@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sri Lankan Tourism Portfolio Design System */
+
+@layer base {
+  :root {
+    /* Core Colors - Based on Logo Palette */
+    --background: 0 0% 99%;                    /* White: #fefefe */
+    --foreground: 213 25% 26%;                 /* Dark Gray: #3c4254 */
+
+    --card: 0 0% 99%;                          /* White: #fefefe */
+    --card-foreground: 213 25% 26%;            /* Dark Gray: #3c4254 */
+
+    --popover: 0 0% 99%;                       /* White: #fefefe */
+    --popover-foreground: 213 25% 26%;         /* Dark Gray: #3c4254 */
+
+    /* Primary: Teal/Green from logo #5cbcaf */
+    --primary: 174 35% 54%;
+    --primary-foreground: 0 0% 99%;
+    --primary-light: 174 40% 65%;
+    --primary-dark: 174 45% 40%;
+
+    /* Secondary: Blue from logo #3f6ea0 */
+    --secondary: 212 46% 44%;
+    --secondary-foreground: 0 0% 99%;
+
+    /* Accent: Orange from logo #f79d1b */
+    --accent: 32 85% 53%;
+    --accent-foreground: 0 0% 99%;
+    --accent-light: 40 78% 65%;
+
+    /* Purple from logo #856290 */
+    --purple: 284 27% 48%;
+    --purple-foreground: 0 0% 99%;
+
+    /* Pink/Magenta from logo #e04a7e */
+    --pink: 335 68% 59%;
+    --pink-foreground: 0 0% 99%;
+
+    /* Dark Orange from logo #d86429 */
+    --dark-orange: 18 68% 50%;
+    --dark-orange-foreground: 0 0% 99%;
+
+    /* Light Yellow from logo #f7da9b */
+    --light-yellow: 43 84% 78%;
+    --light-yellow-foreground: 213 25% 26%;
+
+    /* Muted: Light Gray from logo #c1c1c6 */
+    --muted: 240 5% 76%;
+    --muted-foreground: 213 25% 26%;
+
+    /* Status Colors using logo palette */
+    --destructive: 335 68% 59%;                /* Using Pink/Magenta */
+    --destructive-foreground: 0 0% 99%;
+
+    --success: 174 35% 54%;                    /* Using Teal/Green */
+    --success-foreground: 0 0% 99%;
+
+    --warning: 43 84% 78%;                     /* Using Light Yellow */
+    --warning-foreground: 213 25% 26%;
+
+    /* UI Elements */
+    --border: 240 5% 76%;                      /* Light Gray */
+    --input: 0 0% 96%;
+    --ring: 174 35% 54%;                       /* Teal/Green */
+
+    /* Modern Gradients with logo colors */
+    --gradient-primary: linear-gradient(135deg, hsl(174 35% 54%), hsl(212 46% 44%));
+    --gradient-sunset: linear-gradient(135deg, hsl(32 85% 53%), hsl(18 68% 50%));
+    --gradient-hero: linear-gradient(135deg, hsl(174 35% 54% / 0.95), hsl(32 85% 53% / 0.85));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 99% / 0.9), hsl(240 5% 96% / 0.7));
+    --gradient-accent: linear-gradient(135deg, hsl(284 27% 48%), hsl(335 68% 59%));
+    --gradient-rainbow: linear-gradient(135deg, hsl(174 35% 54%), hsl(212 46% 44%), hsl(284 27% 48%), hsl(335 68% 59%), hsl(32 85% 53%));
+
+    /* Elegant Shadows using logo colors */
+    --shadow-sm: 0 2px 8px hsl(174 35% 54% / 0.08);
+    --shadow-md: 0 8px 25px hsl(174 35% 54% / 0.12);
+    --shadow-lg: 0 16px 40px hsl(174 35% 54% / 0.16);
+    --shadow-hover: 0 12px 35px hsl(174 35% 54% / 0.2);
+    --shadow-accent: 0 8px 25px hsl(32 85% 53% / 0.15);
+
+    /* Spacing & Sizing */
+    --radius: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark theme using logo colors */
+    --background: 213 25% 8%;                  /* Dark Gray base */
+    --foreground: 0 0% 96%;                    /* Near White */
+
+    --card: 213 20% 12%;
+    --card-foreground: 0 0% 96%;
+
+    --popover: 213 20% 12%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 174 40% 65%;                    /* Brighter Teal for dark mode */
+    --primary-foreground: 213 25% 8%;
+    --primary-light: 174 45% 75%;
+    --primary-dark: 174 35% 45%;
+
+    --secondary: 212 50% 55%;                  /* Brighter Blue for dark mode */
+    --secondary-foreground: 213 25% 8%;
+
+    --accent: 32 85% 60%;                      /* Brighter Orange for dark mode */
+    --accent-foreground: 213 25% 8%;
+    --accent-light: 40 78% 70%;
+
+    --purple: 284 30% 58%;                     /* Brighter Purple for dark mode */
+    --purple-foreground: 213 25% 8%;
+
+    --pink: 335 70% 65%;                       /* Brighter Pink for dark mode */
+    --pink-foreground: 213 25% 8%;
+
+    --dark-orange: 18 70% 60%;                 /* Brighter Dark Orange for dark mode */
+    --dark-orange-foreground: 213 25% 8%;
+
+    --light-yellow: 43 84% 70%;
+    --light-yellow-foreground: 213 25% 8%;
+
+    --muted: 213 15% 18%;
+    --muted-foreground: 240 5% 65%;
+
+    --destructive: 335 70% 65%;                /* Using brighter Pink for dark mode */
+    --destructive-foreground: 0 0% 96%;
+
+    --success: 174 40% 65%;                    /* Using brighter Teal */
+    --success-foreground: 213 25% 8%;
+
+    --warning: 43 84% 70%;
+    --warning-foreground: 213 25% 8%;
+
+    --border: 213 15% 20%;
+    --input: 213 15% 15%;
+    --ring: 174 40% 65%;
+
+    /* Dark mode gradients with logo colors */
+    --gradient-primary: linear-gradient(135deg, hsl(174 40% 65%), hsl(212 50% 55%));
+    --gradient-sunset: linear-gradient(135deg, hsl(32 85% 60%), hsl(18 70% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(174 40% 65% / 0.9), hsl(32 85% 60% / 0.8));
+    --gradient-card: linear-gradient(145deg, hsl(213 20% 12% / 0.9), hsl(213 15% 18% / 0.7));
+    --gradient-accent: linear-gradient(135deg, hsl(284 30% 58%), hsl(335 70% 65%));
+    --gradient-rainbow: linear-gradient(135deg, hsl(174 40% 65%), hsl(212 50% 55%), hsl(284 30% 58%), hsl(335 70% 65%), hsl(32 85% 60%));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-poppins;
+  }
+}
+
+@layer components {
+  /* Hero Section Styles */
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .hero-text {
+    @apply text-5xl md:text-7xl font-bold font-poppins leading-tight;
+    background: linear-gradient(135deg, hsl(0 0% 100%), hsl(25 75% 85%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    @apply text-xl md:text-2xl font-light text-white/90;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Card Styles */
+  .tourism-card {
+    background: var(--gradient-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .tourism-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Button Variants */
+  .btn-hero {
+    @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300;
+    background: var(--gradient-sunset);
+    color: hsl(var(--accent-foreground));
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-300;
+    background: var(--gradient-primary);
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Animation Classes */
+  .fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+  }
+
+  .scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Responsive utilities */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
