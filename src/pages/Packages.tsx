@@ -36,7 +36,7 @@ const Packages = () => {
       highlights: ['Sigiriya Rock Fortress', 'Kandy Temple', 'Galle Fort'],
       image: '/sevendaypack.png',
       category: 'cultural',
-      rating: 4.8,
+      rating: 5,
       travelers: '2-12',
       featured: true
     },
@@ -49,7 +49,7 @@ const Packages = () => {
       highlights: ['Yala Safari', 'Tea Plantations', 'Beach Relaxation'],
       image: '/forteendaypack.png',
       category: 'comprehensive',
-      rating: 4.9,
+      rating: 5,
       travelers: '2-10',
       featured: true
     },

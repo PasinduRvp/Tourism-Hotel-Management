@@ -10,11 +10,11 @@ const About = () => {
       <Header />
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+        <section className="py-20 bg-gradient-to-br from-emerald-100 via-blue-100 to-emerald-100">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                About CEYLON HOLIDAY TRIP
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+                CEYLON HOLIDAY TRIP
               </h1>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Discover the pearl of the Indian Ocean with our expert guidance and 
@@ -24,7 +24,7 @@ const About = () => {
 
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                <h2 className="text-4xl font-bold text-gray-900 mb-6">
                   Our Story
                 </h2>
                 <p className="text-gray-600 mb-4 leading-relaxed">
@@ -62,7 +62,7 @@ const About = () => {
         <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
                 Our Values
               </h2>
               <p className="text-xl text-gray-600">
@@ -134,7 +134,7 @@ const About = () => {
         <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
                 Meet Our Team
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">

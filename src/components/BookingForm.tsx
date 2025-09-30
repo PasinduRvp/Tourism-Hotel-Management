@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { User, Mail, Users, MessageSquare, CheckCircle, Flag } from 'lucide-react';
+import { User, Mail, Users, MessageSquare, CheckCircle, Flag, Send, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const bookingSchema = z.object({
@@ -114,13 +114,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
     country.name.toLowerCase().includes(countrySearch.toLowerCase())
   );
 
-  const onSubmit = async (data: BookingFormData) => {
+  const handleEmailSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
       // Save booking to localStorage
       const bookings = JSON.parse(localStorage.getItem('package_bookings') || '[]');
       const selectedCountry = countries.find(c => c.code === data.country);
@@ -138,10 +135,31 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
       
       localStorage.setItem('package_bookings', JSON.stringify(bookings));
       
+      // Create email content
+      const emailSubject = `Booking Inquiry: ${packageName}`;
+      const emailBody = `
+Name: ${data.name}
+Email: ${data.email}
+Country: ${selectedCountry?.name}
+Passengers: ${data.passengers}
+Package: ${packageName}
+Duration: ${packageDuration}
+Price: ${packagePrice}
+
+Message: ${data.message || 'No special requests'}
+
+---
+This booking was submitted via Ceylon Holiday Trip website.
+      `.trim();
+
+      // Open default email client
+      const mailtoLink = `mailto:bookings@ceylonholiday.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+      window.location.href = mailtoLink;
+      
       setIsSubmitted(true);
       toast({
-        title: "Booking Confirmed!",
-        description: `Your ${packageName} package booking has been submitted successfully.`,
+        title: "Booking Submitted!",
+        description: "Your booking details have been saved. Opening email client...",
       });
       
       reset();
@@ -156,15 +174,69 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
     }
   };
 
+  const handleWhatsAppSubmit = async (data: BookingFormData) => {
+    setIsSubmitting(true);
+    
+    try {
+      // Save booking to localStorage
+      const bookings = JSON.parse(localStorage.getItem('package_bookings') || '[]');
+      const selectedCountry = countries.find(c => c.code === data.country);
+      
+      bookings.push({
+        ...data,
+        packageName,
+        packagePrice,
+        packageDuration,
+        countryFlag: selectedCountry?.flag,
+        countryName: selectedCountry?.name,
+        timestamp: new Date().toISOString(),
+        id: Date.now()
+      });
+      
+      localStorage.setItem('package_bookings', JSON.stringify(bookings));
+      
+      // Create WhatsApp message
+      const whatsappMessage = `*📦 Package Booking Inquiry*%0A%0A*Package:* ${packageName}%0A*Duration:* ${packageDuration}%0A*Price:* ${packagePrice}%0A%0A*👤 Customer Details*%0A*Name:* ${data.name}%0A*Email:* ${data.email}%0A*Country:* ${selectedCountry?.name}%0A*Passengers:* ${data.passengers}%0A%0A*💬 Special Requests:*%0A${data.message || 'No special requests'}%0A%0A---%0A_Submitted via Ceylon Holiday Trip Website_`;
+      
+      // Open WhatsApp
+      const whatsappLink = `https://wa.me/94771234567?text=${whatsappMessage}`;
+      window.open(whatsappLink, '_blank');
+      
+      setIsSubmitted(true);
+      toast({
+        title: "Booking Submitted!",
+        description: "Your booking details have been saved. Opening WhatsApp...",
+      });
+      
+      reset();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const onSubmit = (data: BookingFormData, method: 'email' | 'whatsapp') => {
+    if (method === 'email') {
+      handleEmailSubmit(data);
+    } else {
+      handleWhatsAppSubmit(data);
+    }
+  };
+
   if (isSubmitted) {
     return (
       <Card className="tourism-card">
         <CardContent className="pt-6">
           <div className="text-center space-y-4">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
-            <h3 className="text-xl font-bold text-foreground">Booking Confirmed!</h3>
+            <h3 className="text-xl font-bold text-foreground">Booking Submitted!</h3>
             <p className="text-muted-foreground">
-              Thank you for booking the {packageName} package. We'll contact you within 24 hours to finalize your trip details.
+              Thank you for your interest in the {packageName} package. We'll contact you within 24 hours to confirm your booking details.
             </p>
             <Button 
               onClick={() => setIsSubmitted(false)}
@@ -191,7 +263,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
         </div>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form className="space-y-6">
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
@@ -311,24 +383,49 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
             </div>
           </div>
 
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full btn-primary"
-          >
-            {isSubmitting ? (
-              <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                <span>Processing...</span>
-              </div>
-            ) : (
-              'Confirm Booking'
-            )}
-          </Button>
+          {/* Dual Submit Buttons */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <Button
+              type="button"
+              onClick={handleSubmit((data) => onSubmit(data, 'email'))}
+              disabled={isSubmitting}
+              className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg"
+            >
+              {isSubmitting ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Processing...</span>
+                </div>
+              ) : (
+                <>
+                  <Send className="w-5 h-5 mr-2" />
+                  Send via Email
+                </>
+              )}
+            </Button>
+
+            <Button
+              type="button"
+              onClick={handleSubmit((data) => onSubmit(data, 'whatsapp'))}
+              disabled={isSubmitting}
+              className="w-full py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg"
+            >
+              {isSubmitting ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Processing...</span>
+                </div>
+              ) : (
+                <>
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Send via WhatsApp
+                </>
+              )}
+            </Button>
+          </div>
 
           <p className="text-xs text-muted-foreground text-center">
-            By booking, you agree to our terms and conditions. We'll contact you within 24 hours to confirm your trip details.
+            By submitting, you agree to our terms and conditions. We'll contact you within 24 hours to confirm your trip details.
           </p>
         </form>
       </CardContent>

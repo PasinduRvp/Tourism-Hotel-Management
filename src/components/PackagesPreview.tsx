@@ -37,25 +37,26 @@ const PackagesPreview = () => {
       image: '/twentyfirstdaypack.png',
     },
     {
-      id: 'customize',
-      title: 'Design Your Dream Package',
-      duration: 'Flexible',
-      price: 'Custom Quote',
-      description: 'Create your perfect Sri Lankan adventure with our expert travel consultants.',
-      highlights: ['Personalized Itinerary', 'Custom Activities', 'Flexible Duration'],
-      image: '/logoic.jpg',
-    }
+  id: 'customize',
+  title: 'Design Your Dream Package',
+  duration: 'Flexible',
+  price: 'Custom Quote',
+  description: 'Create your perfect Sri Lankan adventure with our expert travel consultants.',
+  highlights: ['Personalized Itinerary', 'Custom Activities', 'Flexible Duration'],
+  image: 'https://images.pexels.com/photos/6045035/pexels-photo-6045035.jpeg?auto=compress&cs=tinysrgb&w=600',
+}
+
   ];
 
   return (
-    <section id="packages" className="py-20 bg-gradient-to-br from-background to-muted">
+    <section id="packages" className="py-20 bg-gradient-to-br from-slate-200 via-blue-100 to-emerald-100">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 slide-up">
           <div className="flex items-center justify-center mb-4">
             <Calendar className="w-6 h-6 text-primary mr-2" />
             <span className="text-primary font-medium">Our Packages</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-poppins">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-poppins bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
             Choose Your Adventure
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

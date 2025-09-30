@@ -1,47 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Camera, Search, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Camera, Search, X, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 
-// Swipe Card Component
-const SwipeCard = ({ card, isFront, onRemove, onClick }) => {
-  const x = useMotionValue(0);
-  const rotateRaw = useTransform(x, [-150, 150], [-18, 18]);
-  const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
-
-  const rotate = useTransform(() => {
-    const offset = isFront ? 0 : card.id % 2 ? 6 : -6;
-    return `${rotateRaw.get() + offset}deg`;
-  });
-
-  const handleDragEnd = () => {
-    if (Math.abs(x.get()) > 100) {
-      onRemove(card.id);
-    }
-  };
-
+// Auto Carousel Card Component
+const CarouselCard = ({ card, isActive, onClick }) => {
   return (
     <motion.div
-      className="absolute inset-0 cursor-grab active:cursor-grabbing"
-      style={{
-        x,
-        opacity,
-        rotate,
-        transition: "0.125s transform",
+      className={`absolute inset-0 cursor-pointer overflow-hidden rounded-2xl shadow-2xl ${
+        isActive ? 'z-10' : 'z-0'
+      }`}
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ 
+        scale: isActive ? 1 : 0.85,
+        opacity: isActive ? 1 : 0.7
       }}
-      drag={isFront ? "x" : false}
-      dragConstraints={{ left: 0, right: 0 }}
-      onDragEnd={handleDragEnd}
-      onClick={() => isFront && onClick(card)}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      onClick={() => onClick(card)}
     >
       <img 
         src={card.src} 
         alt={card.alt}
-        className="w-full h-full object-cover rounded-2xl shadow-2xl"
+        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
       />
-      {isFront && (
+      {isActive && (
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-2xl">
           <p className="text-white font-semibold text-lg">{card.alt}</p>
           <p className="text-white/80 text-sm capitalize">{card.category}</p>
@@ -51,34 +35,138 @@ const SwipeCard = ({ card, isFront, onRemove, onClick }) => {
   );
 };
 
-// Swipe Cards Container
-const SwipeCards = ({ images, onCardClick }) => {
-  const [cards, setCards] = useState(images);
+// Auto Carousel Container
+const AutoCarousel = ({ images, onCardClick }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const intervalRef = useRef(null);
 
-  const handleRemove = (id: number) => {
-    setCards(prev => prev.filter(card => card.id !== id));
+  // Auto-advance carousel - FIXED VERSION
+  // Auto-advance carousel - AUTO-PLAY EVERY 5 SECONDS INFINITELY
+  useEffect(() => {
+    // Clear any existing interval
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    if (isPlaying && images.length > 0) {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((prevIndex) => {
+          // Loop infinitely - when at last image, go back to first
+          return (prevIndex + 1) % images.length;
+        });
+      }, 5000); // Change slide every 5 seconds
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isPlaying, images.length]);// Added images.length as dependency
+
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
   };
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+    setIsPlaying(false);
+    // Resume auto-play after 8 seconds of manual interaction
+    setTimeout(() => setIsPlaying(true), 8000);
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => {
+      if (prevIndex >= images.length - 1) {
+        return 0;
+      }
+      return prevIndex + 1;
+    });
+    setIsPlaying(false);
+    setTimeout(() => setIsPlaying(true), 8000);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => {
+      if (prevIndex <= 0) {
+        return images.length - 1;
+      }
+      return prevIndex - 1;
+    });
+    setIsPlaying(false);
+    setTimeout(() => setIsPlaying(true), 8000);
+  };
+
+  if (images.length === 0) {
+    return (
+      <div className="relative h-[500px] w-full max-w-md flex items-center justify-center bg-gray-100 rounded-2xl">
+        <p className="text-gray-500 text-lg">No featured photos available</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-[500px] w-full max-w-md">
-      {cards.map((card, index) => {
-        const isFront = index === cards.length - 1;
-        return (
-          <SwipeCard
-            key={card.id}
-            card={card}
-            isFront={isFront}
-            onRemove={handleRemove}
-            onClick={onCardClick}
-          />
-        );
-      })}
+      {/* Carousel Cards */}
+      {images.map((card, index) => (
+        <CarouselCard
+          key={card.id}
+          card={card}
+          isActive={index === currentIndex}
+          onClick={onCardClick}
+        />
+      ))}
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
       
-      {cards.length === 0 && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-2xl">
-          <p className="text-gray-500 text-lg">No more featured photos</p>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      {/* Play/Pause Button */}
+      <button
+        onClick={handlePlayPause}
+        className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
+      >
+        {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+      </button>
+
+      {/* Progress Indicator */}
+      <div className="absolute bottom-4 left-4 right-4 z-20">
+        <div className="flex justify-center space-x-2 mb-3">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'
+              }`}
+            />
+          ))}
         </div>
-      )}
+        
+        {/* Progress Bar */}
+        <div className="w-full bg-white/30 rounded-full h-1">
+          <motion.div
+            className="bg-white h-1 rounded-full"
+            initial={{ width: "0%" }}
+            animate={{ width: isPlaying ? "100%" : "0%" }}
+            transition={{ duration: 4, ease: "linear" }}
+            key={currentIndex} // Reset animation when slide changes
+          />
+        </div>
+      </div>
+
     </div>
   );
 };
@@ -108,86 +196,86 @@ const Gallery = () => {
   const galleryImages = [
     {
       id: 1,
-      src: 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=800&h=600&fit=crop',
+      src: 'https://images.pexels.com/photos/13391116/pexels-photo-13391116.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Sigiriya Rock Fortress',
       category: 'culture',
       featured: true
     },
     {
       id: 2,
-      src: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop',
+      src: 'https://images.pexels.com/photos/13410061/pexels-photo-13410061.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Elephant Safari',
       category: 'wildlife',
       featured: true
     },
     {
       id: 3,
-      src: 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&h=600&fit=crop',
+      src: 'https://images.pexels.com/photos/9771342/pexels-photo-9771342.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Tea Plantations',
       category: 'nature',
       featured: false
     },
     {
       id: 4,
-      src: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&h=600&fit=crop',
-      alt: 'Pristine Beach',
+      src: 'https://images.pexels.com/photos/29644514/pexels-photo-29644514.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Mirissa Beach',
       category: 'beaches',
       featured: true
     },
     {
       id: 5,
-      src: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&h=600&fit=crop',
-      alt: 'Buddhist Temple',
+      src: 'https://images.pexels.com/photos/14041994/pexels-photo-14041994.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Temple of the Tooth',
       category: 'culture',
       featured: false
     },
     {
       id: 6,
-      src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop',
-      alt: 'Spice Gardens',
+      src: 'https://images.pexels.com/photos/2597205/pexels-photo-2597205.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Ayurvedic Yoga',
       category: 'nature',
       featured: false
     },
     {
       id: 7,
-      src: 'https://images.unsplash.com/photo-1544644181-1489ab6c8cae?w=800&h=600&fit=crop',
-      alt: 'Traditional Dance',
-      category: 'culture',
+      src: 'https://images.pexels.com/photos/2403209/pexels-photo-2403209.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Nine Arch Bridge',
+      category: 'adventure',
       featured: false
     },
     {
       id: 8,
-      src: 'https://images.unsplash.com/photo-1574362849222-9dd4621feaa1?w=800&h=600&fit=crop',
+      src: 'https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Mountain Hiking',
       category: 'adventure',
       featured: true
     },
     {
       id: 9,
-      src: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop',
-      alt: 'Wildlife Sanctuary',
-      category: 'wildlife',
+      src: 'https://images.pexels.com/photos/12781426/pexels-photo-12781426.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Totus Tower',
+      category: 'culture',
       featured: false
     },
     {
       id: 10,
-      src: 'https://images.unsplash.com/photo-1571896349842-33c89424de9d?w=800&h=600&fit=crop',
+      src: 'https://images.pexels.com/photos/34037253/pexels-photo-34037253.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Waterfall Adventure',
       category: 'adventure',
       featured: false
     },
     {
       id: 11,
-      src: 'https://images.unsplash.com/photo-1544966503-eb6e1d7bf3d3?w=800&h=600&fit=crop',
+      src: 'https://images.pexels.com/photos/221387/pexels-photo-221387.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Sunset Beach',
       category: 'beaches',
       featured: false
     },
     {
       id: 12,
-      src: 'https://images.unsplash.com/photo-1574362848141-61e1e56d46d7?w=800&h=600&fit=crop',
-      alt: 'Hill Country',
-      category: 'nature',
+      src: 'https://images.pexels.com/photos/1645028/pexels-photo-1645028.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Diving & Turtles',
+      category: 'wildlife',
       featured: true
     }
   ];
@@ -247,10 +335,10 @@ const Gallery = () => {
   }, [selectedImage, filteredImages]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-200 via-blue-100 to-emerald-200">
       <Header />
       
-      {/* Enhanced Hero Section with Swipe Cards */}
+      {/* Enhanced Hero Section with Auto Carousel */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-800/10 via-transparent to-green-900/10" />
         <div className="absolute top-0 left-0 w-72 h-72 bg-blue-500/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
@@ -276,31 +364,18 @@ const Gallery = () => {
                 of stunning photographs from across the island.
               </p>
 
-              {/* Search Bar */}
-              <div className="max-w-2xl">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Search photos..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl"
-                  />
-                </div>
-              </div>
+              
             </div>
 
-            {/* Right Side - Swipe Cards */}
+            {/* Right Side - Auto Carousel */}
             <div className={`flex justify-center lg:justify-end transition-all duration-1000 ${
               isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
             }`} style={{ animationDelay: '300ms' }}>
               <div className="w-full max-w-md">
                 <div className="text-center lg:text-left mb-6">
                   <h2 className="text-3xl font-bold text-gray-900 mb-2">Featured Moments</h2>
-                  <p className="text-gray-600">Swipe to explore featured photos</p>
                 </div>
-                <SwipeCards images={featuredImages} onCardClick={openLightbox} />
+                <AutoCarousel images={featuredImages} onCardClick={openLightbox} />
               </div>
             </div>
           </div>
@@ -334,7 +409,7 @@ const Gallery = () => {
           <div className={`transition-all duration-1000 ${
             isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
           }`} style={{ animationDelay: '800ms' }}>
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">All Photos</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">All Photos</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredImages.map((image, index) => (
                 <div

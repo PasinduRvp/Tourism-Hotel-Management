@@ -13,39 +13,39 @@ const GalleryPreview = () => {
   const galleryImages = [
     {
       id: 1,
-      src: 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=600&h=400&fit=crop',
+      src: 'https://images.pexels.com/photos/13391116/pexels-photo-13391116.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Sigiriya Rock Fortress',
       category: 'Culture'
     },
     {
       id: 2,
-      src: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop',
+      src: 'https://images.pexels.com/photos/13410061/pexels-photo-13410061.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Elephant Safari',
       category: 'Wildlife'
     },
     {
       id: 3,
-      src: 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=600&h=400&fit=crop',
+      src: 'https://images.pexels.com/photos/9771342/pexels-photo-9771342.jpeg?auto=compress&cs=tinysrgb&w=600',
       alt: 'Tea Plantations',
       category: 'Nature'
     },
     {
       id: 4,
-      src: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=600&h=400&fit=crop',
-      alt: 'Pristine Beach',
+      src: 'https://images.pexels.com/photos/29644514/pexels-photo-29644514.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Mirissa Beach',
       category: 'Beaches'
     },
     {
       id: 5,
-      src: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&h=400&fit=crop',
-      alt: 'Buddhist Temple',
+      src: 'https://images.pexels.com/photos/14041994/pexels-photo-14041994.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Temple of the Tooth',
       category: 'Culture'
     },
     {
       id: 6,
-      src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop',
-      alt: 'Spice Gardens',
-      category: 'Nature'
+      src: 'https://images.pexels.com/photos/2597205/pexels-photo-2597205.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Ayurvedic Yoga',
+      category: 'Mind Relaxation'
     }
   ];
 
@@ -92,14 +92,14 @@ const GalleryPreview = () => {
         }
       `}</style>
 
-      <section className="py-20 bg-gradient-to-br from-muted to-background">
+      <section className="py-20 bg-gradient-to-br from-slate-200 via-blue-100 to-emerald-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 slide-up">
             <div className="flex items-center justify-center mb-4">
               <Camera className="w-6 h-6 text-primary mr-2" />
               <span className="text-primary font-medium">Gallery</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-poppins">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-poppins bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
               Captured Moments
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -159,12 +159,14 @@ const GalleryPreview = () => {
           </div>
 
           <div className="text-center mt-12">
-            <button 
+            
+            <button
               onClick={() => navigate('/Gallery')}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+              className="relative overflow-hidden group bg-gradient-to-r from-[#1a365d] to-[#2d3748] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-2xl px-8 py-4 rounded-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl border-0"
             >
               View Full Gallery
             </button>
+
           </div>
         </div>
       </section>
