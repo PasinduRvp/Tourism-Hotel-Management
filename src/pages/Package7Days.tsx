@@ -442,19 +442,20 @@ const Package7Days = () => {
     <div className="min-h-screen">
       <Header />
       <main className="pt-20">
-        {/* Hero Section - Increased height with square video */}
-        <section className="relative h-96 bg-gradient-to-r from-primary to-emerald-200">
+        {/* Hero Section - Fixed for mobile */}
+        <section className="relative py-12 lg:py-0 lg:h-96 bg-gradient-to-r from-primary to-emerald-200">
           <div className="absolute inset-0 bg-black/40" />
           <div className="relative container mx-auto px-4 h-full flex items-center">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full items-center">
-              <div className="text-white">
+              {/* Text Content */}
+              <div className="text-white text-center lg:text-left">
                 <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
                   Cultural Triangle
                 </h1>
                 <p className="text-xl md:text-2xl mb-6">
                   7 Days of Heritage & Culture
                 </p>
-                <div className="flex items-center space-x-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-6">
                   <div className="flex items-center">
                     <Calendar className="w-5 h-5 mr-2" />
                     <span>7 Days</span>
@@ -469,8 +470,10 @@ const Package7Days = () => {
                   </div>
                 </div>
               </div>
-              <div className="hidden lg:flex justify-center">
-                <div className="w-80 h-60 rounded-2xl shadow-2xl overflow-hidden">
+              
+              {/* Video Content - Now visible on all screens */}
+              <div className="flex justify-center">
+                <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:w-80 h-48 sm:h-56 md:h-64 lg:h-60 rounded-2xl shadow-2xl overflow-hidden">
                   <video
                     src="/map7.mp4"
                     autoPlay
