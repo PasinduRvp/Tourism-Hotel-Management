@@ -164,8 +164,10 @@ const Hero = () => {
               </span>
             </h1>
 
-            {/* Short Description - Responsive text and padding */}
-            <p className="text-base font-oldenburg sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-lg leading-relaxed backdrop-blur-sm bg-black/20 rounded-lg p-3 sm:p-4 border-l-4 border-[#d4af37]">
+            <p
+              className="text-base sm:text-lg md:text-xl font-semibold italic text-white/90 mb-6 sm:mb-8 max-w-lg leading-relaxed 
+              backdrop-blur-sm bg-black/20 rounded-lg p-3 sm:p-4 border-l-4 border-[#d4af37]"
+            >
               Discover unforgettable journeys to the world's most breathtaking
               destinations. Your dream vacation is just one click away.
             </p>
@@ -173,9 +175,7 @@ const Hero = () => {
             {/* Enhanced CTA Buttons - Stack on mobile, row on larger screens */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 items-start sm:items-center">
               <Link to="/packages" className="w-full sm:w-auto">
-                <Button
-                  className="relative overflow-hidden group bg-gradient-to-r from-[#d4af37] to-[#e53e3e] hover:from-[#e7e6e2] hover:to-[#835858] text-white font-semibold px-6 sm:px-8 py-4 sm:py-5 rounded-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl border-0 w-full sm:w-auto"
-                >
+                <Button className="relative overflow-hidden group bg-gradient-to-r from-[#d4af37] to-[#e53e3e] hover:from-[#e7e6e2] hover:to-[#835858] text-white font-semibold px-6 sm:px-8 py-4 sm:py-5 rounded-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl border-0 w-full sm:w-auto">
                   <span className="relative z-10 flex items-center justify-center sm:justify-start">
                     Explore Packages
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 sm:ml-3 group-hover:translate-x-1 sm:group-hover:translate-x-2 transition-transform duration-300" />
