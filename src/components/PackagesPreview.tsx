@@ -43,7 +43,7 @@ const PackagesPreview = () => {
   price: 'Custom Quote',
   description: 'Create your perfect Sri Lankan adventure with our expert travel consultants.',
   highlights: ['Personalized Itinerary', 'Custom Activities', 'Flexible Duration'],
-  image: 'https://images.pexels.com/photos/6045035/pexels-photo-6045035.jpeg?auto=compress&cs=tinysrgb&w=600',
+  image: '/logoic.jpg',
 }
 
   ];

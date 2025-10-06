@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Calendar, MapPin, Users, DollarSign, Camera, Utensils, Car, Send, CheckCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { Calendar, MapPin, Users, DollarSign, Camera, Utensils, Car, Send, CheckCircle, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -29,9 +30,27 @@ const customizationSchema = z.object({
   specialRequests: z.string().optional()
 });
 
+// EmailJS Configuration
+const EMAILJS_CONFIG = {
+  SERVICE_ID: 'service_zo4a4xr',
+  BOOKING_TEMPLATE_ID: 'template_k82rtr2',
+  AUTO_REPLY_TEMPLATE_ID: 'template_m9bwcdl',
+  PUBLIC_KEY: 'wRx4YOQ1VVqvhlAKt'
+};
+
+// WhatsApp Configuration
+const WHATSAPP_CONFIG = {
+  PHONE_NUMBER: '+94766500225',
+  COMPANY_NAME: 'Ceylon Holiday Trip'
+};
+
+// Initialize EmailJS
+emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+
 const CustomizePackage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionMethod, setSubmissionMethod] = useState<'email' | 'whatsapp' | null>(null);
   const { toast } = useToast();
 
   const {
@@ -40,7 +59,8 @@ const CustomizePackage = () => {
     formState: { errors },
     watch,
     setValue,
-    reset
+    reset,
+    getValues
   } = useForm<z.infer<typeof customizationSchema>>({
     resolver: zodResolver(customizationSchema),
     defaultValues: {
@@ -94,36 +114,248 @@ const CustomizePackage = () => {
     }
   };
 
-  const onSubmit = async (data: any) => {
+  const getBudgetLabel = (budget: string) => {
+    const labels = {
+      budget: 'Budget ($50-100/day)',
+      'mid-range': 'Mid-range ($100-200/day)',
+      luxury: 'Luxury ($200+/day)'
+    };
+    return labels[budget as keyof typeof labels] || budget;
+  };
+
+  const getAccommodationLabel = (acc: string) => {
+    const labels = {
+      budget: 'Budget Hotels/Guesthouses',
+      'mid-range': 'Mid-range Hotels',
+      luxury: 'Luxury Resorts'
+    };
+    return labels[acc as keyof typeof labels] || acc;
+  };
+
+  const getTransportationLabel = (trans: string) => {
+    const labels = {
+      private: 'Private Vehicle',
+      public: 'Public Transport',
+      mixed: 'Mixed (Private + Public)'
+    };
+    return labels[trans as keyof typeof labels] || trans;
+  };
+
+  const sendAdminNotification = async (data: any) => {
+    const selectedDestinations = destinations
+      .filter(d => data.destinations.includes(d.id))
+      .map(d => d.name)
+      .join(', ');
+
+    const selectedActivities = activities
+      .filter(a => data.activities.includes(a.id))
+      .map(a => a.name)
+      .join(', ');
+
+    const templateParams = {
+      to_name: 'Ceylon Holiday Trip Team',
+      from_name: data.name,
+      from_email: data.email,
+      reply_to: data.email,
+      package_name: 'Custom Trip Package',
+      package_duration: `${data.duration} days`,
+      package_price: getBudgetLabel(data.budget),
+      country: selectedDestinations,
+      country_flag: '🇱🇰',
+      passengers: data.travelers.toString(),
+      message: `
+CUSTOMIZATION DETAILS:
+━━━━━━━━━━━━━━━━━━━━
+Phone: ${data.phone || 'Not provided'}
+Destinations: ${selectedDestinations}
+Activities: ${selectedActivities}
+Accommodation: ${getAccommodationLabel(data.accommodation)}
+Transportation: ${getTransportationLabel(data.transportation)}
+Dietary Restrictions: ${data.dietary || 'None'}
+Special Requests: ${data.specialRequests || 'None'}
+      `.trim(),
+      submission_date: new Date().toLocaleDateString('en-US', { 
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+      }),
+      submission_time: new Date().toLocaleTimeString('en-US', { 
+        hour: '2-digit', minute: '2-digit', hour12: true 
+      })
+    };
+
+    console.log('📧 Sending admin notification...');
+    await emailjs.send(
+      EMAILJS_CONFIG.SERVICE_ID,
+      EMAILJS_CONFIG.BOOKING_TEMPLATE_ID,
+      templateParams,
+      EMAILJS_CONFIG.PUBLIC_KEY
+    );
+    console.log('✅ Admin notification sent');
+  };
+
+  const sendCustomerAutoReply = async (data: any) => {
+    const selectedDestinations = destinations
+      .filter(d => data.destinations.includes(d.id))
+      .map(d => d.name)
+      .join(', ');
+
+    const selectedActivities = activities
+      .filter(a => data.activities.includes(a.id))
+      .map(a => a.name)
+      .join(', ');
+
+    const templateParams = {
+      to_name: data.name,
+      to_email: data.email,
+      from_name: 'Ceylon Holiday Trip',
+      reply_to: 'ceylonholidaytrip@gmail.com',
+      customer_name: data.name,
+      customer_email: data.email,
+      package_name: 'Custom Sri Lanka Trip',
+      package_duration: `${data.duration} days`,
+      package_price: getBudgetLabel(data.budget),
+      country: selectedDestinations,
+      country_flag: '🇱🇰',
+      passengers: data.travelers.toString(),
+      message: `
+YOUR CUSTOMIZATION:
+Destinations: ${selectedDestinations}
+Activities: ${selectedActivities}
+Accommodation: ${getAccommodationLabel(data.accommodation)}
+Transportation: ${getTransportationLabel(data.transportation)}
+Dietary: ${data.dietary || 'None'}
+Special Requests: ${data.specialRequests || 'None'}
+      `.trim(),
+      submission_date: new Date().toLocaleDateString('en-US', { 
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+      }),
+      submission_time: new Date().toLocaleTimeString('en-US', { 
+        hour: '2-digit', minute: '2-digit', hour12: true 
+      })
+    };
+
+    console.log('📨 Sending customer auto-reply...');
+    await emailjs.send(
+      EMAILJS_CONFIG.SERVICE_ID,
+      EMAILJS_CONFIG.AUTO_REPLY_TEMPLATE_ID,
+      templateParams,
+      EMAILJS_CONFIG.PUBLIC_KEY
+    );
+    console.log('✅ Customer auto-reply sent');
+  };
+
+  const sendWhatsAppNotification = (data: any) => {
+    const selectedDestinations = destinations
+      .filter(d => data.destinations.includes(d.id))
+      .map(d => d.name)
+      .join(', ');
+
+    const selectedActivities = activities
+      .filter(a => data.activities.includes(a.id))
+      .map(a => a.name)
+      .join(', ');
+
+    const message = `🌴 *NEW CUSTOM TRIP REQUEST* 🌴
+
+*Customer Details:*
+👤 Name: ${data.name}
+📧 Email: ${data.email}
+📞 Phone: ${data.phone || 'Not provided'}
+
+*Trip Preferences:*
+👥 Travelers: ${data.travelers}
+📅 Duration: ${data.duration} days
+💰 Budget: ${getBudgetLabel(data.budget)}
+
+*Destinations:* ${selectedDestinations}
+
+*Activities:* ${selectedActivities}
+
+*Additional Preferences:*
+🏨 Accommodation: ${getAccommodationLabel(data.accommodation)}
+🚗 Transportation: ${getTransportationLabel(data.transportation)}
+🍽️ Dietary: ${data.dietary || 'None'}
+💫 Special Requests: ${data.specialRequests || 'None'}
+
+*Submitted on:* ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}
+
+Please check the customer's email for follow-up.`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${WHATSAPP_CONFIG.PHONE_NUMBER}?text=${encodedMessage}`;
+    
+    console.log('📱 Opening WhatsApp...');
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleEmailSubmit = async (data: any) => {
     setIsSubmitting(true);
+    setSubmissionMethod('email');
+    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log('🚀 Starting email process...');
       
-      // Save to localStorage
-      const customizations = JSON.parse(localStorage.getItem('trip_customizations') || '[]');
-      customizations.push({
-        ...data,
-        timestamp: new Date().toISOString(),
-        id: Date.now()
-      });
-      localStorage.setItem('trip_customizations', JSON.stringify(customizations));
+      // Send admin notification
+      await sendAdminNotification(data);
+      
+      // Send customer auto-reply
+      await sendCustomerAutoReply(data);
+
+      console.log('🎉 Email process completed successfully!');
 
       setIsSubmitted(true);
       reset();
       toast({
-        title: "Request Submitted!",
-        description: "Your trip customization request has been submitted! We'll get back to you within 24 hours."
+        title: "Request Submitted via Email!",
+        description: "Check your email for confirmation. We'll contact you within 24 hours."
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error('❌ Email submission error:', error);
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: "Email Failed",
+        description: "Failed to send email. Please try WhatsApp or contact us directly.",
         variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
+      setSubmissionMethod(null);
     }
+  };
+
+  const handleWhatsAppSubmit = async (data: any) => {
+    setIsSubmitting(true);
+    setSubmissionMethod('whatsapp');
+    
+    try {
+      console.log('📱 Starting WhatsApp process...');
+      
+      // Send WhatsApp notification
+      sendWhatsAppNotification(data);
+
+      console.log('🎉 WhatsApp process completed successfully!');
+
+      setIsSubmitted(true);
+      reset();
+      toast({
+        title: "Request Submitted via WhatsApp!",
+        description: "We've received your request and will contact you within 24 hours."
+      });
+    } catch (error: any) {
+      console.error('❌ WhatsApp submission error:', error);
+      toast({
+        title: "WhatsApp Failed",
+        description: "Failed to open WhatsApp. Please try email or contact us directly.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+      setSubmissionMethod(null);
+    }
+  };
+
+  const onSubmit = (data: any) => {
+    // This is now handled by individual button handlers
+    // Keeping this for form validation
+    return data;
   };
 
   if (isSubmitted) {
@@ -138,10 +370,16 @@ const CustomizePackage = () => {
                 Request Submitted!
               </h1>
               <p className="text-xl text-white/90 max-w-3xl mx-auto">
-                Thank you for your interest in customizing your Sri Lankan adventure. Our travel experts will review your preferences and contact you within 24 hours with a personalized itinerary.
+                {submissionMethod === 'email' 
+                  ? "Thank you for your customization request! Check your email for confirmation. Our travel experts will review your preferences and contact you within 24 hours with a personalized itinerary."
+                  : "Thank you for your customization request! We've received your details via WhatsApp and our travel experts will contact you within 24 hours with a personalized itinerary."
+                }
               </p>
               <button
-                onClick={() => setIsSubmitted(false)}
+                onClick={() => {
+                  setIsSubmitted(false);
+                  setSubmissionMethod(null);
+                }}
                 className="mt-8 bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-white/90 transition-colors"
               >
                 Customize Another Trip
@@ -161,7 +399,7 @@ const CustomizePackage = () => {
       {/* Hero Section */}
       <section className="pt-20 pb-12 bg-gradient-to-r from-primary to-accent">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 font-poppins animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-poppins animate-fade-in bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
             Customize Your Trip
           </h1>
           <p className="text-xl text-white/90 max-w-3xl mx-auto animate-fade-in">
@@ -377,25 +615,47 @@ const CustomizePackage = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
-            <div className="text-center animate-fade-in">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-primary text-primary-foreground px-12 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 mx-auto hover-scale"
-              >
-                {isSubmitting ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                ) : (
-                  <>
-                    <Send className="h-5 w-5" />
-                    <span>Submit Customization Request</span>
-                  </>
-                )}
-              </button>
-              <p className="mt-4 text-sm text-muted-foreground">
-                We'll get back to you within 24 hours with a personalized itinerary.
+            <p className="mt-4 text-m text-muted-foreground">
+                Choose your preferred method to submit your customization request. We'll get back to you within 24 hours.
               </p>
+
+            {/* Submit Buttons */}
+            <div className="text-center animate-fade-in space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  type="button"
+                  onClick={handleSubmit(handleEmailSubmit)}
+                  disabled={isSubmitting}
+                  className="bg-primary text-primary-foreground px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 hover-scale flex-1 max-w-md"
+                >
+                  {isSubmitting && submissionMethod === 'email' ? (
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  ) : (
+                    <>
+                      <Send className="h-5 w-5" />
+                      <span>Send via Email</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSubmit(handleWhatsAppSubmit)}
+                  disabled={isSubmitting}
+                  className="bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 hover-scale flex-1 max-w-md"
+                >
+                  {isSubmitting && submissionMethod === 'whatsapp' ? (
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  ) : (
+                    <>
+                      <MessageCircle className="h-5 w-5" />
+                      <span>Send via WhatsApp</span>
+                    </>
+                  )}
+                </button>
+              </div>
+              
+              
             </div>
           </form>
         </div>
