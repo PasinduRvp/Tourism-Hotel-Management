@@ -37,7 +37,7 @@ const Packages = () => {
       image: '/sevendaypack.png',
       category: 'cultural',
       rating: 5,
-      travelers: '2-12',
+      travelers: 'As Much As You Like',
       featured: true
     },
     {
@@ -50,7 +50,7 @@ const Packages = () => {
       image: '/forteendaypack.png',
       category: 'comprehensive',
       rating: 5,
-      travelers: '2-10',
+      travelers: 'As Much As You Like',
       featured: true
     },
     {
@@ -63,8 +63,8 @@ const Packages = () => {
       image: '/twentyfirstdaypack.png',
       category: 'adventure',
       rating: 5.0,
-      travelers: '2-8',
-      featured: false
+      travelers: 'As Much As You Like',
+      featured: true
     },
     {
       id: 'customize',
@@ -76,7 +76,7 @@ const Packages = () => {
       image: '/CHT_LOGO.png',
       category: 'custom',
       rating: 5.0,
-      travelers: 'Any',
+      travelers: 'AnAs Much As You Likey',
       featured: false
     }
   ];

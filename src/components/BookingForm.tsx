@@ -286,7 +286,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
                 {...register('name')}
                 type="text"
                 placeholder="John Doe"
-                className="pl-11 py-6 border-2"
+                className="pl-11 py-6 border-2 placeholder:text-gray-400"
               />
             </div>
             {errors.name && (
@@ -304,7 +304,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
                 {...register('email')}
                 type="email"
                 placeholder="john@example.com"
-                className="pl-11 py-6 border-2"
+                className="pl-11 py-6 border-2 placeholder:text-gray-400"
               />
             </div>
             {errors.email && (
@@ -338,6 +338,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
                     placeholder="Search..."
                     value={countrySearch}
                     onChange={(e) => setCountrySearch(e.target.value)}
+                    className="placeholder:text-gray-400"
                   />
                 </div>
                 {filteredCountries.map((country) => (
@@ -367,7 +368,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
                 min="1"
                 max="20"
                 placeholder="2"
-                className="pl-11 py-6 border-2"
+                className="pl-11 py-6 border-2 placeholder:text-gray-400"
               />
             </div>
             {errors.passengers && (
@@ -384,7 +385,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
               <Textarea
                 {...register('message')}
                 placeholder="Any special requirements..."
-                className="pl-11 min-h-[120px] border-2 resize-none"
+                className="pl-11 min-h-[120px] border-2 resize-none placeholder:text-gray-400"
               />
             </div>
           </div>

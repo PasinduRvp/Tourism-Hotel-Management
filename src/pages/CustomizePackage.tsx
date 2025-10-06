@@ -397,7 +397,7 @@ Please check the customer's email for follow-up.`;
       <Header />
       
       {/* Hero Section */}
-      <section className="pt-20 pb-12 bg-gradient-to-r from-primary to-accent">
+      <section className=" pt-20 pb-12 bg-gradient-to-r from-primary to-orange-200">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-poppins animate-fade-in bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
             Customize Your Trip

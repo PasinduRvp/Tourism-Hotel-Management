@@ -159,9 +159,9 @@ const Hero = () => {
             )}
           >
             {/* Website Name */}
-            <h1 className="text-7xl font-bold mb-6">
+            <h1 className="text-6xl font-bold mb-6">
               <span className="bg-gradient-to-r from-white via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
-                TravelEase
+                CEYLON HOLIDAY TRIP
               </span>
             </h1>
 

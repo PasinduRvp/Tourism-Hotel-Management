@@ -156,7 +156,7 @@ const About = () => {
                     </div>
                     <div className="flex-1 text-center md:text-left">
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        Minindu Thiranjaya
+                        Mr
                       </h3>
                       <p className="text-blue-600 font-medium mb-3">Founder & CEO</p>
                       <div className="flex items-center justify-center md:justify-start mb-3">
@@ -168,15 +168,16 @@ const About = () => {
                         <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>
                       </div>
                       <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                        With over 5 years of experience in tourism and deep roots in Sri Lankan culture, 
-                        Minindu has dedicated his career to showcasing the authentic beauty of his homeland.
+                        With years of experience in the UK tourism industry, Mr.  leads his travel agency with passion and professionalism. 
+                        His agency specializes in organizing unforgettable tours to Sri Lanka, 
+                        helping travelers from the UK experience the island’s breathtaking landscapes, vibrant culture, and warm hospitality.
                       </p>
                       <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                         <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                          Tourism Expert
+                          Travel Agency Director
                         </span>
                         <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
-                          Local Guide
+                          Tourism Consultant
                         </span>
                       </div>
                     </div>
@@ -190,7 +191,7 @@ const About = () => {
                     </div>
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-blue-600" />
-                      <span>minindu@ceylonholiday.com</span>
+                      <span>a@ceylonholiday.com</span>
                     </div>
                   </div>
                 </div>
@@ -202,8 +203,8 @@ const About = () => {
                   <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
                     <div className="flex-shrink-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
-                        alt="Operations Manager"
+                        src="/mr_wimukthi.jpg"
+                        alt="Sri Lanka Operations Manager"
                         className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
                       />
                     </div>
@@ -211,25 +212,27 @@ const About = () => {
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
                         Sarah Perera
                       </h3>
-                      <p className="text-blue-600 font-medium mb-3">Operations Manager</p>
+                      <p className="text-blue-600 font-medium mb-3">Sri Lanka Operations Manager</p>
                       <div className="flex items-center justify-center md:justify-start mb-3">
                         <div className="flex">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                           ))}
                         </div>
-                        <span className="text-sm text-gray-600 ml-2">4.9 Rating</span>
+                        <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>
                       </div>
                       <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                        Sarah ensures every aspect of your journey runs smoothly. With expertise in 
-                        logistics and customer service, she coordinates all operations to perfection.
+                        With a deep understanding of Sri Lanka’s diverse culture, heritage, and destinations, 
+                        Mr. Wimukthi manages all ground operations for the agency within Sri Lanka. 
+                        He coordinates with local guides, hotels, and transport services to 
+                        deliver exceptional experiences for tourists arriving through the agency.
                       </p>
                       <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                         <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">
-                          Logistics
+                          Tourism Expert
                         </span>
                         <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium">
-                          Customer Care
+                          Local Operations Coordinator
                         </span>
                       </div>
                     </div>
@@ -239,11 +242,11 @@ const About = () => {
                   <div className="flex items-center justify-center md:justify-start space-x-4 text-sm text-gray-600">
                     <div className="flex items-center">
                       <Phone className="w-4 h-4 mr-1 text-blue-600" />
-                      <span>+94 77 765 4321</span>
+                      <span>+94 75 770 3941</span>
                     </div>
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-blue-600" />
-                      <span>sarah@ceylonholiday.com</span>
+                      <span>wimukthi@ceylonholiday.com</span>
                     </div>
                   </div>
                 </div>

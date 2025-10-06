@@ -10,7 +10,6 @@ import Package14Days from "./pages/Package14Days";
 import Package21Days from "./pages/Package21Days";
 import Gallery from "./pages/Gallery";
 import About from "./pages/About";
-import Customizer from "./pages/Customizer";
 import CustomizePackage from "./pages/CustomizePackage";
 import NotFound from "./pages/NotFound";
 import Contact from "./pages/Contact";
@@ -32,7 +31,6 @@ const App = () => (
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact/>}/>
-          <Route path="/customizer" element={<Customizer />} />
           <Route path="/customize-package" element={<CustomizePackage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

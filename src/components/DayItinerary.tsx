@@ -408,7 +408,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
             {index < days.length - 1 && (
               <div className="flex justify-center my-8 relative">
                 <div className={cn(
-                  "relative w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-500 hover-scale group cursor-pointer",
+                  "relative w-12 h-12 rounded-full flex items-center justify-center text-red transition-all duration-500 hover-scale group cursor-pointer",
                   `bg-gradient-to-br from-${packageColor}/70 to-${packageColor}/50`,
                   "shadow-lg hover:shadow-xl animate-pulse",
                   activeDay > day.day && "animate-bounce"

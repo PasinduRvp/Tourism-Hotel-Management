@@ -86,7 +86,7 @@ const Contact = () => {
       title: "Email",
       details: "info@ceylonholiday.com",
       description: "Send us your query anytime!",
-      link: "mailto:info@ceylonholiday.com",
+      link: "mailto:info@ceylonholidaytrip@gmail.com",
     },
     {
       icon: MapPin,
