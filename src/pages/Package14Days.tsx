@@ -384,17 +384,20 @@ const Package14Days = () => {
     <div className="min-h-screen">
       <Header />
       <main className="pt-20">
-        {/* Hero Section - Updated with square video layout */}
-        <section className="relative h-96 bg-gradient-to-r from-accent to-orange-100">
+        {/* Hero Section - Updated for mobile responsiveness */}
+        <section className="relative py-12 lg:py-0 lg:h-96 bg-gradient-to-r from-accent to-orange-100">
           <div className="absolute inset-0 bg-black/40" />
           <div className="relative container mx-auto px-4 h-full flex items-center">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full items-center">
-              <div className="text-white">
+              {/* Text Content */}
+              <div className="text-white text-center lg:text-left">
                 <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
                   Complete Sri Lanka
                 </h1>
-                <p className="text-xl md:text-2xl mb-6">14 Days of Ultimate Discovery</p>
-                <div className="flex items-center space-x-6">
+                <p className="text-xl md:text-2xl mb-6">
+                  14 Days of Ultimate Discovery
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-6">
                   <div className="flex items-center">
                     <Calendar className="w-5 h-5 mr-2" />
                     <span>14 Days</span>
@@ -409,15 +412,17 @@ const Package14Days = () => {
                   </div>
                 </div>
               </div>
-              <div className="hidden lg:flex justify-center">
-                <div className="w-80 h-80 rounded-2xl shadow-2xl overflow-hidden">
+              
+              {/* Video Content - Now visible on all screens */}
+              <div className="flex justify-center">
+                <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:w-80 h-48 sm:h-56 md:h-64 lg:h-60 rounded-2xl shadow-2xl overflow-hidden">
                   <video
-                    src="/map14.mp4"  // Changed to map14.mp4 for 14-day package
+                    src="/map14.mp4"
                     autoPlay
                     loop
                     muted
                     playsInline
-                    className="w-80 h-80 object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               </div>
