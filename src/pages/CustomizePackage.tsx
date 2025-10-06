@@ -511,7 +511,7 @@ Please check the customer's email for follow-up.`;
                       onClick={() => handleDestinationToggle(destination.id)}
                       className={`p-4 border-2 rounded-lg text-left transition-all hover-scale ${
                         watchedDestinations?.includes(destination.id)
-                          ? 'border-teal-800 bg-teal-500 text-teal-900'
+                          ? 'border-accent bg-accent/10 text-accent'
                           : 'border-border hover:border-muted-foreground'
                       }`}
                     >
