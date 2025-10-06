@@ -210,7 +210,7 @@ const About = () => {
                     </div>
                     <div className="flex-1 text-center md:text-left">
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        Sarah Perera
+                        Mr.Wimukthi
                       </h3>
                       <p className="text-blue-600 font-medium mb-3">Sri Lanka Operations Manager</p>
                       <div className="flex items-center justify-center md:justify-start mb-3">
