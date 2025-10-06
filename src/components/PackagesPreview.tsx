@@ -79,7 +79,7 @@ const PackagesPreview = () => {
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                 />
                 
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full shadow-2xl px-3 py-1">
                   <span className="text-sm font-semibold text-foreground">{pkg.duration}</span>
                 </div>
               </div>

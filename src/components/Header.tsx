@@ -131,7 +131,7 @@ const Header = () => {
                   navigate("/customize-package");
                   setIsOpen(false);
                 }}
-                className="w-40 px-0 py-4 bg-gradient-to-r from-[#1a365d] to-[#2d3748] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-sm rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
+                className="w-40 px-0 py-4 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-sm rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
               >
                 Plan Your Trip
               </Button>
@@ -177,7 +177,7 @@ const Header = () => {
                   navigate("/customize-package");
                   setIsOpen(false);
                 }}
-                className="w-full px-6 py-4 bg-gradient-to-r from-[#1a365d] to-[#2d3748] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-lg rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
+                className="w-full px-6 py-4 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-lg rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
               >
                 Plan Your Trip
               </Button>

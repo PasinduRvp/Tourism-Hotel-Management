@@ -146,10 +146,9 @@ const Hero = () => {
         ))}
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex items-center justify-between h-full px-4 max-w-7xl mx-auto">
-        {/* Enhanced Main Content */}
-        <div className="text-left max-w-2xl">
+      {/* Content - Left aligned */}
+      <div className="relative z-10 flex items-center h-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-left w-full max-w-2xl">
           <div
             className={cn(
               "transition-all duration-700 ease-out transform",
@@ -158,37 +157,37 @@ const Hero = () => {
                 : "opacity-100 translate-y-0 blur-0"
             )}
           >
-            {/* Website Name */}
-            <h1 className="text-6xl font-bold mb-6">
+            {/* Website Name - Responsive font sizes */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6">
               <span className="bg-gradient-to-r from-white via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
                 CEYLON HOLIDAY TRIP
               </span>
             </h1>
 
-            {/* Short Description */}
-            <p className="text-xl text-white/90 mb-8 max-w-lg leading-relaxed backdrop-blur-sm bg-black/20 rounded-lg p-4 border-l-4 border-[#d4af37]">
+            {/* Short Description - Responsive text and padding */}
+            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-lg leading-relaxed backdrop-blur-sm bg-black/20 rounded-lg p-3 sm:p-4 border-l-4 border-[#d4af37]">
               Discover unforgettable journeys to the world's most breathtaking
               destinations. Your dream vacation is just one click away.
             </p>
 
-            {/* Enhanced CTA Buttons */}
-            <div className="flex gap-6 items-center">
-              <Link to="/packages">
-              <Button
-                className="relative overflow-hidden group bg-gradient-to-r from-[#1a365d] to-[#2d3748] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold px-8 py-5 rounded-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl border-0"
-              >
-                <span className="relative z-10 flex items-center">
-                  Explore Packages
-                  <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform duration-300" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              </Button>
+            {/* Enhanced CTA Buttons - Stack on mobile, row on larger screens */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 items-start sm:items-center">
+              <Link to="/packages" className="w-full sm:w-auto">
+                <Button
+                  className="relative overflow-hidden group bg-gradient-to-r from-[#d4af37] to-[#e53e3e] hover:from-[#e7e6e2] hover:to-[#835858] text-white font-semibold px-6 sm:px-8 py-4 sm:py-5 rounded-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl border-0 w-full sm:w-auto"
+                >
+                  <span className="relative z-10 flex items-center justify-center sm:justify-start">
+                    Explore Packages
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 sm:ml-3 group-hover:translate-x-1 sm:group-hover:translate-x-2 transition-transform duration-300" />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#e53e3e] to-[#d4af37] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                </Button>
               </Link>
 
-              <Link to="/contact">
+              <Link to="/contact" className="w-full sm:w-auto">
                 <Button
                   variant="outline"
-                  className="bg-white/10 backdrop-blur-lg border-white/30 text-white hover:bg-white hover:text-[#1a365d] px-6 py-5 rounded-xl font-semibold transition-all duration-300 hover:scale-105 group"
+                  className="bg-white/40 backdrop-blur-lg border-white/50 text-white hover:bg-white hover:text-[#1a365d] px-6 py-4 sm:py-5 rounded-xl font-semibold transition-all duration-300 hover:scale-105 group w-full sm:w-auto"
                 >
                   Contact Us
                 </Button>
@@ -198,9 +197,9 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Enhanced Navigation Controls */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-6">
-        <div className="flex gap-3 bg-white/10 backdrop-blur-lg rounded-full p-2 border border-white/20">
+      {/* Enhanced Navigation Controls - Smaller on mobile */}
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 sm:gap-6">
+        <div className="flex gap-2 sm:gap-3 bg-white/10 backdrop-blur-lg rounded-full p-1 sm:p-2 border border-white/20">
           {destinations.map((_, index) => (
             <button
               key={index}
@@ -208,24 +207,24 @@ const Hero = () => {
               className={cn(
                 "relative rounded-full transition-all duration-500 group",
                 index === currentDestination
-                  ? "w-12 bg-gradient-to-r from-[#d4af37] to-[#e53e3e]"
-                  : "w-3 bg-white/40 hover:bg-white/60"
+                  ? "w-8 sm:w-12 bg-gradient-to-r from-[#d4af37] to-[#e53e3e]"
+                  : "w-2 sm:w-3 bg-white/40 hover:bg-white/60"
               )}
               style={{
-                height: index === currentDestination ? "12px" : "12px",
+                height: index === currentDestination ? "8px" : "8px",
               }}
             />
           ))}
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-4 left-8 transform -translate-x-1/2">
+      {/* Scroll Indicator - Hidden on very small screens */}
+      <div className="absolute bottom-4 left-4 sm:left-8 transform -translate-x-1/2 hidden xs:block">
         <div className="flex flex-col items-center gap-2 text-white/60">
-          <span className="text-xs font-medium uppercase tracking-wider rotate-90 origin-center whitespace-nowrap mb-12">
+          <span className="text-xs font-medium uppercase tracking-wider rotate-90 origin-center whitespace-nowrap mb-8 sm:mb-12">
             Scroll to Explore
           </span>
-          <div className="w-0.5 h-12 bg-gradient-to-b from-[#d4af37] to-transparent rounded-full animate-bounce" />
+          <div className="w-0.5 h-8 sm:h-12 bg-gradient-to-b from-[#d4af37] to-transparent rounded-full animate-bounce" />
         </div>
       </div>
 
@@ -242,6 +241,13 @@ const Hero = () => {
           }
           .animate-float {
             animation: float 6s ease-in-out infinite;
+          }
+          
+          /* Extra small screen breakpoint */
+          @media (max-width: 475px) {
+            .xs\\:block {
+              display: block;
+            }
           }
         `}
       </style>
