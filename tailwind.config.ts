@@ -22,6 +22,11 @@ export default {
         nosifer: ['Nosifer', 'cursive'],
         playwrite: ['Playwrite', 'serif'],
         moirai: ['Moirai One', 'serif'],
+        oldenburg: ['Oldenburg', 'cursive'],
+        arefru: ['Aref Ruqaa', 'serif'],
+        tuskimi: ['Tuskimi', 'cursive'],
+        Diphylleia: ['Diphylleia', 'serif'],
+        openSans: ['Open Sans', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

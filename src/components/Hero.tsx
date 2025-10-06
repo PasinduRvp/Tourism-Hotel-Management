@@ -159,13 +159,13 @@ const Hero = () => {
           >
             {/* Website Name - Responsive font sizes */}
             <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold mb-4 sm:mb-6">
-              <span className="font-playwrite bg-gradient-to-r from-white via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
+              <span className="font-openSans bg-gradient-to-r from-white via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
                 CEYLON HOLIDAY TRIP
               </span>
             </h1>
 
             {/* Short Description - Responsive text and padding */}
-            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-lg leading-relaxed backdrop-blur-sm bg-black/20 rounded-lg p-3 sm:p-4 border-l-4 border-[#d4af37]">
+            <p className="text-base font-oldenburg sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-lg leading-relaxed backdrop-blur-sm bg-black/20 rounded-lg p-3 sm:p-4 border-l-4 border-[#d4af37]">
               Discover unforgettable journeys to the world's most breathtaking
               destinations. Your dream vacation is just one click away.
             </p>
