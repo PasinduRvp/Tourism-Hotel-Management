@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { Menu, X, MapPin, Phone } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = () => {
@@ -10,15 +10,12 @@ const Header = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -26,7 +23,7 @@ const Header = () => {
     }
   };
 
-  const handleNavigation = (path: string, sectionId?: string) => {
+  const handleNavigation = (path, sectionId) => {
     if (location.pathname !== "/" && sectionId) {
       navigate("/");
       setTimeout(() => scrollToSection(sectionId), 100);
@@ -40,10 +37,10 @@ const Header = () => {
 
   const navItems = [
     { label: "Home", action: () => navigate("/") },
-    { label: "Packages", action: () => handleNavigation("/packages") },
+    { label: "Packages", action: () => navigate("/packages") },
     { label: "Gallery", action: () => navigate("/gallery") },
     { label: "About", action: () => navigate("/about") },
-    { label: "Contact", action: () => handleNavigation("/contact") },
+    { label: "Contact", action: () => navigate("/contact") },
   ];
 
   return (
@@ -61,17 +58,14 @@ const Header = () => {
             className="flex items-center space-x-3 cursor-pointer group"
             onClick={() => navigate("/")}
           >
-            <div className="group-hover:scale-105 transition-transform">
-              <img
-                src="/CHT_LOGO.png"
-                alt="CEYLON HOLIDAY TRIP Logo"
-                className="w-12 h-12 object-contain"
-              />
-            </div>
-
+            <img
+              src="/CHT_LOGO.png"
+              alt="CEYLON HOLIDAY TRIP Logo"
+              className="w-12 h-12 object-contain group-hover:scale-105 transition-transform"
+            />
             <div>
               <h1
-                className={`text-xl font-bold font-poppins transition-colors ${
+                className={`text-xl font-bold transition-colors ${
                   isScrolled ? "text-gray-900" : "text-white"
                 }`}
               >
@@ -109,7 +103,7 @@ const Header = () => {
             ))}
           </div>
 
-          {/* Contact Info & CTA */}
+          {/* Desktop CTA */}
           <div className="hidden lg:flex items-center space-x-6">
             <div className="flex items-center space-x-2">
               <Phone
@@ -127,14 +121,16 @@ const Header = () => {
             </div>
 
             <Button
-                onClick={() => {
-                  navigate("/customize-package");
-                  setIsOpen(false);
-                }}
-                className="w-40 px-0 py-4 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-sm rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                Plan Your Trip
-              </Button>
+              onClick={() => {
+                navigate("/customize-package");
+                setIsOpen(false);
+              }}
+              className="w-40 px-0 py-4 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] 
+              hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-sm 
+              rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
+            >
+              Plan Your Trip
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -152,8 +148,8 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ${
-            isOpen ? "max-h-96 opacity-100 mt-3" : "max-h-0 opacity-0"
+          className={`md:hidden transition-all duration-500 ease-in-out overflow-hidden ${
+            isOpen ? "max-h-[500px] opacity-100 mt-3" : "max-h-0 opacity-0"
           }`}
         >
           <div className="bg-white/95 backdrop-blur-lg rounded-xl shadow-lg border border-gray-200/50 p-4 space-y-2">
@@ -161,7 +157,9 @@ const Header = () => {
               <button
                 key={index}
                 onClick={item.action}
-                className="block w-full text-left py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 font-medium hover:translate-x-2"
+                className="block w-full text-left py-3 px-4 text-gray-700 
+                hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all 
+                duration-200 font-medium hover:translate-x-2"
               >
                 {item.label}
               </button>
@@ -172,12 +170,16 @@ const Header = () => {
                 <Phone className="w-4 h-4 text-blue-600" />
                 <span className="text-sm font-medium">+94 77 123 4567</span>
               </div>
+
+              {/* FIXED BUTTON DISPLAY ISSUE */}
               <Button
                 onClick={() => {
                   navigate("/customize-package");
                   setIsOpen(false);
                 }}
-                className="w-full px-6 py-4 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-lg rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
+                className="w-full py-4 text-lg bg-gradient-to-r from-[#d4af37] to-[#e53e3e] 
+                hover:from-[#e53e3e] hover:to-[#d4af37] text-white font-semibold 
+                rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
               >
                 Plan Your Trip
               </Button>

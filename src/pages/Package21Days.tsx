@@ -1164,8 +1164,8 @@ const Package21Days = () => {
     <div className="min-h-screen">
       <Header />
       <main className="pt-20">
-        {/* Hero Section - Updated for mobile responsiveness */}
-        <section className="relative py-12 lg:py-0 lg:h-96 bg-gradient-to-r from-teal-600 to-emerald-200">
+        {/* Hero Section - Updated with gold to red gradient */}
+        <section className="relative py-12 lg:py-0 lg:h-96 bg-gradient-to-r from-orange-300 to-red-400">
           <div className="absolute inset-0 bg-black/40" />
           <div className="relative container mx-auto px-4 h-full flex items-center">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full items-center">
@@ -1195,7 +1195,7 @@ const Package21Days = () => {
               
               {/* Video Content - Now visible on all screens */}
               <div className="flex justify-center">
-                <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:w-80 h-48 sm:h-56 md:h-64 lg:h-60 rounded-2xl shadow-2xl overflow-hidden">
+                <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:w-80 h-48 sm:h-56 md:h-64 lg:h-60 rounded-2xl shadow-2xl overflow-hidden border-4 border-white/20">
                   <video
                     src="/map21.mp4"
                     autoPlay
@@ -1210,23 +1210,25 @@ const Package21Days = () => {
           </div>
         </section>
 
-        {/* Package Details */}
-        <section className="py-16">
+        {/* Package Details - Updated background gradient */}
+        <section className="py-16 bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                <h2 className="text-3xl font-bold text-foreground mb-6 font-poppins">
+                <h2 className="text-3xl font-bold text-gray-900 mb-6 font-poppins bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
                   Complete 21-Day Adventure
                 </h2>
-                <DayItinerary days={detailedItinerary} packageColor="primary" />
+                <DayItinerary days={detailedItinerary} packageColor="accent" />
               </div>
 
               <div className="lg:col-span-1">
-                <BookingForm 
-                  packageName="Ultimate Sri Lanka"
-                  packagePrice="$2,999"
-                  packageDuration="21 Days"
-                />
+                <div className="sticky top-8">
+                  <BookingForm 
+                    packageName="Ultimate Sri Lanka"
+                    packagePrice="$2,999"
+                    packageDuration="21 Days"
+                  />
+                </div>
               </div>
             </div>
           </div>

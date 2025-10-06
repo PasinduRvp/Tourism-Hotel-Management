@@ -158,8 +158,8 @@ const Hero = () => {
             )}
           >
             {/* Website Name - Responsive font sizes */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6">
-              <span className="bg-gradient-to-r from-white via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold mb-4 sm:mb-6">
+              <span className="font-playwrite bg-gradient-to-r from-white via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
                 CEYLON HOLIDAY TRIP
               </span>
             </h1>

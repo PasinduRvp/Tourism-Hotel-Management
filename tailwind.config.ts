@@ -16,6 +16,12 @@ export default {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
+        coiny: ['Coiny', 'cursive'],
+        artifika: ['Artifika', 'serif'],
+        tagesschrift: ['Tagesschrift', 'serif'],
+        nosifer: ['Nosifer', 'cursive'],
+        playwrite: ['Playwrite', 'serif'],
+        moirai: ['Moirai One', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",

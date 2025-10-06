@@ -266,7 +266,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
 
   return (
     <Card className="shadow-xl rounded-lg overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+      <CardHeader className="bg-gradient-to-r from-orange-100 to-red-100 border-b">
         <CardTitle className="text-2xl font-bold flex items-center text-gray-800">
           <User className="w-7 h-7 mr-3 text-blue-600" />
           Book {packageName}

@@ -92,14 +92,11 @@ const GalleryPreview = () => {
         }
       `}</style>
 
-      <section className="py-20 bg-gradient-to-br from-slate-200 via-blue-100 to-emerald-100">
+      <section className="py-20 bg-gradient-to-br from-orange-100 via-white to-orange-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 slide-up">
-            <div className="flex items-center justify-center mb-4">
-              <Camera className="w-6 h-6 text-primary mr-2" />
-              <span className="text-primary font-medium">Gallery</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-poppins bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-poppins bg-gradient-to-r from-[#e53e3e] via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
               Captured Moments
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -162,7 +159,7 @@ const GalleryPreview = () => {
             
             <button
               onClick={() => navigate('/Gallery')}
-              className="relative overflow-hidden group bg-gradient-to-r from-[#1a365d] to-[#2d3748] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-2xl px-8 py-4 rounded-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl border-0"
+              className="relative overflow-hidden group bg-gradient-to-r from-[#e53e3e] to-[#d4af37] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold text-2xl px-8 py-4 rounded-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl border-0"
             >
               View Full Gallery
             </button>

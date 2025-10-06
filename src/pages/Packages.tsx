@@ -76,7 +76,7 @@ const Packages = () => {
       image: '/CHT_LOGO.png',
       category: 'custom',
       rating: 5.0,
-      travelers: 'AnAs Much As You Likey',
+      travelers: 'As Much As You Like',
       featured: false
     }
   ];
@@ -100,12 +100,12 @@ const Packages = () => {
 
   // Custom Button Component
   const Button = ({ children, onClick, variant = 'default', className = '', size = 'default', ...props }) => {
-    const baseStyles = 'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer transform hover:scale-105 active:scale-95';
+    const baseStyles = 'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/20 cursor-pointer transform hover:scale-105 active:scale-95';
     
     const variants = {
-      default: 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl',
-      outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white shadow-md hover:shadow-lg',
-      secondary: 'bg-gradient-to-r from-gray-200 to-gray-300 text-gray-900 hover:from-gray-300 hover:to-gray-400 shadow-md hover:shadow-lg'
+      default: 'bg-gradient-to-r from-[#d4af37] to-[#e53e3e] text-white hover:from-[#e53e3e] hover:to-[#d4af37] shadow-lg hover:shadow-xl',
+      outline: 'border-2 border-[#d4af37] text-[#e53e3e] hover:bg-gradient-to-r hover:from-[#d4af37] hover:to-[#e53e3e] hover:text-white shadow-md hover:shadow-lg',
+      secondary: 'bg-gradient-to-r from-amber-100 to-orange-100 text-gray-900 hover:from-amber-200 hover:to-orange-200 shadow-md hover:shadow-lg'
     };
     
     const sizes = {
@@ -128,7 +128,7 @@ const Packages = () => {
   // Custom Card Components
   const Card = ({ children, className = '', delay = 0, ...props }) => (
     <div 
-      className={`bg-white rounded-2xl border border-gray-200 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group transform hover:-translate-y-2 ${className} ${
+      className={`bg-white rounded-2xl border border-amber-200 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group transform hover:-translate-y-2 ${className} ${
         isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
       }`}
       style={{ animationDelay: `${delay}ms` }}
@@ -145,7 +145,7 @@ const Packages = () => {
   );
 
   const CardTitle = ({ children, className = '' }) => (
-    <h3 className={`text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 ${className}`}>
+    <h3 className={`text-xl font-bold text-gray-900 group-hover:text-[#e53e3e] transition-colors duration-300 ${className}`}>
       {children}
     </h3>
   );
@@ -163,23 +163,23 @@ const Packages = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
       <Header />
       
-      {/* Enhanced Hero Section with Animations */}
+      {/* Enhanced Hero Section with New Colors */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         {/* Animated Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-green-500/10 animate-pulse-slow" />
-        <div className="absolute top-0 left-0 w-72 h-72 bg-blue-500/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-float-slow" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-green-500/5 rounded-full translate-x-1/3 translate-y-1/3 animate-float-slow" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/4 w-48 h-48 bg-yellow-500/3 rounded-full animate-float" style={{ animationDelay: '1s' }} />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/10 via-transparent to-[#e53e3e]/10 animate-pulse-slow" />
+        <div className="absolute top-0 left-0 w-72 h-72 bg-[#d4af37]/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-float-slow" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#e53e3e]/5 rounded-full translate-x-1/3 translate-y-1/3 animate-float-slow" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/4 w-48 h-48 bg-amber-500/3 rounded-full animate-float" style={{ animationDelay: '1s' }} />
         
         <div className="container mx-auto px-4 relative z-10">
           <div className={`text-center max-w-4xl mx-auto transition-all duration-1000 ${
             isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
           }`}>
             
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent animate-gradient-x">
+            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent animate-gradient-x">
               Tour Packages
             </h1>
             
@@ -188,7 +188,12 @@ const Packages = () => {
               From ancient cities to pristine beaches, discover your perfect adventure.
             </p>
 
-        
+            {/* Enhanced Search and Filter Section */}
+            <div className={`max-w-4xl mx-auto mb-12 transition-all duration-700 ${
+              isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
+            }`} style={{ animationDelay: '400ms' }}>
+              
+            </div>
           </div>
         </div>
       </section>
@@ -207,7 +212,7 @@ const Packages = () => {
               >
                 {/* Image Container */}
                 <div className="relative h-64 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-all duration-700 z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/20 to-[#e53e3e]/20 opacity-0 group-hover:opacity-100 transition-all duration-700 z-10" />
                   <img 
                     src={pkg.image} 
                     alt={pkg.title}
@@ -221,12 +226,12 @@ const Packages = () => {
                   <div className="absolute top-4 left-4 flex gap-2 z-20">
                     <div className="bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                       <span className="text-sm font-semibold text-gray-900 flex items-center">
-                        <Clock className="w-4 h-4 mr-2 text-blue-600" />
+                        <Clock className="w-4 h-4 mr-2 text-[#e53e3e]" />
                         {pkg.duration}
                       </span>
                     </div>
                     {pkg.featured && (
-                      <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg transform group-hover:scale-105 transition-transform duration-300 animate-pulse-slow">
+                      <div className="bg-gradient-to-r from-[#d4af37] to-[#e53e3e] text-white backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg transform group-hover:scale-105 transition-transform duration-300 animate-pulse-slow">
                         <span className="text-sm font-semibold">⭐ Featured</span>
                       </div>
                     )}
@@ -235,7 +240,7 @@ const Packages = () => {
                   {/* Enhanced Rating */}
                   <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg transform group-hover:scale-105 transition-transform duration-300 z-20">
                     <span className="text-sm font-semibold text-gray-900 flex items-center">
-                      <Star className="w-4 h-4 text-yellow-500 mr-2 fill-current animate-bounce-subtle" />
+                      <Star className="w-4 h-4 text-[#d4af37] mr-2 fill-current animate-bounce-subtle" />
                       {pkg.rating}
                     </span>
                   </div>
@@ -256,7 +261,7 @@ const Packages = () => {
                     {/* Enhanced Highlights */}
                     <div className="space-y-2">
                       <h4 className="font-semibold text-gray-900 flex items-center text-sm">
-                        <Star className="w-4 h-4 text-green-500 mr-2 fill-current animate-pulse" />
+                        <Star className="w-4 h-4 text-[#e53e3e] mr-2 fill-current animate-pulse" />
                         Tour Highlights
                       </h4>
                       {pkg.highlights.map((highlight, idx) => (
@@ -264,28 +269,28 @@ const Packages = () => {
                           key={idx} 
                           className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-300 transform hover:translate-x-1 transition-transform duration-300"
                         >
-                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
+                          <div className="w-1.5 h-1.5 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] rounded-full mr-2 flex-shrink-0" />
                           {highlight}
                         </div>
                       ))}
                     </div>
 
                     {/* Enhanced Meta Info */}
-                    <div className="flex items-center justify-between text-sm text-gray-600 bg-gray-50 rounded-xl p-3">
+                    <div className="flex items-center justify-between text-sm text-gray-600 bg-amber-50 rounded-xl p-3 border border-amber-100">
                       <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-1 text-blue-600" />
-                        <span className="font-medium">{pkg.travelers} travelers</span>
+                        <Users className="w-4 h-4 mr-1 text-[#e53e3e]" />
+                        <span className="font-medium">{pkg.travelers}</span>
                       </div>
                       <div className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-1 text-green-600" />
+                        <MapPin className="w-4 h-4 mr-1 text-[#d4af37]" />
                         <span className="font-medium capitalize">{pkg.category}</span>
                       </div>
                     </div>
 
                     {/* Enhanced Price and CTA */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                    <div className="flex items-center justify-between pt-4 border-t border-amber-200">
                       <div className="transform hover:scale-105 transition-transform duration-300">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+                        <span className="text-2xl font-bold bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
                           {pkg.price}
                         </span>
                         <p className="text-sm text-gray-600 mt-1">per person</p>
@@ -326,6 +331,80 @@ const Packages = () => {
       </section>
 
       <Footer />
+
+      {/* Add Custom CSS for Animations */}
+      <style >{`
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+        @keyframes float-slow {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-10px) rotate(5deg);
+          }
+        }
+        @keyframes gradient-x {
+          0%, 100% {
+            background-size: 200% 200%;
+            background-position: left center;
+          }
+          50% {
+            background-size: 200% 200%;
+            background-position: right center;
+          }
+        }
+        @keyframes pulse-slow {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.8;
+          }
+        }
+        @keyframes bounce-subtle {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-2px);
+          }
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.6s ease-out forwards;
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-slow {
+          animation: float-slow 8s ease-in-out infinite;
+        }
+        .animate-gradient-x {
+          animation: gradient-x 3s ease infinite;
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 2s ease-in-out infinite;
+        }
+        .animate-bounce-subtle {
+          animation: bounce-subtle 2s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 };
