@@ -1164,13 +1164,13 @@ const Package21Days = () => {
     <div className="min-h-screen">
       <Header />
       <main className="pt-20">
-        {/* Hero Section */}
-        <section className="relative h-96 bg-gradient-to-r from-purple to-secondary">
+        {/* Hero Section - Updated with square video layout */}
+        <section className="relative h-96 bg-gradient-to-r from-teal-600 to-emerald-200">
           <div className="absolute inset-0 bg-black/40" />
           <div className="relative container mx-auto px-4 h-full flex items-center">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full items-center">
               <div className="text-white">
-                <h1 className="text-4xl md:text-6xl font-bold font-poppins mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
                   Ultimate Sri Lanka
                 </h1>
                 <p className="text-xl md:text-2xl mb-6">21 Days of Complete Discovery</p>
@@ -1181,7 +1181,7 @@ const Package21Days = () => {
                   </div>
                   <div className="flex items-center">
                     <Users className="w-5 h-5 mr-2" />
-                    <span>2-10 People</span>
+                    <span>As Much As You Like</span>
                   </div>
                   <div className="flex items-center">
                     <MapPin className="w-5 h-5 mr-2" />
@@ -1189,8 +1189,17 @@ const Package21Days = () => {
                   </div>
                 </div>
               </div>
-              <div className="hidden lg:block">
-                <AnimatedMap destinations={destinations} className="h-full min-h-[300px]" />
+              <div className="hidden lg:flex justify-center">
+                <div className="w-80 h-80 rounded-2xl shadow-2xl overflow-hidden">
+                  <video
+                    src="/map21.mp4"  // Changed to map21.mp4 for 21-day package
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </div>
           </div>

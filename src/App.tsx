@@ -10,9 +10,9 @@ import Package14Days from "./pages/Package14Days";
 import Package21Days from "./pages/Package21Days";
 import Gallery from "./pages/Gallery";
 import About from "./pages/About";
-import Customizer from "./pages/Customizer";
 import CustomizePackage from "./pages/CustomizePackage";
 import NotFound from "./pages/NotFound";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +30,7 @@ const App = () => (
           <Route path="/packages/21-days" element={<Package21Days />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/about" element={<About />} />
-          <Route path="/customizer" element={<Customizer />} />
+          <Route path="/contact" element={<Contact/>}/>
           <Route path="/customize-package" element={<CustomizePackage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

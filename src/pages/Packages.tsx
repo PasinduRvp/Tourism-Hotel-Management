@@ -36,8 +36,8 @@ const Packages = () => {
       highlights: ['Sigiriya Rock Fortress', 'Kandy Temple', 'Galle Fort'],
       image: '/sevendaypack.png',
       category: 'cultural',
-      rating: 4.8,
-      travelers: '2-12',
+      rating: 5,
+      travelers: 'As Much As You Like',
       featured: true
     },
     {
@@ -49,8 +49,8 @@ const Packages = () => {
       highlights: ['Yala Safari', 'Tea Plantations', 'Beach Relaxation'],
       image: '/forteendaypack.png',
       category: 'comprehensive',
-      rating: 4.9,
-      travelers: '2-10',
+      rating: 5,
+      travelers: 'As Much As You Like',
       featured: true
     },
     {
@@ -63,8 +63,8 @@ const Packages = () => {
       image: '/twentyfirstdaypack.png',
       category: 'adventure',
       rating: 5.0,
-      travelers: '2-8',
-      featured: false
+      travelers: 'As Much As You Like',
+      featured: true
     },
     {
       id: 'customize',
@@ -76,7 +76,7 @@ const Packages = () => {
       image: '/CHT_LOGO.png',
       category: 'custom',
       rating: 5.0,
-      travelers: 'Any',
+      travelers: 'AnAs Much As You Likey',
       featured: false
     }
   ];

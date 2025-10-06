@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Car, MapPin } from 'lucide-react';
 
 interface Destination {
   name: string;
-  x: number; // percentage from left
-  y: number; // percentage from top
+  x: number;
+  y: number;
   order: number;
 }
 
@@ -14,134 +14,137 @@ interface AnimatedMapProps {
 }
 
 const AnimatedMap: React.FC<AnimatedMapProps> = ({ destinations, className = "" }) => {
-  const [carPosition, setCarPosition] = useState({ x: 0, y: 0, rotation: 0 });
   const [currentDestination, setCurrentDestination] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const carRef = useRef<HTMLDivElement>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  // Accurate Sri Lanka map outline based on real geography
-  const sriLankaPath = "M85 10 L100 8 L115 10 L130 15 L145 22 L158 30 L168 40 L175 52 L180 65 L182 78 L183 92 L182 106 L179 120 L174 133 L167 145 L158 156 L147 165 L134 172 L120 177 L105 180 L90 181 L75 180 L61 177 L48 172 L36 165 L26 156 L18 145 L12 133 L8 120 L6 106 L7 92 L9 78 L13 65 L19 52 L27 40 L37 30 L49 22 L62 15 L75 10 L85 10 Z";
+  const sortedDestinations = useMemo(
+    () => [...destinations].sort((a, b) => a.order - b.order),
+    [destinations]
+  );
 
   useEffect(() => {
-    if (destinations.length === 0) return;
+    if (sortedDestinations.length === 0 || !carRef.current) return;
 
-    const sortedDestinations = [...destinations].sort((a, b) => a.order - b.order);
-    let destinationIndex = 0;
+    const initial = sortedDestinations[0];
+    if (carRef.current) {
+      carRef.current.style.left = `${initial.x}%`;
+      carRef.current.style.top = `${initial.y}%`;
+    }
+    setCurrentDestination(0);
+  }, [sortedDestinations]);
 
-    const animateCar = () => {
-      const current = sortedDestinations[destinationIndex];
-      const next = sortedDestinations[(destinationIndex + 1) % sortedDestinations.length];
-      
-      setCurrentDestination(destinationIndex);
-      
-      // Calculate rotation angle
-      const dx = next.x - current.x;
-      const dy = next.y - current.y;
-      const rotation = Math.atan2(dy, dx) * 180 / Math.PI;
-      
-      setCarPosition({
-        x: current.x,
-        y: current.y,
-        rotation
-      });
+  const animateToDestination = (targetIndex: number) => {
+    if (isAnimating || targetIndex < 0 || targetIndex >= sortedDestinations.length || targetIndex === currentDestination) return;
 
-      destinationIndex = (destinationIndex + 1) % sortedDestinations.length;
+    setIsAnimating(true);
+
+    const fromIndex = currentDestination;
+    const currentPos = sortedDestinations[fromIndex];
+    const targetPos = sortedDestinations[targetIndex];
+
+    const dx = targetPos.x - currentPos.x;
+    const dy = targetPos.y - currentPos.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const duration = Math.max(1500, distance * 30);
+
+    const startTime = Date.now();
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = progress < 0.5 
+        ? 2 * progress * progress 
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+      const currentX = currentPos.x + dx * eased;
+      const currentY = currentPos.y + dy * eased;
+
+      if (carRef.current) {
+        carRef.current.style.left = `${currentX}%`;
+        carRef.current.style.top = `${currentY}%`;
+        
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        carRef.current.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setCurrentDestination(targetIndex);
+        setIsAnimating(false);
+      }
     };
 
-    // Initial position
-    animateCar();
-    
-    // Animate every 3 seconds
-    const interval = setInterval(animateCar, 3000);
-    
-    return () => clearInterval(interval);
-  }, [destinations]);
+    animate();
+  };
 
-  if (destinations.length === 0) return null;
+  const handleNext = () => {
+    animateToDestination(currentDestination + 1);
+  };
+
+  const handlePrev = () => {
+    animateToDestination(currentDestination - 1);
+  };
+
+  if (sortedDestinations.length === 0) return null;
 
   return (
-    <div className={`relative w-full h-full ${className}`}>
-      {/* Full Sri Lanka Map - Prominent Display */}
-      <svg 
-        className="absolute inset-0 w-full h-full" 
-        viewBox="0 0 180 200"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        {/* Map Shadow/Glow */}
-        <defs>
-          <filter id="mapGlow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-            <feMerge> 
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-        
-        {/* Main Map Shape */}
-        <path
-          d={sriLankaPath}
-          fill="rgba(255,255,255,0.2)"
-          stroke="rgba(255,255,255,0.6)"
-          strokeWidth="2"
-          filter="url(#mapGlow)"
-          className="drop-shadow-lg"
-        />
-        
-        {/* Map Border Highlight */}
-        <path
-          d={sriLankaPath}
-          fill="none"
-          stroke="rgba(255,255,255,0.8)"
-          strokeWidth="1"
-          strokeDasharray="5,5"
-          className="animate-pulse"
-        />
+    <div 
+      ref={mapContainerRef}
+      className={`relative w-full h-full overflow-hidden bg-gray-100 ${className}`}
+    >
+      {/* Background Map Image */}
+      <img 
+        src="https://www.stepmap.com/map/Colombo-Sigiriya-Dambulla-Kandy-Nuwera-Eliya-Galle-Colombo-1682753.png"
+        alt="Sri Lanka Map"
+        className="absolute inset-0 w-full h-full object-contain"
+      />
+
+      {/* Route Lines */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 10 }}>
+        {sortedDestinations.map((destination, index) => {
+          if (index >= sortedDestinations.length - 1 || index >= currentDestination) return null;
+          const nextDestination = sortedDestinations[index + 1];
+
+          return (
+            <line
+              key={`route-${index}`}
+              x1={`${destination.x}%`}
+              y1={`${destination.y}%`}
+              x2={`${nextDestination.x}%`}
+              y2={`${nextDestination.y}%`}
+              stroke="#14B8A6"
+              strokeWidth="2"
+              strokeDasharray="5,5"
+              strokeOpacity="0.6"
+            />
+          );
+        })}
       </svg>
 
-      {/* Destinations - Main Focus */}
-      {destinations.map((destination, index) => (
+      {/* Destinations */}
+      {sortedDestinations.map((destination, index) => (
         <div
           key={destination.name}
-          className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
+          className="absolute transform -translate-x-1/2 -translate-y-1/2"
           style={{
             left: `${destination.x}%`,
             top: `${destination.y}%`,
+            zIndex: 20,
           }}
         >
-          <div className={`transition-all duration-700 ${
-            index === currentDestination ? 'scale-150' : 'scale-110'
-          }`}>
-            <div className="relative">
-              {/* Destination Glow Effect */}
-              <div className={`absolute inset-0 rounded-full blur-sm ${
-                index === currentDestination 
-                  ? 'bg-yellow-400/60 animate-pulse' 
-                  : 'bg-white/20'
-              }`} style={{ width: '32px', height: '32px', left: '-4px', top: '-4px' }} />
-              
-              {/* Main Pin */}
-              <div className={`relative w-6 h-6 rounded-full flex items-center justify-center ${
-                index === currentDestination 
-                  ? 'bg-yellow-400 text-primary shadow-lg shadow-yellow-400/50 animate-bounce' 
-                  : 'bg-white/90 text-primary shadow-lg'
+          <div className={`transition-all duration-300 ${index === currentDestination ? 'scale-125' : 'scale-100'}`}>
+            <div className="relative w-8 h-8 flex items-center justify-center rounded-full bg-teal-500 text-white shadow-lg">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <div className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 whitespace-nowrap">
+              <span className={`text-xs font-medium px-2 py-1 rounded-full bg-white/90 text-teal-600 shadow-md transition-all ${
+                index === currentDestination ? 'bg-white font-semibold' : ''
               }`}>
-                <MapPin className="w-4 h-4" />
-              </div>
-              
-              {/* Destination Label */}
-              <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                <span className={`text-sm font-semibold px-3 py-1.5 rounded-full shadow-lg transition-all duration-500 ${
-                  index === currentDestination
-                    ? 'bg-white text-primary scale-110 shadow-xl'
-                    : 'bg-white/90 text-primary/80'
-                }`}>
-                  {destination.name}
-                </span>
-              </div>
-              
-              {/* Current Destination Indicator */}
-              {index === currentDestination && (
-                <div className="absolute -inset-2 border-2 border-yellow-400 rounded-full animate-ping opacity-75" />
-              )}
+                {destination.name}
+              </span>
             </div>
           </div>
         </div>
@@ -149,47 +152,63 @@ const AnimatedMap: React.FC<AnimatedMapProps> = ({ destinations, className = "" 
 
       {/* Animated Car */}
       <div
-        className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-[2800ms] ease-in-out"
+        ref={carRef}
+        className="absolute w-10 h-10 flex items-center justify-center bg-teal-600 rounded-full shadow-xl text-white transition-transform"
         style={{
-          left: `${carPosition.x}%`,
-          top: `${carPosition.y}%`,
-          transform: `translate(-50%, -50%) rotate(${carPosition.rotation}deg)`,
+          transform: 'translate(-50%, -50%)',
+          zIndex: 30,
         }}
       >
-        <div className="bg-white/90 rounded-full p-2 shadow-lg">
-          <Car className="w-5 h-5 text-primary" />
-        </div>
+        <Car className="w-6 h-6" />
       </div>
 
-      {/* Route Lines */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100">
-        {destinations.map((destination, index) => {
-          const nextDestination = destinations[(index + 1) % destinations.length];
-          return (
-            <line
-              key={`route-${index}`}
-              x1={destination.x}
-              y1={destination.y}
-              x2={nextDestination.x}
-              y2={nextDestination.y}
-              stroke="rgba(255,255,255,0.3)"
-              strokeWidth="0.5"
-              strokeDasharray="2,2"
-              className="animate-pulse"
-            />
-          );
-        })}
-      </svg>
-
-      {/* Package Info Overlay */}
-      <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-sm rounded-lg p-3">
-        <div className="text-white text-sm">
-          <div className="font-semibold">{destinations.length} Destinations</div>
-          <div className="text-xs opacity-80">Follow the journey</div>
+      {/* Package Info */}
+      <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg text-teal-900" style={{ zIndex: 40 }}>
+        <div className="text-sm font-semibold">
+          Step {currentDestination + 1} of {sortedDestinations.length}: {sortedDestinations[currentDestination].name}
         </div>
+        <div className="text-xs text-gray-600">Exploring Sri Lanka</div>
+      </div>
+
+      {/* Navigation Controls */}
+      <div className="absolute bottom-4 right-4 flex space-x-2" style={{ zIndex: 40 }}>
+        <button 
+          onClick={handlePrev} 
+          disabled={isAnimating || currentDestination === 0} 
+          className="px-4 py-2 bg-teal-500 text-white rounded-lg shadow hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          Previous
+        </button>
+        <button 
+          onClick={handleNext} 
+          disabled={isAnimating || currentDestination === sortedDestinations.length - 1} 
+          className="px-4 py-2 bg-teal-500 text-white rounded-lg shadow hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
 };
 
-export default AnimatedMap;
+// Demo with correctly aligned coordinates for the specific map
+const App = () => {
+  return (
+    <div className="w-full h-screen p-4 bg-gray-50">
+      <AnimatedMap 
+        destinations={[
+          { name: 'Colombo', x: 48, y: 73, order: 1 },
+          { name: 'Sigiriya', x: 56, y: 40, order: 2 },
+          { name: 'Dambulla', x: 54, y: 45, order: 3 },
+          { name: 'Kandy', x: 53, y: 58, order: 4 },
+          { name: 'Nuwara Eliya', x: 56, y: 65, order: 5 },
+          { name: 'Galle', x: 50, y: 82, order: 6 },
+          { name: 'Colombo', x: 48, y: 73, order: 7 },
+        ]}
+        className="w-full h-full rounded-xl shadow-2xl"
+      />
+    </div>
+  );
+};
+
+export default App;
