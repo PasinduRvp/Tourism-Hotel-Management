@@ -173,8 +173,8 @@ const Hero = () => {
 
             {/* Enhanced CTA Buttons */}
             <div className="flex gap-6 items-center">
+              <Link to="/packages">
               <Button
-                onClick={scrollToPackages}
                 className="relative overflow-hidden group bg-gradient-to-r from-[#1a365d] to-[#2d3748] hover:from-[#d4af37] hover:to-[#e53e3e] text-white font-semibold px-8 py-5 rounded-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl border-0"
               >
                 <span className="relative z-10 flex items-center">
@@ -183,6 +183,7 @@ const Hero = () => {
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </Button>
+              </Link>
 
               <Link to="/contact">
                 <Button
