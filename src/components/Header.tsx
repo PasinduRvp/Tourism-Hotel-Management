@@ -105,20 +105,18 @@ const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center space-x-6">
-            <div className="flex items-center space-x-2">
-              <Phone
-                className={`w-4 h-4 ${
-                  isScrolled ? "text-blue-600" : "text-white"
-                }`}
-              />
-              <span
-                className={`text-sm font-medium ${
-                  isScrolled ? "text-gray-700" : "text-white"
-                }`}
-              >
-                +94 77 123 4567
-              </span>
-            </div>
+            {/* Glass Theme Phone Button */}
+            <button
+              onClick={() => window.location.href = "tel:+94771234567"}
+              className={`flex items-center bg-white/40 space-x-2 px-4 py-2 rounded-xl backdrop-blur-md border transition-all duration-300 hover:scale-105 ${
+                isScrolled
+                  ? "bg-white/80 border-gray-300/50 text-gray-700 hover:bg-white hover:shadow-lg"
+                  : "bg-white/20 border-white/30 text-white hover:bg-white/30 hover:shadow-lg"
+              }`}
+            >
+              <Phone className="w-4 h-4" />
+              <span className="text-sm font-medium">+94 77 123 4567</span>
+            </button>
 
             <Button
               onClick={() => {
@@ -166,12 +164,18 @@ const Header = () => {
             ))}
 
             <div className="border-t border-gray-200 pt-4 mt-2">
-              <div className="flex items-center space-x-2 mb-3 text-gray-600 px-4">
-                <Phone className="w-4 h-4 text-blue-600" />
+              {/* Glass Theme Phone Button for Mobile */}
+              <button
+                onClick={() => window.location.href = "tel:+94771234567"}
+                className="w-full flex items-center justify-center space-x-2 py-3 px-4 mb-3 
+                bg-gradient-to-r from-white/80 to-white/60 backdrop-blur-md 
+                border border-gray-300/50 text-gray-700 rounded-xl 
+                transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              >
+                <Phone className="w-4 h-4" />
                 <span className="text-sm font-medium">+94 77 123 4567</span>
-              </div>
+              </button>
 
-              {/* FIXED BUTTON DISPLAY ISSUE */}
               <Button
                 onClick={() => {
                   navigate("/customize-package");
