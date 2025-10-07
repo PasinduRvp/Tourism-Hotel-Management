@@ -136,7 +136,7 @@ const Header = () => {
             onClick={() => setIsOpen(!isOpen)}
             className={`md:hidden p-2 rounded-lg transition-colors ${
               isScrolled
-                ? "text-gray-700 hover:bg-gray-100"
+                ? "text-gray-700 hover:bg-white/60"
                 : "text-white hover:bg-white/20"
             }`}
           >
@@ -150,12 +150,12 @@ const Header = () => {
             isOpen ? "max-h-[500px] opacity-100 mt-3" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="bg-white/95 backdrop-blur-lg rounded-xl shadow-lg border border-gray-200/50 p-4 space-y-2">
+          <div className="bg-white/50 backdrop-blur-lg rounded-xl shadow-lg border border-gray-200/50 p-4 space-y-2">
             {navItems.map((item, index) => (
               <button
                 key={index}
                 onClick={item.action}
-                className="block w-full text-left py-3 px-4 text-gray-700 
+                className="block w-full text-left py-3 px-4 text-gray-900 
                 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all 
                 duration-200 font-medium hover:translate-x-2"
               >
