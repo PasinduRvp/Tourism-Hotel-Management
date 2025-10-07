@@ -113,7 +113,7 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     className="text-gray-600 hover:text-[#e53e3e] transition-colors duration-300"
                   >
-                    Colombo, Sri Lanka
+                    UK & Sri Lanka
                   </a>
                 </div>
                 <div className="flex items-center group">
