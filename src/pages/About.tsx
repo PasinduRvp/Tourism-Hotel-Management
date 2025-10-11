@@ -224,7 +224,7 @@ const About = () => {
                       </div>
                       <p className="text-gray-600 mb-4 text-sm leading-relaxed">
                         With a deep understanding of Sri Lanka's diverse culture, heritage, and destinations, 
-                        Mr. Wimukthi manages all ground operations for the agency within Sri Lanka. 
+                        Mr. Vimukthi manages all ground operations for the agency within Sri Lanka. 
                         He coordinates with local guides, hotels, and transport services to 
                         deliver exceptional experiences for tourists arriving through the agency.
                       </p>
@@ -247,7 +247,7 @@ const About = () => {
                     </div>
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                      <span>wimukthi@ceylonholiday.com</span>
+                      <span>vimukthi@ceylonholiday.com</span>
                     </div>
                   </div>
                 </div>
