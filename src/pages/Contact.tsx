@@ -52,7 +52,7 @@ const Contact = () => {
       }%0A*Subject:* ${formData.subject}%0A%0A*Message:*%0A${
         formData.message
       }%0A%0A*Submitted via Website*`;
-      const whatsappLink = `https://wa.me/94771234567?text=${whatsappMessage}`;
+      const whatsappLink = `https://wa.me/447460511586?text=${whatsappMessage}`;
 
       window.open(whatsappLink, "_blank");
 
@@ -79,7 +79,7 @@ const Contact = () => {
       title: "Phone & WhatsApp",
       details: "+94 77 123 4567",
       description: "Mon to Sun 9am to 8pm",
-      link: "https://wa.me/94771234567",
+      link: "https://wa.me/447460511586",
     },
     {
       icon: Mail,

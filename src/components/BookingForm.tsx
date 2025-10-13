@@ -218,7 +218,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ packageName, packagePrice, pa
 
       const msg = `*📦 Booking Inquiry*%0A%0A*Package:* ${packageName}%0A*Duration:* ${packageDuration}%0A*Price:* ${packagePrice}%0A%0A*Name:* ${data.name}%0A*Email:* ${data.email}%0A*Country:* ${selectedCountry.flag} ${selectedCountry.name}%0A*Passengers:* ${data.passengers}%0A%0A*Message:*%0A${data.message || 'No special requests'}`;
       
-      window.open(`https://wa.me/94771234567?text=${msg}`, '_blank');
+      window.open(`https://wa.me/447460511586?text=${msg}`, '_blank');
       setIsSubmitted(true);
       toast({
         title: "Opening WhatsApp",

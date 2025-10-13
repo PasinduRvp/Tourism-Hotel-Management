@@ -188,11 +188,15 @@ const About = () => {
                   <div className="flex items-center justify-center md:justify-start space-x-4 text-sm text-gray-600">
                     <div className="flex items-center">
                       <Phone className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                      <span>+94 77 123 4567</span>
+                      <a href="tel:0447460511586" className="hover:text-[#e53e3e] transition-colors">
+                        0447460511586
+                      </a>
                     </div>
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                      <span>a@ceylonholiday.com</span>
+                      <a href="mailto:a@ceylonholiday.com" className="hover:text-[#e53e3e] transition-colors">
+                        a@ceylonholiday.com
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -243,11 +247,15 @@ const About = () => {
                   <div className="flex items-center justify-center md:justify-start space-x-4 text-sm text-gray-600">
                     <div className="flex items-center">
                       <Phone className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                      <span>+94 75 770 3941</span>
+                      <a href="tel:+94757703941" className="hover:text-[#e53e3e] transition-colors">
+                        +94 75 770 3941
+                      </a>
                     </div>
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                      <span>vimukthi@ceylonholiday.com</span>
+                      <a href="mailto:vimukthi@ceylonholiday.com" className="hover:text-[#e53e3e] transition-colors">
+                        vimukthi@ceylonholiday.com
+                      </a>
                     </div>
                   </div>
                 </div>

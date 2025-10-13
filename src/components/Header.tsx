@@ -107,7 +107,7 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-6">
             {/* Glass Theme Phone Button */}
             <button
-              onClick={() => window.location.href = "tel:+94771234567"}
+              onClick={() => window.location.href = "tel:+447460511586"}
               className={`flex items-center bg-white/40 space-x-2 px-4 py-2 rounded-xl backdrop-blur-md border transition-all duration-300 hover:scale-105 ${
                 isScrolled
                   ? "bg-white/80 border-gray-300/50 text-gray-700 hover:bg-white hover:shadow-lg"
@@ -166,7 +166,7 @@ const Header = () => {
             <div className="border-t border-gray-200 pt-4 mt-2">
               {/* Glass Theme Phone Button for Mobile */}
               <button
-                onClick={() => window.location.href = "tel:+94771234567"}
+                onClick={() => window.location.href = "tel:+447460511586"}
                 className="w-full flex items-center justify-center space-x-2 py-3 px-4 mb-3 
                 bg-gradient-to-r from-white/80 to-white/60 backdrop-blur-md 
                 border border-gray-300/50 text-gray-700 rounded-xl 
