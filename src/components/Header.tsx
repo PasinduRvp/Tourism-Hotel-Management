@@ -120,7 +120,7 @@ const Header = () => {
 
             <Button
               onClick={() => {
-                navigate("/customize-package");
+                navigate("/packages");
                 setIsOpen(false);
               }}
               className="w-40 px-0 py-4 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] 
@@ -178,7 +178,7 @@ const Header = () => {
 
               <Button
                 onClick={() => {
-                  navigate("/customize-package");
+                  navigate("/packages");
                   setIsOpen(false);
                 }}
                 className="w-full py-4 text-lg bg-gradient-to-r from-[#d4af37] to-[#e53e3e] 
