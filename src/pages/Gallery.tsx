@@ -11,174 +11,58 @@ import {
   Pause,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
-// Auto Carousel Card Component
-const CarouselCard = ({ card, isActive, onClick }) => {
-  return (
-    <motion.div
-      className={`absolute inset-0 cursor-pointer overflow-hidden rounded-2xl shadow-2xl ${
-        isActive ? "z-10" : "z-0"
-      }`}
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{
-        scale: isActive ? 1 : 0.85,
-        opacity: isActive ? 1 : 0.7,
-      }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      onClick={() => onClick(card)}
-    >
-      <img
-        src={card.src}
-        alt={card.alt}
-        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-      />
-      {isActive && (
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-2xl">
-          <p className="text-white font-semibold text-lg">{card.alt}</p>
-          <p className="text-white/80 text-sm capitalize">{card.category}</p>
-        </div>
-      )}
-    </motion.div>
-  );
-};
+// Diagonal Slider Component
+const DiagonalSlider = ({ images, onCardClick }) => {
+  const [offset, setOffset] = useState(0);
 
-// Auto Carousel Container
-const AutoCarousel = ({ images, onCardClick }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const intervalRef = useRef(null);
-
-  // Auto-advance carousel - FIXED VERSION
-  // Auto-advance carousel - AUTO-PLAY EVERY 5 SECONDS INFINITELY
   useEffect(() => {
-    // Clear any existing interval
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
+    const interval = setInterval(() => {
+      setOffset((prev) => prev - 1);
+    }, 30);
 
-    if (isPlaying && images.length > 0) {
-      intervalRef.current = setInterval(() => {
-        setCurrentIndex((prevIndex) => {
-          // Loop infinitely - when at last image, go back to first
-          return (prevIndex + 1) % images.length;
-        });
-      }, 5000); // Change slide every 5 seconds
-    }
+    return () => clearInterval(interval);
+  }, []);
 
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isPlaying, images.length]); // Added images.length as dependency
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-    setIsPlaying(false);
-    // Resume auto-play after 8 seconds of manual interaction
-    setTimeout(() => setIsPlaying(true), 8000);
-  };
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => {
-      if (prevIndex >= images.length - 1) {
-        return 0;
-      }
-      return prevIndex + 1;
-    });
-    setIsPlaying(false);
-    setTimeout(() => setIsPlaying(true), 8000);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => {
-      if (prevIndex <= 0) {
-        return images.length - 1;
-      }
-      return prevIndex - 1;
-    });
-    setIsPlaying(false);
-    setTimeout(() => setIsPlaying(true), 8000);
-  };
-
-  if (images.length === 0) {
-    return (
-      <div className="relative h-[500px] w-full max-w-md flex items-center justify-center bg-gray-100 rounded-2xl">
-        <p className="text-gray-500 text-lg">No featured photos available</p>
-      </div>
-    );
-  }
+  // Duplicate images for infinite scroll effect
+  const duplicatedImages = [...images, ...images, ...images];
 
   return (
-    <div className="relative h-[500px] w-full max-w-md">
-      {/* Carousel Cards */}
-      {images.map((card, index) => (
-        <CarouselCard
-          key={card.id}
-          card={card}
-          isActive={index === currentIndex}
-          onClick={onCardClick}
-        />
-      ))}
-
-      {/* Navigation Arrows */}
-      <button
-        onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
+    <div className="relative w-full h-[500px] overflow-hidden">
+      <div
+        className="absolute flex flex-col gap-4"
+        style={{
+          transform: `rotate(15deg) translateY(${offset}px)`,
+          top: "-100px",
+          left: "50%",
+          marginLeft: "-350px", // Fixed: Changed from -150px to -100px for better centering
+        }}
       >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-
-      <button
-        onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-
-      {/* Play/Pause Button */}
-      <button
-        onClick={handlePlayPause}
-        className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
-      >
-        {isPlaying ? (
-          <Pause className="w-4 h-4" />
-        ) : (
-          <Play className="w-4 h-4" />
-        )}
-      </button>
-
-      {/* Progress Indicator */}
-      <div className="absolute bottom-4 left-4 right-4 z-20">
-        <div className="flex justify-center space-x-2 mb-3">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex
-                  ? "bg-white scale-125"
-                  : "bg-white/50 hover:bg-white/80"
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Progress Bar */}
-        <div className="w-full bg-white/30 rounded-full h-1">
+        {duplicatedImages.map((image, index) => (
           <motion.div
-            className="bg-white h-1 rounded-full"
-            initial={{ width: "0%" }}
-            animate={{ width: isPlaying ? "100%" : "0%" }}
-            transition={{ duration: 4, ease: "linear" }}
-            key={currentIndex} // Reset animation when slide changes
-          />
-        </div>
+            key={`${image.id}-${index}`}
+            className="w-[280px] h-[180px] rounded-2xl overflow-hidden shadow-2xl cursor-pointer hover:scale-105 transition-transform duration-300" // Slightly smaller for better fit
+            onClick={() => onCardClick(image)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute bottom-4 left-4 text-white">
+                <p className="font-semibold text-sm">{image.alt}</p>
+                <p className="text-xs text-white/80 capitalize">
+                  {image.category}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   );
@@ -357,7 +241,7 @@ const Gallery = () => {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
       <Header />
 
-      {/* Enhanced Hero Section with Auto Carousel */}
+      {/* Enhanced Hero Section with Diagonal Slider */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/10 via-transparent to-[#e53e3e]/10" />
         <div className="absolute top-0 left-0 w-72 h-72 bg-[#d4af37]/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
@@ -379,23 +263,26 @@ const Gallery = () => {
                 Explore the breathtaking beauty of Sri Lanka through our curated
                 collection of stunning photographs from across the island.
               </p>
+
+              <div className="text-center lg:text-left mb-6">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-[#e53e3e] to-[#d4af37] bg-clip-text text-transparent">
+                  Featured Moments
+                </h2>
+                <p className="text-sm text-gray-500 mt-2 italic">
+                  Lightweight & Fast!
+                </p>
+              </div>
             </div>
 
-            {/* Right Side - Auto Carousel */}
+            {/* Right Side - Diagonal Slider */}
             <div
               className={`flex justify-center lg:justify-end transition-all duration-1000 ${
                 isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-8"
               }`}
               style={{ animationDelay: "300ms" }}
             >
-              <div className="w-full max-w-md">
-                <div className="text-center lg:text-left mb-6">
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-[#e53e3e] to-[#d4af37] bg-clip-text text-transparent">
-                    Featured Moments
-                  </h2>
-                </div>
-
-                <AutoCarousel
+              <div className="w-full">
+                <DiagonalSlider
                   images={featuredImages}
                   onCardClick={openLightbox}
                 />
