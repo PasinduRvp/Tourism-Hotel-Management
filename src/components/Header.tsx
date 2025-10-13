@@ -115,7 +115,7 @@ const Header = () => {
               }`}
             >
               <Phone className="w-4 h-4" />
-              <span className="text-sm font-medium">+94 77 123 4567</span>
+              <span className="text-sm font-medium">0447460511586</span>
             </button>
 
             <Button
@@ -173,7 +173,7 @@ const Header = () => {
                 transition-all duration-300 hover:scale-105 hover:shadow-lg"
               >
                 <Phone className="w-4 h-4" />
-                <span className="text-sm font-medium">+94 77 123 4567</span>
+                <span className="text-sm font-medium">0447460511586</span>
               </button>
 
               <Button
