@@ -1,3 +1,5 @@
+# robots.txt for https://www.ceylonholidaytrip.com/
+
 User-agent: Googlebot
 Allow: /
 
@@ -10,5 +12,9 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# All other bots
 User-agent: *
 Allow: /
+
+# Sitemap location
+Sitemap: https://www.ceylonholidaytrip.com/sitemap.xml
