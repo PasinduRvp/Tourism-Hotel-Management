@@ -74,7 +74,7 @@ const Footer = () => {
                 <div className="w-1 h-1 bg-[#d4af37] rounded-full"></div>
                 <div className="flex items-center text-sm text-gray-500">
                   <Heart className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                  <span>Since 2025</span>
+                  <span>Since 2015</span>
                 </div>
               </div>
             </div>
