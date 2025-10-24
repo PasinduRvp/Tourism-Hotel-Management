@@ -143,24 +143,24 @@ const About = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {/* Founder Card */}
               <Card className="border border-amber-200 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 overflow-hidden bg-gradient-to-br from-white to-amber-50">
                 <div className="p-8">
-                  <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+                  <div className="flex flex-col gap-6 items-center text-center">
                     <div className="flex-shrink-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face"
+                        src="/mr_a.png"
                         alt="Founder"
                         className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
                       />
                     </div>
-                    <div className="flex-1 text-center md:text-left">
+                    <div className="flex-1">
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
                         Mr
                       </h3>
                       <p className="text-[#e53e3e] font-medium mb-3">Founder & CEO</p>
-                      <div className="flex items-center justify-center md:justify-start mb-3">
+                      <div className="flex items-center justify-center mb-3">
                         <div className="flex">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
@@ -173,7 +173,7 @@ const About = () => {
                         His agency specializes in organizing unforgettable tours to Sri Lanka, 
                         helping travelers from the UK experience the island's breathtaking landscapes, vibrant culture, and warm hospitality.
                       </p>
-                      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                      <div className="flex flex-wrap gap-2 justify-center">
                         <span className="bg-[#d4af37]/20 text-[#e53e3e] px-3 py-1 rounded-full text-sm font-medium border border-[#d4af37]/30">
                           Travel Agency Director
                         </span>
@@ -185,7 +185,7 @@ const About = () => {
                   </div>
                 </div>
                 <div className="bg-amber-50 px-8 py-4 border-t border-amber-200">
-                  <div className="flex items-center justify-center md:justify-start space-x-4 text-sm text-gray-600">
+                  <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
                     <div className="flex items-center">
                       <Phone className="w-4 h-4 mr-1 text-[#e53e3e]" />
                       <a href="tel:0447460511586" className="hover:text-[#e53e3e] transition-colors">
@@ -205,7 +205,7 @@ const About = () => {
               {/* Operations Manager Card */}
               <Card className="border border-amber-200 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 overflow-hidden bg-gradient-to-br from-white to-orange-50">
                 <div className="p-8">
-                  <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+                  <div className="flex flex-col gap-6 items-center text-center">
                     <div className="flex-shrink-0">
                       <img 
                         src="/mr_wimukthi.jpg"
@@ -213,12 +213,12 @@ const About = () => {
                         className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
                       />
                     </div>
-                    <div className="flex-1 text-center md:text-left">
+                    <div className="flex-1">
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
                         Mr.Vimukthi ( HESHU )
                       </h3>
                       <p className="text-[#e53e3e] font-medium mb-3">Sri Lanka Operations Manager</p>
-                      <div className="flex items-center justify-center md:justify-start mb-3">
+                      <div className="flex items-center justify-center mb-3">
                         <div className="flex">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
@@ -232,7 +232,7 @@ const About = () => {
                         He coordinates with local guides, hotels, and transport services to 
                         deliver exceptional experiences for tourists arriving through the agency.
                       </p>
-                      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                      <div className="flex flex-wrap gap-2 justify-center">
                         <span className="bg-[#d4af37]/20 text-[#e53e3e] px-3 py-1 rounded-full text-sm font-medium border border-[#d4af37]/30">
                           Tourism Expert
                         </span>
@@ -244,7 +244,7 @@ const About = () => {
                   </div>
                 </div>
                 <div className="bg-orange-50 px-8 py-4 border-t border-amber-200">
-                  <div className="flex items-center justify-center md:justify-start space-x-4 text-sm text-gray-600">
+                  <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
                     <div className="flex items-center">
                       <Phone className="w-4 h-4 mr-1 text-[#e53e3e]" />
                       <a href="tel:+94757703941" className="hover:text-[#e53e3e] transition-colors">
@@ -255,6 +255,65 @@ const About = () => {
                       <Mail className="w-4 h-4 mr-1 text-[#e53e3e]" />
                       <a href="mailto:vimukthi@ceylonholiday.com" className="hover:text-[#e53e3e] transition-colors">
                         vimukthi@ceylonholiday.com
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* New Member Card */}
+              <Card className="border border-amber-200 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 overflow-hidden bg-gradient-to-br from-white to-red-50">
+                <div className="p-8">
+                  <div className="flex flex-col gap-6 items-center text-center">
+                    <div className="flex-shrink-0">
+                      <img 
+                        src="/mr.nandakumara.jpeg" 
+                        alt="Customer Relations Manager"
+                        className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        Mr. Nanda Kumara Sandagiri
+                      </h3>
+                      <p className="text-[#e53e3e] font-medium mb-3">UK Operations Manager</p>
+                      <div className="flex items-center justify-center mb-3">
+                        <div className="flex">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
+                          ))}
+                        </div>
+                        <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>
+                      </div>
+                      <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                        With exceptional communication skills and a warm, welcoming approach, Mr. Nanda Kumara Sandagiri 
+                        every client receives personalized attention from the moment they inquire about our services. 
+                        He specializes in understanding client preferences and crafting tailor-made itineraries 
+                        that exceed expectations.
+                      </p>
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        <span className="bg-[#d4af37]/20 text-[#e53e3e] px-3 py-1 rounded-full text-sm font-medium border border-[#d4af37]/30">
+                          Client Relations
+                        </span>
+                        <span className="bg-[#e53e3e]/20 text-[#e53e3e] px-3 py-1 rounded-full text-sm font-medium border border-[#e53e3e]/30">
+                          Itinerary Specialist
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-red-50 px-8 py-4 border-t border-amber-200">
+                  <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
+                    <div className="flex items-center">
+                      <Phone className="w-4 h-4 mr-1 text-[#e53e3e]" />
+                      <a href="tel:+94760400525" className="hover:text-[#e53e3e] transition-colors">
+                        +94 71 123 4567
+                      </a>
+                    </div>
+                    <div className="flex items-center">
+                      <Mail className="w-4 h-4 mr-1 text-[#e53e3e]" />
+                      <a href="mailto:anjali@ceylonholiday.com" className="hover:text-[#e53e3e] transition-colors">
+                        nandakumara@ceylonholiday.com
                       </a>
                     </div>
                   </div>
