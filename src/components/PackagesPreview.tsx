@@ -1,17 +1,8 @@
-import React from "react";
-import { Button } from "./ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import { Calendar, MapPin, Star, ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef } from "react";
+import { Star, ArrowRight } from "lucide-react";
 
 const PackagesPreview = () => {
-  const navigate = useNavigate();
+  const cardRefs = useRef([]);
 
   const packages = [
     {
@@ -22,7 +13,7 @@ const PackagesPreview = () => {
       description:
         "Explore ancient kingdoms, sacred temples, and colonial heritage in this week-long cultural immersion.",
       highlights: ["Sigiriya Rock Fortress", "Kandy Temple", "Galle Fort"],
-      image: "/sevendaypack.png",
+      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
     },
     {
       id: "14-days",
@@ -32,7 +23,7 @@ const PackagesPreview = () => {
       description:
         "The ultimate Sri Lankan experience covering cultural sites, wildlife, beaches, and hill country.",
       highlights: ["Yala Safari", "Tea Plantations", "Beach Relaxation"],
-      image: "/forteendaypack.png",
+      image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=400&h=300&fit=crop",
     },
     {
       id: "21-days",
@@ -42,7 +33,7 @@ const PackagesPreview = () => {
       description:
         "Deep dive into Sri Lankan culture, nature, and adventure with our most comprehensive tour.",
       highlights: ["Off-the-beaten-path", "Local Communities", "Hidden Gems"],
-      image: "/twentyfirstdaypack.png",
+      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop",
     },
     {
       id: "customize",
@@ -56,9 +47,42 @@ const PackagesPreview = () => {
         "Custom Activities",
         "Flexible Duration",
       ],
-      image: "/logoic.jpg",
+      image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=300&fit=crop",
     },
   ];
+
+  // Handle mouse enter to capture scroll
+  const handleMouseEnter = (index) => {
+    const card = cardRefs.current[index];
+    if (card) {
+      card.style.overflow = "auto";
+    }
+  };
+
+  // Handle mouse leave to release scroll
+  const handleMouseLeave = (index) => {
+    const card = cardRefs.current[index];
+    if (card) {
+      card.style.overflow = "hidden";
+    }
+  };
+
+  // Prevent scroll propagation when scrolling inside card
+  const handleWheel = (e, index) => {
+    const card = cardRefs.current[index];
+    if (card) {
+      const isScrollable = card.scrollHeight > card.clientHeight;
+      const isAtTop = card.scrollTop === 0;
+      const isAtBottom = card.scrollTop + card.clientHeight >= card.scrollHeight;
+
+      // Prevent page scroll if we're scrolling within the card bounds
+      if (isScrollable) {
+        if ((e.deltaY < 0 && !isAtTop) || (e.deltaY > 0 && !isAtBottom)) {
+          e.stopPropagation();
+        }
+      }
+    }
+  };
 
   return (
     <section
@@ -68,10 +92,10 @@ const PackagesPreview = () => {
       <div className="container mx-auto px-4">
         {/* Header Section with Modern Font Style */}
         <div className="text-center mb-16 slide-up">
-          <h2 className="text-4xl md:text-6xl font-black text-foreground mb-6 bg-gradient-to-r from-[#e53e3e] via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 bg-gradient-to-r from-[#e53e3e] via-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent tracking-tight">
             Choose Your Adventure Package
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light">
             Thoughtfully crafted journeys to showcase the best of Sri Lanka,
             from quick getaways to extensive explorations.
           </p>
@@ -80,13 +104,17 @@ const PackagesPreview = () => {
         {/* Cards Grid with Top Margin and Enhanced Shadows */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {packages.map((pkg, index) => (
-            <Card
+            <div
               key={pkg.id}
-              className={`tourism-card scale-in hover:scale-105 transition-all duration-500 overflow-hidden border-0 shadow-2xl hover:shadow-2xl`}
+              ref={(el) => (cardRefs.current[index] = el)}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={() => handleMouseLeave(index)}
+              onWheel={(e) => handleWheel(e, index)}
+              className="tourism-card scale-in hover:scale-105 transition-all duration-500 overflow-hidden border-0 shadow-2xl hover:shadow-2xl max-h-[600px]"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               {/* Image Container with Top Margin */}
-              <div className="relative h-48 overflow-hidden mt-6 mx-6 rounded-xl">
+              <div className="relative h-48 overflow-hidden mt-6 mx-6 rounded-xl flex-shrink-0">
                 <img
                   src={pkg.image}
                   alt={pkg.title}
@@ -102,24 +130,24 @@ const PackagesPreview = () => {
               </div>
 
               {/* Card Content with Proper Spacing */}
-              <CardHeader className="pb-4 pt-6 px-6">
-                <CardTitle className="text-xl font-bold text-foreground font-poppins leading-tight">
+              <div className="pb-4 pt-6 px-6 flex-shrink-0">
+                <h3 className="text-xl font-bold text-gray-900 leading-tight">
                   {pkg.title}
-                </CardTitle>
-                <CardDescription className="text-muted-foreground text-sm leading-relaxed mt-2">
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed mt-2">
                   {pkg.description}
-                </CardDescription>
-              </CardHeader>
+                </p>
+              </div>
 
-              <CardContent className="space-y-4 px-6 pb-6">
+              <div className="space-y-4 px-6 pb-6">
                 {/* Highlights List */}
                 <div className="space-y-3">
                   {pkg.highlights.map((highlight, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center text-sm text-muted-foreground"
+                      className="flex items-center text-sm text-gray-600"
                     >
-                      <Star className="w-4 h-4 text-accent mr-3 flex-shrink-0" />
+                      <Star className="w-4 h-4 text-yellow-500 mr-3 flex-shrink-0" />
                       <span className="font-medium">{highlight}</span>
                     </div>
                   ))}
@@ -128,49 +156,42 @@ const PackagesPreview = () => {
                 {/* Price and CTA Button */}
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                   <div>
-                    <span className="text-2xl font-bold text-orange-600 font-poppins block">
+                    <span className="text-2xl font-bold text-orange-600 block">
                       {pkg.price}
                     </span>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-gray-500 mt-1">
                       per person
                     </p>
                   </div>
 
-                  <Button
-                    onClick={() =>
-                      navigate(
-                        pkg.id === "customize"
-                          ? "/customize-package"
-                          : `/packages/${pkg.id}`
-                      )
-                    }
-                                      className="btn-primary group 
+                  <button
+                    onClick={() => alert(`Viewing ${pkg.title}`)}
+                    className="btn-primary group 
                       bg-gradient-to-r from-[#e53e3e] to-[#d4af37] 
-                      hover:from-[#d4af37]  hover:to-[#e53e3e]
+                      hover:from-[#d4af37] hover:to-[#e53e3e]
                       text-white font-semibold px-4 py-2 rounded-lg 
-                      transition-all duration-500 hover:shadow-xl hover:scale-105"
-                                    >
+                      transition-all duration-500 hover:shadow-xl hover:scale-105 flex items-center"
+                  >
                     {pkg.id === "customize" ? "Get Started" : "View Details"}
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                  </button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
 
         {/* View All Button */}
         <div className="text-center mt-16">
-          <Button
-            onClick={() => navigate("/packages")}
-            variant="outline"
-            className="px-8 py-3 text-lg border-2absolute inset-0 bg-gradient-to-r from-[#e53e3e] to-[#d4af37] 
-                      hover:from-[#d4af37]  hover:to-[#e53e3e]
-                      text-white font-semibold px-4 py-2 rounded-lg 
-                      transition-all duration-500 hover:shadow-xl hover:scale-105 rounded-xl"
+          <button
+            onClick={() => alert("View all packages")}
+            className="px-8 py-3 text-lg bg-gradient-to-r from-[#e53e3e] to-[#d4af37] 
+                      hover:from-[#d4af37] hover:to-[#e53e3e]
+                      text-white font-semibold rounded-lg 
+                      transition-all duration-500 hover:shadow-xl hover:scale-105"
           >
             View All Packages Details
-          </Button>
+          </button>
         </div>
       </div>
 
@@ -180,6 +201,8 @@ const PackagesPreview = () => {
           background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
           border-radius: 20px;
           position: relative;
+          display: flex;
+          flex-direction: column;
         }
         
         .tourism-card::before {
@@ -191,6 +214,25 @@ const PackagesPreview = () => {
           height: 4px;
           background: linear-gradient(90deg, #ffffff, #ffffff);
           border-radius: 20px 20px 0 0;
+        }
+        
+        /* Custom scrollbar styling */
+        .tourism-card::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .tourism-card::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        
+        .tourism-card::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #e53e3e, #d4af37);
+          border-radius: 10px;
+        }
+        
+        .tourism-card::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(180deg, #d4af37, #e53e3e);
         }
         
         .shadow-2xl {
