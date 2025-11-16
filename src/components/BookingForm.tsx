@@ -58,10 +58,10 @@ const PROMO_CODES = {
 };
 
 const EMAILJS_CONFIG = {
-  SERVICE_ID: 'service_slq5dbm',
-  BOOKING_TEMPLATE_ID: 'template_k82rtr2',
-  AUTO_REPLY_TEMPLATE_ID: 'template_m9bwcdl',
-  PUBLIC_KEY: 'wRx4YOQ1VVqvhlAKt'
+  SERVICE_ID: '..',
+  BOOKING_TEMPLATE_ID: '..',
+  AUTO_REPLY_TEMPLATE_ID: '..',
+  PUBLIC_KEY: '..'
 };
 
 emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
