@@ -13,7 +13,7 @@ const PackagesPreview = () => {
       description:
         "Explore ancient kingdoms, sacred temples, and colonial heritage in this week-long cultural immersion.",
       highlights: ["Sigiriya Rock Fortress", "Kandy Temple", "Galle Fort"],
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
+      image: '/sevendaypack.png',
     },
     {
       id: "14-days",
@@ -23,7 +23,7 @@ const PackagesPreview = () => {
       description:
         "The ultimate Sri Lankan experience covering cultural sites, wildlife, beaches, and hill country.",
       highlights: ["Yala Safari", "Tea Plantations", "Beach Relaxation"],
-      image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=400&h=300&fit=crop",
+      image: '/forteendaypack.png',
     },
     {
       id: "21-days",
@@ -33,7 +33,7 @@ const PackagesPreview = () => {
       description:
         "Deep dive into Sri Lankan culture, nature, and adventure with our most comprehensive tour.",
       highlights: ["Off-the-beaten-path", "Local Communities", "Hidden Gems"],
-      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop",
+      image: '/twentyfirstdaypack.png',
     },
     {
       id: "customize",
@@ -47,7 +47,7 @@ const PackagesPreview = () => {
         "Custom Activities",
         "Flexible Duration",
       ],
-      image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=300&fit=crop",
+      image: '/logoic.jpg',
     },
   ];
 
