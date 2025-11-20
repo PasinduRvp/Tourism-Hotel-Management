@@ -1,8 +1,10 @@
 import React, { useRef } from "react";
 import { Star, ArrowRight } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
 const PackagesPreview = () => {
   const cardRefs = useRef([]);
+  const navigate = useNavigate();
 
   const packages = [
     {
@@ -165,7 +167,7 @@ const PackagesPreview = () => {
                   </div>
 
                   <button
-                    onClick={() => alert(`Viewing ${pkg.title}`)}
+                    onClick={() => navigate(`/packages/${pkg.id}`)}
                     className="btn-primary group 
                       bg-gradient-to-r from-[#e53e3e] to-[#d4af37] 
                       hover:from-[#d4af37] hover:to-[#e53e3e]
@@ -184,7 +186,7 @@ const PackagesPreview = () => {
         {/* View All Button */}
         <div className="text-center mt-16">
           <button
-            onClick={() => alert("View all packages")}
+            onClick={() => navigate('/packages')}
             className="px-8 py-3 text-lg bg-gradient-to-r from-[#e53e3e] to-[#d4af37] 
                       hover:from-[#d4af37] hover:to-[#e53e3e]
                       text-white font-semibold rounded-lg 

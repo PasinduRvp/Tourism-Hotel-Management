@@ -32,7 +32,7 @@ const Package14Days = () => {
           time: "10:00 AM",
           title: "Airport Welcome",
           description: "Meet your guide and luxury transfer",
-          location: "BIA Airport",
+          location: "Bandaranaike International Airport",
           type: "transport" as const
         },
         {

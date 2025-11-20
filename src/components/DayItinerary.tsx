@@ -324,7 +324,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                       <div className="space-y-4">
                         <h4 className="font-semibold text-lg flex items-center">
                           <Clock className="w-5 h-5 mr-2 text-primary" />
-                          Daily Schedule
+                          Day Schedule
                         </h4>
                         {day.activities.map((activity, actIndex) => (
                           <div 

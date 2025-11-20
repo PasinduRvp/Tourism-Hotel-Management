@@ -169,8 +169,7 @@ const Hero = () => {
               className="text-base sm:text-lg md:text-xl font-semibold italic text-white/90 mb-6 sm:mb-8 max-w-lg leading-relaxed 
               backdrop-blur-sm bg-black/20 rounded-lg p-3 sm:p-4 border-l-4 border-[#d4af37]"
             >
-              Discover unforgettable journeys to the world's most breathtaking
-              destinations. Your dream vacation is just one click away.
+              Discover curated journeys in the Pearl of the Indian Ocean.
             </p>
 
             {/* Enhanced CTA Buttons - Stack on mobile, row on larger screens */}

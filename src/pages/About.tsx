@@ -286,10 +286,10 @@ const About = () => {
                         <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>
                       </div>
                       <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                        With exceptional communication skills and a warm, welcoming approach, Mr. Nanda Kumara Sandagiri 
-                        every client receives personalized attention from the moment they inquire about our services. 
-                        He specializes in understanding client preferences and crafting tailor-made itineraries 
-                        that exceed expectations.
+                        With excellent communication skills and a naturally warm, inviting approach, Mr. Nanda Kumara Sandagiri 
+                        makes every client feel valued from their very first inquiry. He takes the time to 
+                        understand each person’s preferences and designs tailor-made itineraries that truly delight and 
+                        exceed expectations.
                       </p>
                       <div className="flex flex-wrap gap-2 justify-center">
                         <span className="bg-[#d4af37]/20 text-[#e53e3e] px-3 py-1 rounded-full text-sm font-medium border border-[#d4af37]/30">
