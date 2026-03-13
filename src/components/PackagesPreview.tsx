@@ -3,7 +3,7 @@ import { Star, ArrowRight, Clock, Zap } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
 const vehicleTiers = [
-  { label: "Wagon R", rate: 67, emoji: "🚗" },
+  { label: "Hatchback", rate: 67, emoji: "🚗" },
   { label: "Sedan",   rate: 77, emoji: "🚙" },
   { label: "SUV",     rate: 117, emoji: "🚐" },
 ];

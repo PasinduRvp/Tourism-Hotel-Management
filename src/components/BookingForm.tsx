@@ -34,7 +34,7 @@ interface BookingFormProps {
 
 // ─── Vehicle tiers ────────────────────────────────────────────────────────────
 const VEHICLE_TIERS = [
-  { id: 'wagon-r', label: 'Wagon R', emoji: '🚗', rate: 67,  seats: 4, description: 'Compact & economical' },
+  { id: 'wagon-r', label: 'Hatchback', emoji: '🚗', rate: 67,  seats: 4, description: 'Compact & economical' },
   { id: 'sedan',   label: 'Sedan',   emoji: '🚙', rate: 77,  seats: 4, description: 'Comfortable & stylish' },
   { id: 'suv',     label: 'SUV',     emoji: '🚐', rate: 117, seats: 7, description: 'Spacious & premium'   },
 ] as const;
