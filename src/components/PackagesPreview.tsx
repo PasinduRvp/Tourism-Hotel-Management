@@ -155,7 +155,7 @@ const PackagesPreview = () => {
                 {/* Duration — top right */}
                 <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm rounded-full px-2.5 py-1 flex items-center gap-1 shadow-sm">
                   <Clock className="w-3 h-3 text-gray-500" />
-                  <span className="text-xs font-bold text-gray-700">{pkg.duration}</span>
+                  <span className="text-xl font-bold text-gray-700">{pkg.duration}</span>
                 </div>
 
                 {/* Title on image */}
