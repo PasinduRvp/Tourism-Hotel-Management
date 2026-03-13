@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DayItinerary from '../components/DayItinerary';
@@ -15,6 +15,11 @@ const vehicleTiers = [
 
 const Package14Days = () => {
   const navigate = useNavigate();
+  const bookingFormRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBooking = () => {
+    bookingFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const detailedItinerary = [
     {
@@ -25,9 +30,7 @@ const Package14Days = () => {
       activities: [
         { time: "10:00 AM", title: "Airport Welcome", description: "Meet your guide and luxury transfer", location: "Bandaranaike International Airport", type: "transport" as const },
         { time: "2:00 PM", title: "City Orientation Tour", description: "Explore Colombo's highlights and hidden gems", location: "Colombo Historic District", type: "sightseeing" as const, highlights: ["Independence Memorial", "Red Mosque", "Lotus Tower"] }
-      ],
-      accommodation: "5-star Colombo City Hotel",
-      meals: ["Lunch", "Welcome Dinner"]
+      ]
     },
     {
       day: 2,
@@ -38,9 +41,7 @@ const Package14Days = () => {
       activities: [
         { time: "8:00 AM", title: "Journey to Cultural Triangle", description: "Scenic drive through authentic Sri Lanka", location: "Highway Route", type: "transport" as const },
         { time: "12:00 PM", title: "Dambulla Golden Temple", description: "UNESCO World Heritage cave complex", location: "Dambulla", type: "sightseeing" as const, highlights: ["Ancient Frescoes", "Buddha Statues", "Cave Temples"] }
-      ],
-      accommodation: "Heritage Resort with Sigiriya Views",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 3,
@@ -50,9 +51,7 @@ const Package14Days = () => {
       activities: [
         { time: "5:30 AM", title: "Sigiriya Rock Climb", description: "Sunrise ascent of the ancient rock fortress", location: "Sigiriya Rock", type: "activity" as const, highlights: ["Lion's Paws", "Frescoes", "Summit Views"] },
         { time: "2:00 PM", title: "Polonnaruwa Ancient City", description: "Explore medieval capital ruins", location: "Polonnaruwa", type: "sightseeing" as const, highlights: ["Gal Vihara", "Royal Palace", "Lotus Pond"] }
-      ],
-      accommodation: "Heritage Resort with Sigiriya Views",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 4,
@@ -63,9 +62,7 @@ const Package14Days = () => {
       activities: [
         { time: "9:00 AM", title: "Spice Garden Visit", description: "Learn about Ceylon spices and Ayurveda", location: "Matale", type: "sightseeing" as const, highlights: ["Cinnamon", "Cardamom", "Traditional Medicine"] },
         { time: "4:00 PM", title: "Kandy City Tour", description: "Explore the last royal capital", location: "Kandy", type: "sightseeing" as const, highlights: ["Temple of Tooth", "Royal Palace", "Kandy Lake"] }
-      ],
-      accommodation: "Boutique Hill Country Hotel",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 5,
@@ -76,9 +73,7 @@ const Package14Days = () => {
       activities: [
         { time: "9:00 AM", title: "Tea Plantation Tour", description: "Experience Ceylon tea culture and processing", location: "Tea Estate", type: "sightseeing" as const, highlights: ["Tea Plucking", "Factory Tour", "Tasting Session"] },
         { time: "2:00 PM", title: "Hill Country Drive", description: "Scenic journey through misty mountains", location: "Hill Roads", type: "transport" as const }
-      ],
-      accommodation: "Colonial Tea Estate Bungalow",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 6,
@@ -88,9 +83,7 @@ const Package14Days = () => {
       activities: [
         { time: "9:00 AM", title: "Gregory Lake & Victoria Park", description: "Enjoy the cool hill station atmosphere", location: "Nuwara Eliya City", type: "activity" as const, highlights: ["Boating", "Gardens", "Colonial Architecture"] },
         { time: "2:00 PM", title: "Strawberry Farm Visit", description: "Fresh mountain agriculture experience", location: "Local Farm", type: "activity" as const }
-      ],
-      accommodation: "Hill Country Hotel",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 7,
@@ -100,10 +93,8 @@ const Package14Days = () => {
       distance: "200km",
       activities: [
         { time: "8:00 AM", title: "Journey to Yala", description: "Drive from cool hills to tropical lowlands", location: "Trans-island Route", type: "transport" as const },
-        { time: "3:00 PM", title: "Safari Lodge Check-in", description: "Settle into wildlife accommodation", location: "Yala Safari Lodge", type: "accommodation" as const }
-      ],
-      accommodation: "Luxury Safari Lodge",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+        { time: "3:00 PM", title: "Safari Lodge Check-in", description: "Settle into wildlife accommodation", location: "Yala Safari Lodge", type: "activity" as const }
+      ]
     },
     {
       day: 8,
@@ -113,9 +104,7 @@ const Package14Days = () => {
       activities: [
         { time: "5:30 AM", title: "Morning Safari", description: "Prime time for leopard and elephant spotting", location: "Yala Block 1", type: "activity" as const, highlights: ["Leopards", "Elephants", "Bears", "Birds"] },
         { time: "3:30 PM", title: "Evening Safari", description: "Golden hour wildlife photography", location: "Yala Block 2", type: "activity" as const, highlights: ["Sunset", "Nocturnal Animals", "Photography"] }
-      ],
-      accommodation: "Luxury Safari Lodge",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 9,
@@ -125,10 +114,8 @@ const Package14Days = () => {
       distance: "180km",
       activities: [
         { time: "8:00 AM", title: "Coastal Journey", description: "Drive to historic southern coast", location: "Southern Highway", type: "transport" as const },
-        { time: "1:00 PM", title: "Galle Fort Arrival", description: "Check into heritage accommodation", location: "Galle Fort", type: "accommodation" as const }
-      ],
-      accommodation: "Fort Heritage Hotel",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+        { time: "1:00 PM", title: "Galle Fort Arrival", description: "Check into heritage accommodation", location: "Galle Fort", type: "activity" as const }
+      ]
     },
     {
       day: 10,
@@ -138,9 +125,7 @@ const Package14Days = () => {
       activities: [
         { time: "9:00 AM", title: "Fort Walking Tour", description: "Explore Dutch colonial architecture", location: "Galle Fort", type: "sightseeing" as const, highlights: ["Dutch Church", "Lighthouse", "Ramparts", "Museums"] },
         { time: "2:00 PM", title: "Craft & Gem Shopping", description: "Browse local artisan workshops", location: "Fort Streets", type: "activity" as const }
-      ],
-      accommodation: "Fort Heritage Hotel",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 11,
@@ -150,9 +135,7 @@ const Package14Days = () => {
       activities: [
         { time: "9:00 AM", title: "Unawatuna Beach", description: "Golden sandy beach relaxation", location: "Unawatuna", type: "activity" as const, highlights: ["Swimming", "Snorkeling", "Beach Games"] },
         { time: "2:00 PM", title: "Water Sports", description: "Surfing, diving, and boat trips", location: "Beach Center", type: "activity" as const }
-      ],
-      accommodation: "Beachfront Resort",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 12,
@@ -162,9 +145,7 @@ const Package14Days = () => {
       activities: [
         { time: "6:00 AM", title: "Whale Watching Tour", description: "Blue whale and dolphin spotting", location: "Mirissa Harbor", type: "activity" as const, highlights: ["Blue Whales", "Sperm Whales", "Dolphins"] },
         { time: "2:00 PM", title: "Coconut Tree Hill", description: "Iconic palm tree viewpoint", location: "Mirissa Hill", type: "sightseeing" as const }
-      ],
-      accommodation: "Ocean View Resort",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 13,
@@ -174,9 +155,7 @@ const Package14Days = () => {
       activities: [
         { time: "9:00 AM", title: "Stilt Fishermen", description: "Traditional fishing methods", location: "Weligama", type: "sightseeing" as const, highlights: ["Traditional Fishing", "Photo Opportunities"] },
         { time: "12:00 PM", title: "Snake Island", description: "Small temple island exploration", location: "Snake Island", type: "activity" as const }
-      ],
-      accommodation: "Coastal Resort",
-      meals: ["Breakfast", "Lunch", "Dinner"]
+      ]
     },
     {
       day: 14,
@@ -187,9 +166,7 @@ const Package14Days = () => {
       activities: [
         { time: "9:00 AM", title: "Final Beach Moments", description: "Last tropical memories", location: "Beach", type: "activity" as const },
         { time: "12:00 PM", title: "Departure Transfer", description: "Journey to Colombo Airport", location: "Airport Route", type: "transport" as const }
-      ],
-      accommodation: "N/A - Departure",
-      meals: ["Breakfast", "Farewell Lunch"]
+      ]
     }
   ];
 
@@ -232,10 +209,17 @@ const Package14Days = () => {
                   <div className="flex items-center"><Users className="w-5 h-5 mr-2" /><span>As Much As You Like</span></div>
                   <div className="flex items-center"><MapPin className="w-5 h-5 mr-2" /><span>8 Cities</span></div>
                 </div>
+
+                <button
+                  onClick={scrollToBooking}
+                  className="mt-6 sm:mt-8 px-8 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow duration-300 w-full sm:w-auto"
+                >
+                  Book Now
+                </button>
               </div>
 
               <div className="flex justify-center">
-                <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:w-80 h-48 sm:h-56 md:h-64 lg:h-60 rounded-2xl shadow-2xl overflow-hidden border-4 border-white/20">
+                <div className="w-full max-w-xs sm:max-w-sm h-40 sm:h-48 md:h-56 lg:w-80 lg:h-60 rounded-2xl shadow-2xl overflow-hidden border-4 border-white/20">
                   <video src="/map14.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
               </div>
@@ -244,9 +228,9 @@ const Package14Days = () => {
         </section>
 
         {/* Package Details */}
-        <section className="py-16 bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
+        <section className="py-8 sm:py-12 md:py-16 bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
           <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
               <div className="lg:col-span-2">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6 font-poppins bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
                   Complete 14-Day Journey
@@ -254,8 +238,8 @@ const Package14Days = () => {
                 <DayItinerary days={detailedItinerary} packageColor="accent" />
               </div>
 
-              <div className="lg:col-span-1">
-                <div className="sticky top-8">
+              <div className="lg:col-span-1" ref={bookingFormRef}>
+                <div className="sticky top-20 md:top-8">
                   <BookingForm
                     packageName="Complete Sri Lanka"
                     packagePrice={`From $${vehicleTiers[0].rate * DAYS}`}

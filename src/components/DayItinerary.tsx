@@ -6,12 +6,11 @@ import {
   MapPin, 
   Clock, 
   Camera, 
-  Utensils, 
+  Utensils,
   Car, 
   ChevronDown, 
   ChevronUp,
   ArrowDown,
-  Star,
   Mountain,
   Waves,
   TreePine
@@ -23,7 +22,7 @@ interface Activity {
   title: string;
   description: string;
   location: string;
-  type: 'transport' | 'sightseeing' | 'meal' | 'activity' | 'accommodation';
+  type: 'transport' | 'sightseeing' | 'meal' | 'activity';
   icon?: React.ReactNode;
   highlights?: string[];
 }
@@ -34,8 +33,6 @@ interface DayData {
   location: string;
   theme: string;
   activities: Activity[];
-  accommodation: string;
-  meals: string[];
   distance?: string;
   travelTime?: string;
 }
@@ -51,7 +48,6 @@ const getActivityIcon = (type: string) => {
     case 'sightseeing': return <Camera className="w-4 h-4" />;
     case 'meal': return <Utensils className="w-4 h-4" />;
     case 'activity': return <Mountain className="w-4 h-4" />;
-    case 'accommodation': return <Star className="w-4 h-4" />;
     default: return <MapPin className="w-4 h-4" />;
   }
 };
@@ -375,29 +371,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                         ))}
                       </div>
 
-                      {/* Day Summary */}
-                      <div className="grid md:grid-cols-2 gap-4 p-4 bg-gradient-to-r from-muted/30 to-muted/10 rounded-lg">
-                        <div>
-                          <h5 className="font-semibold text-sm mb-2 flex items-center">
-                            <Star className="w-4 h-4 mr-1 text-accent" />
-                            Accommodation
-                          </h5>
-                          <p className="text-sm text-muted-foreground">{day.accommodation}</p>
-                        </div>
-                        <div>
-                          <h5 className="font-semibold text-sm mb-2 flex items-center">
-                            <Utensils className="w-4 h-4 mr-1 text-accent" />
-                            Meals Included
-                          </h5>
-                          <div className="flex flex-wrap gap-1">
-                            {day.meals.map((meal, mIndex) => (
-                              <Badge key={mIndex} variant="secondary" className="text-xs">
-                                {meal}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
                   </CardContent>
                 )}

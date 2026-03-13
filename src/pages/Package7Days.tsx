@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import DayItinerary from "../components/DayItinerary";
@@ -16,6 +16,11 @@ const vehicleTiers = [
 
 const Package7Days = () => {
   const navigate = useNavigate();
+  const bookingFormRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBooking = () => {
+    bookingFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const destinations = [
     { name: "Colombo", x: 25, y: 75, order: 1 },
@@ -40,8 +45,6 @@ const Package7Days = () => {
         { time: "5:00 PM", title: "Galle Face Green", description: "Sunset walk along the oceanfront promenade", location: "Galle Face Green", type: "activity" as const, highlights: ["Ocean Views", "Street Food", "Sunset"] },
         { time: "7:00 PM", title: "Welcome Dinner", description: "Traditional Sri Lankan cuisine introduction", location: "Local Restaurant", type: "meal" as const },
       ],
-      accommodation: "4-star Colombo City Hotel",
-      meals: ["Lunch", "Dinner"],
     },
     {
       day: 2,
@@ -55,11 +58,9 @@ const Package7Days = () => {
         { time: "8:00 AM", title: "Drive to Sigiriya", description: "Scenic drive through Sri Lankan countryside", location: "Highway Route", type: "transport" as const },
         { time: "12:00 PM", title: "Dambulla Cave Temple", description: "Explore the Golden Temple and cave complex", location: "Dambulla", type: "sightseeing" as const, highlights: ["Cave Paintings", "Buddha Statues", "Mountain Views"] },
         { time: "2:00 PM", title: "Local Lunch", description: "Authentic rice and curry meal", location: "Dambulla Restaurant", type: "meal" as const },
-        { time: "3:30 PM", title: "Check-in Sigiriya", description: "Settle into heritage hotel with rock views", location: "Sigiriya Hotel", type: "accommodation" as const },
+        { time: "3:30 PM", title: "Check-in Sigiriya", description: "Settle into heritage hotel with rock views", location: "Sigiriya Hotel", type: "activity" as const },
         { time: "5:00 PM", title: "Village Tour", description: "Traditional village life experience", location: "Local Village", type: "activity" as const, highlights: ["Bullock Cart Ride", "Traditional Cooking", "Local Crafts"] },
       ],
-      accommodation: "Heritage Hotel with Sigiriya Rock View",
-      meals: ["Breakfast", "Lunch", "Dinner"],
     },
     {
       day: 3,
@@ -74,8 +75,6 @@ const Package7Days = () => {
         { time: "1:00 PM", title: "Pidurangala Rock", description: "Alternative viewpoint for Sigiriya photos", location: "Pidurangala", type: "activity" as const, highlights: ["Photography", "Hiking", "Rock Views"] },
         { time: "4:00 PM", title: "Ayurvedic Spa", description: "Traditional healing and relaxation", location: "Hotel Spa", type: "activity" as const },
       ],
-      accommodation: "Heritage Hotel with Sigiriya Rock View",
-      meals: ["Breakfast", "Brunch", "Dinner"],
     },
     {
       day: 4,
@@ -93,8 +92,6 @@ const Package7Days = () => {
         { time: "5:00 PM", title: "Temple of the Tooth", description: "Visit the sacred Buddhist temple", location: "Temple of the Sacred Tooth Relic", type: "sightseeing" as const, highlights: ["Sacred Relic", "Evening Ceremony", "Architecture"] },
         { time: "7:00 PM", title: "Cultural Dance Show", description: "Traditional Kandyan dancing performance", location: "Cultural Center", type: "activity" as const },
       ],
-      accommodation: "Boutique Hotel overlooking Kandy Lake",
-      meals: ["Breakfast", "Lunch", "Dinner"],
     },
     {
       day: 5,
@@ -109,8 +106,6 @@ const Package7Days = () => {
         { time: "4:00 PM", title: "Kandy City Shopping", description: "Browse local markets and gem shops", location: "Kandy Market Square", type: "activity" as const },
         { time: "6:00 PM", title: "Sunset Viewpoint", description: "Panoramic views of Kandy city", location: "Arthur's Seat", type: "activity" as const },
       ],
-      accommodation: "Boutique Hotel overlooking Kandy Lake",
-      meals: ["Breakfast", "Lunch", "Dinner"],
     },
     {
       day: 6,
@@ -123,13 +118,11 @@ const Package7Days = () => {
         { time: "7:00 AM", title: "Early Breakfast", description: "Hearty breakfast before coastal journey", location: "Hotel Restaurant", type: "meal" as const },
         { time: "8:00 AM", title: "Departure to Galle", description: "Scenic drive to the southern coast", location: "Highway to Coast", type: "transport" as const },
         { time: "12:00 PM", title: "Coastal Lunch Stop", description: "Fresh seafood by the ocean", location: "Coastal Restaurant", type: "meal" as const },
-        { time: "2:00 PM", title: "Galle Fort Arrival", description: "Check-in to heritage hotel in the fort", location: "Galle Fort", type: "accommodation" as const },
+        { time: "2:00 PM", title: "Galle Fort Arrival", description: "Check-in to heritage hotel in the fort", location: "Galle Fort", type: "activity" as const },
         { time: "3:00 PM", title: "Fort Walking Tour", description: "Explore Dutch colonial architecture", location: "Galle Fort", type: "sightseeing" as const, highlights: ["Dutch Church", "Lighthouse", "Ramparts", "Colonial Buildings"] },
         { time: "5:30 PM", title: "Sunset at Ramparts", description: "Watch sunset from historic fort walls", location: "Fort Ramparts", type: "activity" as const },
         { time: "7:00 PM", title: "Fort Dining", description: "Dinner at historic restaurant", location: "Fort Restaurant", type: "meal" as const },
       ],
-      accommodation: "Heritage Hotel within Galle Fort",
-      meals: ["Breakfast", "Lunch", "Dinner"],
     },
     {
       day: 7,
@@ -146,8 +139,6 @@ const Package7Days = () => {
         { time: "2:30 PM", title: "Departure Transfer", description: "Journey to Colombo Airport", location: "Airport Transfer", type: "transport" as const },
         { time: "6:00 PM", title: "Airport Arrival", description: "Check-in for international departure", location: "Bandaranaike International Airport", type: "transport" as const },
       ],
-      accommodation: "N/A - Departure Day",
-      meals: ["Breakfast", "Lunch"],
     },
   ];
 
@@ -190,10 +181,17 @@ const Package7Days = () => {
                   <div className="flex items-center"><Users className="w-5 h-5 mr-2" /><span>As Much As You Like</span></div>
                   <div className="flex items-center"><MapPin className="w-5 h-5 mr-2" /><span>5 Cities</span></div>
                 </div>
+
+                <button
+                  onClick={scrollToBooking}
+                  className="mt-6 sm:mt-8 px-8 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow duration-300 w-full sm:w-auto"
+                >
+                  Book Now
+                </button>
               </div>
 
               <div className="flex justify-center">
-                <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:w-80 h-48 sm:h-56 md:h-64 lg:h-60 rounded-2xl shadow-2xl overflow-hidden border-4 border-white/20">
+                <div className="w-full max-w-xs sm:max-w-sm h-40 sm:h-48 md:h-56 lg:w-80 lg:h-60 rounded-2xl shadow-2xl overflow-hidden border-4 border-white/20">
                   <video src="/map7.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
               </div>
@@ -202,9 +200,9 @@ const Package7Days = () => {
         </section>
 
         {/* Package Details */}
-        <section className="py-16 bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
+        <section className="py-8 sm:py-12 md:py-16 bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
           <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
               <div className="lg:col-span-2">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6 font-poppins bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
                   Detailed Day-by-Day Journey
@@ -212,8 +210,8 @@ const Package7Days = () => {
                 <DayItinerary days={detailedItinerary} packageColor="primary" />
               </div>
 
-              <div className="lg:col-span-1">
-                <div className="sticky top-8">
+              <div className="lg:col-span-1" ref={bookingFormRef}>
+                <div className="sticky top-20 md:top-8">
                   <BookingForm
                     packageName="Cultural Triangle"
                     packagePrice={`From $${vehicleTiers[0].rate * DAYS}`}
