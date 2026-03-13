@@ -5,6 +5,12 @@ import Footer from '../components/Footer';
 import { Calendar, MapPin, Star, ArrowRight, Search, Clock, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+const vehicleTiers = [
+  { label: "Wagon R", rate: 67, emoji: "🚗" },
+  { label: "Sedan",   rate: 77, emoji: "🚙" },
+  { label: "SUV",     rate: 117, emoji: "🚐" },
+];
+
 const Packages = () => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState('all');
@@ -17,8 +23,6 @@ const Packages = () => {
       setIsScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll);
-    
-    // Animation trigger
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -31,7 +35,7 @@ const Packages = () => {
       id: '7-days',
       title: '7-Days Cultural Tour',
       duration: '7 Days',
-      price: 'From $899',
+      days: 7,
       description: 'Explore ancient kingdoms, sacred temples, and colonial heritage in this week-long cultural immersion.',
       highlights: ['Sigiriya Rock Fortress', 'Kandy Temple', 'Galle Fort'],
       image: '/sevendaypack.png',
@@ -44,7 +48,7 @@ const Packages = () => {
       id: '14-days',
       title: '14-Days Complete Experience',
       duration: '14 Days',
-      price: 'From $1,599',
+      days: 14,
       description: 'The ultimate Sri Lankan experience covering cultural sites, wildlife, beaches, and hill country.',
       highlights: ['Yala Safari', 'Tea Plantations', 'Beach Relaxation'],
       image: '/forteendaypack.png',
@@ -57,7 +61,7 @@ const Packages = () => {
       id: '21-days',
       title: '21-Days Deep Exploration',
       duration: '21 Days',
-      price: 'From $2,299',
+      days: 21,
       description: 'Deep dive into Sri Lankan culture, nature, and adventure with our most comprehensive tour.',
       highlights: ['Off-the-beaten-path', 'Local Communities', 'Hidden Gems'],
       image: '/twentyfirstdaypack.png',
@@ -70,7 +74,7 @@ const Packages = () => {
       id: 'customize',
       title: 'Design Your Dream Package',
       duration: 'Flexible',
-      price: 'Custom Quote',
+      days: null,
       description: 'Create your perfect Sri Lankan adventure with our expert travel consultants.',
       highlights: ['Personalized Itinerary', 'Custom Activities', 'Flexible Duration'],
       image: '/CHT_LOGO.png',
@@ -101,25 +105,18 @@ const Packages = () => {
   // Custom Button Component
   const Button = ({ children, onClick, variant = 'default', className = '', size = 'default', ...props }) => {
     const baseStyles = 'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/20 cursor-pointer transform hover:scale-105 active:scale-95';
-    
     const variants = {
       default: 'bg-gradient-to-r from-[#d4af37] to-[#e53e3e] text-white hover:from-[#e53e3e] hover:to-[#d4af37] shadow-lg hover:shadow-xl',
       outline: 'border-2 border-[#d4af37] text-[#e53e3e] hover:bg-gradient-to-r hover:from-[#d4af37] hover:to-[#e53e3e] hover:text-white shadow-md hover:shadow-lg',
       secondary: 'bg-gradient-to-r from-amber-100 to-orange-100 text-gray-900 hover:from-amber-200 hover:to-orange-200 shadow-md hover:shadow-lg'
     };
-    
     const sizes = {
       default: 'px-6 py-3 text-base',
       lg: 'px-8 py-4 text-lg',
       sm: 'px-4 py-2 text-sm'
     };
-
     return (
-      <button
-        className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-        onClick={onClick}
-        {...props}
-      >
+      <button className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`} onClick={onClick} {...props}>
         {children}
       </button>
     );
@@ -127,7 +124,7 @@ const Packages = () => {
 
   // Custom Card Components
   const Card = ({ children, className = '', delay = 0, ...props }) => (
-    <div 
+    <div
       className={`bg-white rounded-2xl border border-amber-200 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group transform hover:-translate-y-2 ${className} ${
         isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
       }`}
@@ -139,9 +136,7 @@ const Packages = () => {
   );
 
   const CardHeader = ({ children, className = '' }) => (
-    <div className={`p-6 pb-4 ${className}`}>
-      {children}
-    </div>
+    <div className={`p-6 pb-4 ${className}`}>{children}</div>
   );
 
   const CardTitle = ({ children, className = '' }) => (
@@ -157,72 +152,50 @@ const Packages = () => {
   );
 
   const CardContent = ({ children, className = '' }) => (
-    <div className={`p-6 pt-0 ${className}`}>
-      {children}
-    </div>
+    <div className={`p-6 pt-0 ${className}`}>{children}</div>
   );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
       <Header />
-      
-      {/* Enhanced Hero Section with New Colors */}
+
+      {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">
-        {/* Animated Background Elements */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/10 via-transparent to-[#e53e3e]/10 animate-pulse-slow" />
         <div className="absolute top-0 left-0 w-72 h-72 bg-[#d4af37]/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-float-slow" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#e53e3e]/5 rounded-full translate-x-1/3 translate-y-1/3 animate-float-slow" style={{ animationDelay: '2s' }} />
         <div className="absolute top-1/2 left-1/4 w-48 h-48 bg-amber-500/3 rounded-full animate-float" style={{ animationDelay: '1s' }} />
-        
+
         <div className="container mx-auto px-4 relative z-10">
-          <div className={`text-center max-w-4xl mx-auto transition-all duration-1000 ${
-            isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
-          }`}>
-            
+          <div className={`text-center max-w-4xl mx-auto transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'}`}>
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent animate-gradient-x">
               Tour Packages
             </h1>
-            
             <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-              Curated journeys through the pearl of the Indian Ocean. 
+              Curated journeys through the pearl of the Indian Ocean.
               From ancient cities to pristine beaches, discover your perfect adventure.
             </p>
-
-            {/* Enhanced Search and Filter Section */}
-            <div className={`max-w-4xl mx-auto mb-12 transition-all duration-700 ${
-              isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
-            }`} style={{ animationDelay: '400ms' }}>
-              
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Enhanced Packages Grid Section */}
+      {/* Packages Grid Section */}
       <section id="packages-grid" className="py-20 bg-transparent">
         <div className="container mx-auto px-4">
-          
-          {/* Packages Grid - Updated to 2 cards per row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
             {filteredPackages.map((pkg, index) => (
-              <Card 
-                key={pkg.id} 
-                delay={index * 200}
-                className="flex flex-col group cursor-pointer transform hover:scale-[1.02] transition-all duration-500"
-              >
+              <Card key={pkg.id} delay={index * 200} className="flex flex-col group cursor-pointer transform hover:scale-[1.02] transition-all duration-500">
                 {/* Image Container */}
                 <div className="relative h-64 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/20 to-[#e53e3e]/20 opacity-0 group-hover:opacity-100 transition-all duration-700 z-10" />
-                  <img 
-                    src={pkg.image} 
+                  <img
+                    src={pkg.image}
                     alt={pkg.title}
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
                   />
-                  
-                  {/* Enhanced Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  
-                  {/* Enhanced Badges */}
+
+                  {/* Badges */}
                   <div className="absolute top-4 left-4 flex gap-2 z-20">
                     <div className="bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                       <span className="text-sm font-semibold text-gray-900 flex items-center">
@@ -237,7 +210,7 @@ const Packages = () => {
                     )}
                   </div>
 
-                  {/* Enhanced Rating */}
+                  {/* Rating */}
                   <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg transform group-hover:scale-105 transition-transform duration-300 z-20">
                     <span className="text-sm font-semibold text-gray-900 flex items-center">
                       <Star className="w-4 h-4 text-[#d4af37] mr-2 fill-current animate-bounce-subtle" />
@@ -249,33 +222,26 @@ const Packages = () => {
                 {/* Content Container */}
                 <div className="flex-1 flex flex-col p-6">
                   <CardHeader className="p-0 pb-4">
-                    <CardTitle className="text-xl">
-                      {pkg.title}
-                    </CardTitle>
-                    <CardDescription className="text-base">
-                      {pkg.description}
-                    </CardDescription>
+                    <CardTitle className="text-xl">{pkg.title}</CardTitle>
+                    <CardDescription className="text-base">{pkg.description}</CardDescription>
                   </CardHeader>
 
                   <CardContent className="space-y-4 flex-1 p-0">
-                    {/* Enhanced Highlights */}
+                    {/* Highlights */}
                     <div className="space-y-2">
                       <h4 className="font-semibold text-gray-900 flex items-center text-sm">
                         <Star className="w-4 h-4 text-[#e53e3e] mr-2 fill-current animate-pulse" />
                         Tour Highlights
                       </h4>
                       {pkg.highlights.map((highlight, idx) => (
-                        <div 
-                          key={idx} 
-                          className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-300 transform hover:translate-x-1 transition-transform duration-300"
-                        >
+                        <div key={idx} className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-300 transform hover:translate-x-1 transition-transform duration-300">
                           <div className="w-1.5 h-1.5 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] rounded-full mr-2 flex-shrink-0" />
                           {highlight}
                         </div>
                       ))}
                     </div>
 
-                    {/* Enhanced Meta Info */}
+                    {/* Meta Info */}
                     <div className="flex items-center justify-between text-sm text-gray-600 bg-amber-50 rounded-xl p-3 border border-amber-100">
                       <div className="flex items-center">
                         <Users className="w-4 h-4 mr-1 text-[#e53e3e]" />
@@ -287,18 +253,39 @@ const Packages = () => {
                       </div>
                     </div>
 
-                    {/* Enhanced Price and CTA */}
-                    <div className="flex items-center justify-between pt-4 border-t border-amber-200">
-                      <div className="transform hover:scale-105 transition-transform duration-300">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
-                          {pkg.price}
-                        </span>
-                        <p className="text-sm text-gray-600 mt-1">per person</p>
-                      </div>
-                      
-                      <Button 
+                    {/* Price and CTA */}
+                    <div className="pt-4 border-t border-amber-200">
+                      {pkg.days ? (
+                        <>
+                          {/* Vehicle tier pricing rows */}
+                          <div className="space-y-2 mb-2">
+                            {vehicleTiers.map((tier) => (
+                              <div key={tier.label} className="flex items-center justify-between">
+                                <span className="text-sm text-gray-500 flex items-center gap-1.5">
+                                  <span>{tier.emoji}</span>
+                                  <span>{tier.label}</span>
+                                  <span className="text-xs text-gray-400">(${tier.rate}/day)</span>
+                                </span>
+                                <span className="text-base font-bold bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
+                                  ${tier.rate * pkg.days}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-xs text-gray-400 mb-4">Total for {pkg.days} days · per vehicle</p>
+                        </>
+                      ) : (
+                        <div className="mb-4">
+                          <span className="text-2xl font-bold bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
+                            Custom Quote
+                          </span>
+                          <p className="text-sm text-gray-600 mt-1">Tailored to your needs</p>
+                        </div>
+                      )}
+
+                      <Button
                         onClick={() => navigate(pkg.id === 'customize' ? '/customize-package' : `/packages/${pkg.id}`)}
-                        className="rounded-xl px-6 py-3"
+                        className="rounded-xl px-6 py-3 w-full"
                       >
                         {pkg.id === 'customize' ? 'Design Trip' : 'View Details'}
                         <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
@@ -310,19 +297,11 @@ const Packages = () => {
             ))}
           </div>
 
-          {/* Enhanced No Results */}
+          {/* No Results */}
           {filteredPackages.length === 0 && (
-            <div className={`text-center py-20 transition-all duration-700 ${
-              isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
-            }`}>
-              <div className="text-gray-600 text-xl mb-6">
-                🗺️ No packages found matching your criteria.
-              </div>
-              <Button 
-                onClick={() => { setFilter('all'); setSearchTerm(''); }}
-                variant="outline"
-                className="mt-4 rounded-xl px-8 py-4"
-              >
+            <div className={`text-center py-20 transition-all duration-700 ${isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'}`}>
+              <div className="text-gray-600 text-xl mb-6">🗺️ No packages found matching your criteria.</div>
+              <Button onClick={() => { setFilter('all'); setSearchTerm(''); }} variant="outline" className="mt-4 rounded-xl px-8 py-4">
                 Show All Packages
               </Button>
             </div>
@@ -332,78 +311,37 @@ const Packages = () => {
 
       <Footer />
 
-      {/* Add Custom CSS for Animations */}
-      <style >{`
+      <style>{`
         @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
         }
         @keyframes float-slow {
-          0%, 100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-10px) rotate(5deg);
-          }
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(5deg); }
         }
         @keyframes gradient-x {
-          0%, 100% {
-            background-size: 200% 200%;
-            background-position: left center;
-          }
-          50% {
-            background-size: 200% 200%;
-            background-position: right center;
-          }
+          0%, 100% { background-size: 200% 200%; background-position: left center; }
+          50% { background-size: 200% 200%; background-position: right center; }
         }
         @keyframes pulse-slow {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.8;
-          }
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.8; }
         }
         @keyframes bounce-subtle {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-2px);
-          }
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-2px); }
         }
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s ease-out forwards;
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .animate-float-slow {
-          animation: float-slow 8s ease-in-out infinite;
-        }
-        .animate-gradient-x {
-          animation: gradient-x 3s ease infinite;
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 2s ease-in-out infinite;
-        }
-        .animate-bounce-subtle {
-          animation: bounce-subtle 2s ease-in-out infinite;
-        }
+        .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+        .animate-gradient-x { animation: gradient-x 3s ease infinite; }
+        .animate-pulse-slow { animation: pulse-slow 2s ease-in-out infinite; }
+        .animate-bounce-subtle { animation: bounce-subtle 2s ease-in-out infinite; }
       `}</style>
     </div>
   );

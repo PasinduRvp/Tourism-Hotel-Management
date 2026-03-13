@@ -150,14 +150,14 @@ const About = () => {
                   <div className="flex flex-col gap-6 items-center text-center">
                     <div className="flex-shrink-0">
                       <img 
-                        src="/mr_a.png"
+                        src="/sp.jpeg"
                         alt="Founder"
                         className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
                       />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        Mr
+                        Mr.S.Pradeep
                       </h3>
                       <p className="text-[#e53e3e] font-medium mb-3">Founder & CEO</p>
                       <div className="flex items-center justify-center mb-3">
@@ -169,7 +169,7 @@ const About = () => {
                         <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>
                       </div>
                       <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                        With years of experience in the UK tourism industry, Mr. leads his travel agency with passion and professionalism. 
+                        With years of experience in the UK tourism industry, Mr.S.Pradeep leads his travel agency with passion and professionalism. 
                         His agency specializes in organizing unforgettable tours to Sri Lanka, 
                         helping travelers from the UK experience the island's breathtaking landscapes, vibrant culture, and warm hospitality.
                       </p>
