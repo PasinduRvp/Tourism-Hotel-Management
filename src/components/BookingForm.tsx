@@ -746,6 +746,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
                     <span className="text-blue-700 font-extrabold text-2xl">${combinedFinal}</span>
                   )}
                 </div>
+                <p className="mt-2 text-[11px] text-gray-400 italic">
+                  * Prices are indicative and may vary based on season, availability, and market rates at the time of booking.
+                </p>
               </div>
             )}
 
