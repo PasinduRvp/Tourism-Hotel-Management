@@ -6,9 +6,9 @@ import { Calendar, MapPin, Star, ArrowRight, Search, Clock, Users } from 'lucide
 import { useNavigate } from 'react-router-dom';
 
 const vehicleTiers = [
-  { label: "Hatchback", rate: 67, emoji: "🚗" },
-  { label: "Sedan",   rate: 77, emoji: "🚙" },
-  { label: "SUV",     rate: 117, emoji: "🚐" },
+  { label: "Hatchback", rate: 70, emoji: "🚗" },
+  { label: "Sedan",   rate: 80, emoji: "🚙" },
+  { label: "SUV",     rate: 120, emoji: "🚐" },
 ];
 
 const Packages = () => {

@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom';
 
 const DAYS = 14;
 const vehicleTiers = [
-  { label: "Hatchback", rate: 67, emoji: "🚗" },
-  { label: "Sedan",   rate: 77, emoji: "🚙" },
-  { label: "SUV",     rate: 117, emoji: "🚐" },
+  { label: "Hatchback", rate: 70, emoji: "🚗" },
+  { label: "Sedan",   rate: 80, emoji: "🚙" },
+  { label: "SUV",     rate: 120, emoji: "🚐" },
 ];
 
 const Package14Days = () => {
