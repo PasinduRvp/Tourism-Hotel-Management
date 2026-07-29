@@ -10,7 +10,7 @@ import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import {
   User, Mail, Users, MessageSquare, CheckCircle,
-  Flag, Send, MessageCircle, AlertCircle, Tag, Car,
+  Flag, Send, MessageCircle, AlertCircle, Tag, Car, Hotel,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -40,6 +40,15 @@ const VEHICLE_TIERS = [
 ] as const;
 
 type VehicleId = typeof VEHICLE_TIERS[number]['id'];
+
+// ─── Hotel tiers ──────────────────────────────────────────────────────────────
+const HOTEL_TIERS = [
+  { id: 'budget',    label: 'Budget',    emoji: '🏠', rate: 35,  description: 'Budget Hotels & Guesthouses' },
+  { id: 'mid-range', label: 'Mid-range', emoji: '🏨', rate: 60,  description: 'Comfortable Mid-range Hotels' },
+  { id: 'luxury',    label: 'Luxury',    emoji: '🏰', rate: 100, description: 'Luxury Resorts & Villas' },
+] as const;
+
+type HotelId = typeof HOTEL_TIERS[number]['id'];
 
 const getTierTotal = (rate: number, days: number | null): number | null =>
   days ? rate * days : null;
@@ -76,6 +85,41 @@ const VEHICLE_COLORS: Record<VehicleId, {
     check:  'bg-purple-500',
     price:  s => s ? 'text-purple-700'   : 'text-gray-800',
     rate:   s => s ? 'text-purple-400'   : 'text-gray-400',
+  },
+};
+
+// ─── Colours per hotel tier ───────────────────────────────────────────────────
+const HOTEL_COLORS: Record<HotelId, {
+  border: (sel: boolean) => string;
+  bg:     (sel: boolean) => string;
+  badge:  string;
+  check:  string;
+  price:  (sel: boolean) => string;
+  rate:   (sel: boolean) => string;
+}> = {
+  budget: {
+    border: s => s ? 'border-teal-500'   : 'border-gray-200',
+    bg:     s => s ? 'bg-teal-50'        : 'bg-white hover:bg-teal-50',
+    badge:  'bg-teal-100 text-teal-700',
+    check:  'bg-teal-500',
+    price:  s => s ? 'text-teal-700'     : 'text-gray-800',
+    rate:   s => s ? 'text-teal-400'     : 'text-gray-400',
+  },
+  'mid-range': {
+    border: s => s ? 'border-amber-500'  : 'border-gray-200',
+    bg:     s => s ? 'bg-amber-50'       : 'bg-white hover:bg-amber-50',
+    badge:  'bg-amber-100 text-amber-700',
+    check:  'bg-amber-500',
+    price:  s => s ? 'text-amber-700'    : 'text-gray-800',
+    rate:   s => s ? 'text-amber-400'    : 'text-gray-400',
+  },
+  luxury: {
+    border: s => s ? 'border-rose-500'   : 'border-gray-200',
+    bg:     s => s ? 'bg-rose-50'        : 'bg-white hover:bg-rose-50',
+    badge:  'bg-rose-100 text-rose-700',
+    check:  'bg-rose-500',
+    price:  s => s ? 'text-rose-700'     : 'text-gray-800',
+    rate:   s => s ? 'text-rose-400'     : 'text-gray-400',
   },
 };
 
@@ -132,6 +176,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const [isSubmitted,     setIsSubmitted]     = useState(false);
   const [countrySearch,   setCountrySearch]   = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleId>('wagon-r');
+  const [selectedHotel,   setSelectedHotel]   = useState<HotelId>('budget');
   const [appliedPromo,    setAppliedPromo]    = useState<{
     code: string; discount: number; type: string; description: string;
   } | null>(null);
@@ -141,6 +186,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
   const days        = parseDays(packageDuration);
   const activeTier  = VEHICLE_TIERS.find(t => t.id === selectedVehicle)!;
+  const activeHotel = HOTEL_TIERS.find(h => h.id === selectedHotel)!;
 
   const { register, handleSubmit, formState: { errors }, setValue, watch, reset, getValues } =
     useForm<BookingFormData>({
@@ -162,10 +208,19 @@ const BookingForm: React.FC<BookingFormProps> = ({
     return Math.max(0, amount - appliedPromo.discount);
   };
 
-  // ── selected vehicle totals ───────────────────────────────────────────────
+  // ── selected vehicle / hotel totals ───────────────────────────────────────
   const activeTotal      = getTierTotal(activeTier.rate, days);
   const activeDiscounted = activeTotal && appliedPromo ? applyDiscount(activeTotal) : null;
   const activeFinal      = activeDiscounted ?? activeTotal;
+
+  const hotelTotal      = getTierTotal(activeHotel.rate, days);
+  const hotelDiscounted = hotelTotal && appliedPromo ? applyDiscount(hotelTotal) : null;
+  const hotelFinal      = hotelDiscounted ?? hotelTotal;
+
+  // ── combined package total (vehicle + hotel) ──────────────────────────────
+  const combinedTotal      = days ? (activeTier.rate + activeHotel.rate) * days : null;
+  const combinedDiscounted = combinedTotal && appliedPromo ? applyDiscount(combinedTotal) : null;
+  const combinedFinal      = combinedDiscounted ?? combinedTotal;
 
   // ── promo handlers ────────────────────────────────────────────────────────
   const handleApplyPromo = () => {
@@ -222,6 +277,26 @@ const BookingForm: React.FC<BookingFormProps> = ({
         : base;
     })();
 
+    // All 3 hotel tiers with ✅ marker on selected one
+    const allHotelOptions = HOTEL_TIERS.map(h => {
+      const tot  = getTierTotal(h.rate, days);
+      const disc = tot && appliedPromo ? applyDiscount(tot) : null;
+      const mark = h.id === selectedHotel ? ' ✅' : '';
+      if (!tot) return `${h.emoji} ${h.label} ($${h.rate}/day): Custom quote${mark}`;
+      return disc
+        ? `${h.emoji} ${h.label} ($${h.rate}/day): $${tot} → $${disc}${mark}`
+        : `${h.emoji} ${h.label} ($${h.rate}/day): $${tot}${mark}`;
+    }).join('  |  ');
+
+    // Single-line summary for selected hotel
+    const selectedHotelSummary = (() => {
+      if (!hotelTotal) return `${activeHotel.emoji} ${activeHotel.label} — Custom quote`;
+      const base = `${activeHotel.emoji} ${activeHotel.label} ($${activeHotel.rate}/day × ${days} days) = $${hotelTotal}`;
+      return hotelDiscounted
+        ? `${base}  →  $${hotelDiscounted} after ${appliedPromo!.discount}% discount`
+        : base;
+    })();
+
     return {
       // ── package ──────────────────────────────────────────────────────────
       package_name:     packageName,
@@ -235,6 +310,18 @@ const BookingForm: React.FC<BookingFormProps> = ({
       vehicle_rate:    `$${activeTier.rate}/day`,
       vehicle_total:   activeFinal ? `$${activeFinal}` : 'Custom quote',
       vehicle_original: activeTotal ? `$${activeTotal}` : 'Custom quote',
+
+      // ── hotel ────────────────────────────────────────────────────────────
+      hotel_selected: selectedHotelSummary,
+      hotel_pricing:  allHotelOptions,
+      hotel_name:    `${activeHotel.emoji} ${activeHotel.label}`,
+      hotel_rate:    `$${activeHotel.rate}/day`,
+      hotel_total:   hotelFinal ? `$${hotelFinal}` : 'Custom quote',
+      hotel_original: hotelTotal ? `$${hotelTotal}` : 'Custom quote',
+
+      // ── final package price (vehicle + hotel) ───────────────────────────
+      package_final_price:    combinedFinal ? `$${combinedFinal}` : 'Custom quote',
+      package_original_price: combinedTotal ? `$${combinedTotal}` : 'Custom quote',
 
       // ── promo ─────────────────────────────────────────────────────────────
       promo_code:     appliedPromo?.code ?? 'None',
@@ -299,7 +386,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       setIsSubmitted(true);
       toast({ title: 'Booking Submitted!', description: "Confirmation sent. We'll contact you within 24 hours." });
-      reset(); setAppliedPromo(null); setSelectedVehicle('wagon-r');
+      reset(); setAppliedPromo(null); setSelectedVehicle('wagon-r'); setSelectedHotel('budget');
     } catch (err: any) {
       console.error('EmailJS Error:', err);
       let msg = 'Failed to send email. Please try WhatsApp instead.';
@@ -325,6 +412,20 @@ const BookingForm: React.FC<BookingFormProps> = ({
           : `$${activeTotal}`;
       })();
 
+      const hotelPriceStr = (() => {
+        if (!hotelTotal) return 'Custom quote';
+        return hotelDiscounted
+          ? `$${hotelDiscounted} _(was $${hotelTotal})_`
+          : `$${hotelTotal}`;
+      })();
+
+      const finalPriceStr = (() => {
+        if (!combinedTotal) return 'Custom quote';
+        return combinedDiscounted
+          ? `$${combinedDiscounted} _(was $${combinedTotal})_`
+          : `$${combinedTotal}`;
+      })();
+
       const promoLine = appliedPromo
         ? `%0A🎟️ *Promo:* ${appliedPromo.code} — ${appliedPromo.discount}% off`
         : '';
@@ -337,7 +438,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
         ``,
         `*🚗 Vehicle Selected:*`,
         `${activeTier.emoji} ${activeTier.label}  •  $${activeTier.rate}/day  •  ${priceStr}`,
+        ``,
+        `*🏨 Hotel Selected:*`,
+        `${activeHotel.emoji} ${activeHotel.label}  •  $${activeHotel.rate}/day  •  ${hotelPriceStr}`,
         promoLine,
+        ``,
+        `*💰 Final Package Price:* ${finalPriceStr}`,
         ``,
         `*👤 Customer:*`,
         `Name:       ${data.name}`,
@@ -352,7 +458,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       window.open(`https://wa.me/447460511586?text=${msg}`, '_blank');
       setIsSubmitted(true);
       toast({ title: 'Opening WhatsApp', description: 'Complete your booking via WhatsApp.' });
-      reset(); setAppliedPromo(null); setSelectedVehicle('wagon-r');
+      reset(); setAppliedPromo(null); setSelectedVehicle('wagon-r'); setSelectedHotel('budget');
     } catch {
       toast({ title: 'Error', description: 'Something went wrong.', variant: 'destructive' });
     } finally { setIsSubmitting(false); }
@@ -398,23 +504,34 @@ const BookingForm: React.FC<BookingFormProps> = ({
         <div className="mt-2 space-y-1 text-sm text-gray-600">
           <p><strong>Duration:</strong> {packageDuration}</p>
 
-          {/* Live selected price */}
-          {activeFinal && (
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-gray-500">Your price:</span>
-              <span className="text-lg font-extrabold text-gray-800">
-                {activeTier.emoji} {activeTier.label}
+          {/* Live selected vehicle + hotel breakdown */}
+          {(activeFinal || hotelFinal) && (
+            <div className="flex flex-col gap-0.5">
+              <span className="flex items-center gap-1.5">
+                <span className="text-gray-500">{activeTier.emoji} {activeTier.label}:</span>
+                <span className="font-semibold text-gray-800">${activeFinal ?? '—'}</span>
               </span>
-              {activeDiscounted ? (
+              <span className="flex items-center gap-1.5">
+                <span className="text-gray-500">{activeHotel.emoji} {activeHotel.label}:</span>
+                <span className="font-semibold text-gray-800">${hotelFinal ?? '—'}</span>
+              </span>
+            </div>
+          )}
+
+          {/* Live final package price */}
+          {combinedFinal && (
+            <div className="flex items-center gap-2 flex-wrap pt-1">
+              <span className="text-gray-500">Final package price:</span>
+              {combinedDiscounted ? (
                 <>
-                  <span className="line-through text-gray-400 text-sm">${activeTotal}</span>
-                  <span className="text-green-600 font-extrabold text-lg">${activeDiscounted}</span>
+                  <span className="line-through text-gray-400 text-sm">${combinedTotal}</span>
+                  <span className="text-green-600 font-extrabold text-lg">${combinedDiscounted}</span>
                   <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">
                     {appliedPromo!.discount}% off
                   </span>
                 </>
               ) : (
-                <span className="text-blue-700 font-extrabold text-lg">${activeFinal}</span>
+                <span className="text-blue-700 font-extrabold text-lg">${combinedFinal}</span>
               )}
             </div>
           )}
@@ -525,6 +642,112 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 </p>
               )}
             </div>
+
+            {/* ════ Hotel Selector ════ */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
+                  <Hotel className="w-4 h-4 text-blue-600" />
+                  Select Hotel Type *
+                </label>
+                {days && (
+                  <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
+                    Total for {packageDuration}
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                {HOTEL_TIERS.map(tier => {
+                  const total      = getTierTotal(tier.rate, days);
+                  const discounted = total && appliedPromo ? applyDiscount(total) : null;
+                  const sel        = selectedHotel === tier.id;
+                  const c          = HOTEL_COLORS[tier.id];
+
+                  return (
+                    <button
+                      key={tier.id}
+                      type="button"
+                      onClick={() => setSelectedHotel(tier.id)}
+                      className={[
+                        'relative flex flex-col items-center gap-1 p-3 rounded-xl border-2',
+                        'transition-all duration-200 cursor-pointer text-center w-full',
+                        c.border(sel), c.bg(sel),
+                        sel ? 'shadow-lg scale-[1.03]' : 'shadow-sm',
+                      ].join(' ')}
+                    >
+                      {/* checkmark badge */}
+                      {sel && (
+                        <span className={`absolute top-1.5 right-1.5 w-5 h-5 rounded-full ${c.check} flex items-center justify-center shadow`}>
+                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </span>
+                      )}
+
+                      {/* emoji */}
+                      <span className="text-3xl leading-none mt-1">{tier.emoji}</span>
+
+                      {/* name */}
+                      <span className={`text-sm font-bold leading-tight ${c.price(sel)}`}>
+                        {tier.label}
+                      </span>
+
+                      {/* description */}
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${c.badge}`}>
+                        {tier.description}
+                      </span>
+
+                      {/* daily rate */}
+                      <span className={`text-xs ${c.rate(sel)}`}>${tier.rate}/day</span>
+
+                      {/* ── TOTAL ── */}
+                      <div className="w-full border-t border-gray-100 mt-1.5 pt-1.5">
+                        {total ? (
+                          discounted ? (
+                            <div className="leading-tight">
+                              <p className="text-xs line-through text-gray-400">${total}</p>
+                              <p className={`text-lg font-extrabold ${c.price(sel)}`}>${discounted}</p>
+                            </div>
+                          ) : (
+                            <p className={`text-lg font-extrabold ${c.price(sel)}`}>${total}</p>
+                          )
+                        ) : (
+                          <p className="text-xs text-gray-400 italic">Custom</p>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* breakdown note */}
+              {days && (
+                <p className="mt-2 text-xs text-gray-400 text-center">
+                  Prices are per hotel type · total for {days} days
+                </p>
+              )}
+            </div>
+
+            {/* ════ Final Package Price ════ */}
+            {combinedFinal && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4">
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Final Package Price</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm text-gray-600">
+                    {activeTier.emoji} {activeTier.label} + {activeHotel.emoji} {activeHotel.label}
+                  </span>
+                  {combinedDiscounted ? (
+                    <>
+                      <span className="line-through text-gray-400 text-sm">${combinedTotal}</span>
+                      <span className="text-green-600 font-extrabold text-2xl">${combinedDiscounted}</span>
+                    </>
+                  ) : (
+                    <span className="text-blue-700 font-extrabold text-2xl">${combinedFinal}</span>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* ════ Name ════ */}
             <div>
