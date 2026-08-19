@@ -13,6 +13,10 @@ const vehicleTiers = [
 
 const Packages = () => {
   const navigate = useNavigate();
+
+  // Single source of truth for where a package card / its button leads
+  const packageRoute = (id: string) =>
+    id === 'customize' ? '/customize-package' : `/packages/${id}`;
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
@@ -184,7 +188,21 @@ const Packages = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
             {filteredPackages.map((pkg, index) => (
-              <Card key={pkg.id} delay={index * 200} className="flex flex-col group cursor-pointer transform hover:scale-[1.02] transition-all duration-500">
+              <Card
+                key={pkg.id}
+                delay={index * 200}
+                role="button"
+                tabIndex={0}
+                aria-label={`View ${pkg.title}`}
+                onClick={() => navigate(packageRoute(pkg.id))}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate(packageRoute(pkg.id));
+                  }
+                }}
+                className="flex flex-col group cursor-pointer transform hover:scale-[1.02] transition-all duration-500 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e53e3e] focus-visible:ring-offset-2"
+              >
                 {/* Image Container */}
                 <div className="relative h-64 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/20 to-[#e53e3e]/20 opacity-0 group-hover:opacity-100 transition-all duration-700 z-10" />
@@ -284,7 +302,10 @@ const Packages = () => {
                       )}
 
                       <Button
-                        onClick={() => navigate(pkg.id === 'customize' ? '/customize-package' : `/packages/${pkg.id}`)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(packageRoute(pkg.id));
+                        }}
                         className="rounded-xl px-6 py-3 w-full"
                       >
                         {pkg.id === 'customize' ? 'Design Trip' : 'View Details'}

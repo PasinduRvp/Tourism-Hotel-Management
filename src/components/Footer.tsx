@@ -194,7 +194,7 @@ const Footer = () => {
                   <div className="text-right">
                     <p className="text-xs text-gray-500 mb-1">Designed & Developed by</p>
                     <a
-                      href="https://www.pasinduvidanapathirana.me/"
+                      href="https://portfolio-sj49.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group"

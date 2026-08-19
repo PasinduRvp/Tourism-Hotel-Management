@@ -194,8 +194,8 @@ const About = () => {
                     </div>
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                      <a href="mailto:a@ceylonholiday.com" className="hover:text-[#e53e3e] transition-colors">
-                        a@ceylonholiday.com
+                      <a href="mailto:ceylonholidaytrip@gmail.com" className="hover:text-[#e53e3e] transition-colors">
+                        ceylonholidaytrip@gmail.com
                       </a>
                     </div>
                   </div>
@@ -253,8 +253,8 @@ const About = () => {
                     </div>
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                      <a href="mailto:vimukthi@ceylonholiday.com" className="hover:text-[#e53e3e] transition-colors">
-                        vimukthi@ceylonholiday.com
+                      <a href="mailto:ceylonholidaytrip@gmail.com" className="hover:text-[#e53e3e] transition-colors">
+                        ceylonholidaytrip@gmail.com
                       </a>
                     </div>
                   </div>
@@ -312,8 +312,8 @@ const About = () => {
                     </div>
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-[#e53e3e]" />
-                      <a href="mailto:anjali@ceylonholiday.com" className="hover:text-[#e53e3e] transition-colors">
-                        nandakumara@ceylonholiday.com
+                      <a href="mailto:ceylonholidaytrip@gmail.com" className="hover:text-[#e53e3e] transition-colors">
+                        ceylonholidaytrip@gmail.com
                       </a>
                     </div>
                   </div>

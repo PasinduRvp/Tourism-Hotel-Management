@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DayItinerary from '../components/DayItinerary';
@@ -16,12 +16,10 @@ const vehicleTiers = [
 
 const Package14Days = () => {
   const navigate = useNavigate();
-  const bookingFormRef = useRef<HTMLDivElement>(null);
   const [mapPreviewOpen, setMapPreviewOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
-  const scrollToBooking = () => {
-    bookingFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  const openBooking = () => setBookingOpen(true);
 
   const detailedItinerary = [
     {
@@ -173,7 +171,7 @@ const Package14Days = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-20 lg:pb-0">
       <Header />
       <main className="pt-20">
         {/* Hero Section */}
@@ -213,7 +211,7 @@ const Package14Days = () => {
                 </div>
 
                 <button
-                  onClick={scrollToBooking}
+                  onClick={openBooking}
                   className="mt-6 sm:mt-8 px-8 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow duration-300 w-full sm:w-auto"
                 >
                   Book Now
@@ -240,23 +238,11 @@ const Package14Days = () => {
         {/* Package Details */}
         <section className="py-8 sm:py-12 md:py-16 bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-              <div className="lg:col-span-2">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6 font-poppins bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
-                  Complete 14-Day Journey
-                </h2>
-                <DayItinerary days={detailedItinerary} packageColor="accent" />
-              </div>
-
-              <div className="lg:col-span-1" ref={bookingFormRef}>
-                <div className="sticky top-20 md:top-8">
-                  <BookingForm
-                    packageName="Complete Sri Lanka"
-                    packagePrice={`From $${vehicleTiers[0].rate * DAYS}`}
-                    packageDuration="14 Days"
-                  />
-                </div>
-              </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 font-poppins bg-gradient-to-r from-[#d4af37] to-[#e53e3e] bg-clip-text text-transparent">
+                Complete 14-Day Journey
+              </h2>
+              <DayItinerary days={detailedItinerary} packageColor="accent" />
             </div>
           </div>
         </section>
@@ -272,6 +258,30 @@ const Package14Days = () => {
             alt="14-day Complete Sri Lanka route map"
             className="w-full max-h-[80vh] object-contain rounded-lg"
           />
+        </DialogContent>
+      </Dialog>
+
+      {/* Sticky mobile booking bar */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t bg-white/95 backdrop-blur px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+        <button
+          onClick={openBooking}
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold shadow-lg active:scale-[0.99] transition-transform"
+        >
+          Book Now
+        </button>
+      </div>
+
+      {/* Booking Form */}
+      <Dialog open={bookingOpen} onOpenChange={setBookingOpen}>
+        <DialogContent className="w-[calc(100vw-1rem)] sm:w-full max-w-2xl p-0 gap-0 max-h-[92vh] overflow-hidden rounded-lg">
+          <DialogTitle className="sr-only">Book the Complete Sri Lanka package</DialogTitle>
+          <div className="max-h-[92vh] overflow-y-auto overscroll-contain">
+            <BookingForm
+              packageName="Complete Sri Lanka"
+              packagePrice={`From $${vehicleTiers[0].rate * DAYS}`}
+              packageDuration="14 Days"
+            />
+          </div>
         </DialogContent>
       </Dialog>
     </div>

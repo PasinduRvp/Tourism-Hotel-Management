@@ -8,6 +8,10 @@ const vehicleTiers = [
   { label: "SUV",     rate: 120, emoji: "🚐" },
 ];
 
+// Single source of truth for where a package card / its button leads
+const packageRoute = (id: string) =>
+  id === "customize" ? "/customize-package" : `/packages/${id}`;
+
 const packages = [
   {
     id: "7-days",
@@ -120,7 +124,17 @@ const PackagesPreview = () => {
           {packages.map((pkg, index) => (
             <div
               key={pkg.id}
-              className="group bg-white rounded-2xl overflow-hidden flex flex-col border border-gray-100 cursor-pointer"
+              role="button"
+              tabIndex={0}
+              aria-label={`View ${pkg.title}`}
+              onClick={() => navigate(packageRoute(pkg.id))}
+              onKeyDown={e => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  navigate(packageRoute(pkg.id));
+                }
+              }}
+              className="group bg-white rounded-2xl overflow-hidden flex flex-col border border-gray-100 cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e53e3e] focus-visible:ring-offset-2"
               style={{
                 boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -219,7 +233,10 @@ const PackagesPreview = () => {
                   Always fully visible. No scrolling needed.
                 */}
                 <button
-                  onClick={() => navigate(pkg.id === "customize" ? "/customize-package" : `/packages/${pkg.id}`)}
+                  onClick={e => {
+                    e.stopPropagation();
+                    navigate(packageRoute(pkg.id));
+                  }}
                   className="mt-auto w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm text-white transition-all duration-200 hover:opacity-90 active:scale-95"
                   style={{
                     background: "linear-gradient(135deg, #e53e3e 0%, #d4af37 100%)",

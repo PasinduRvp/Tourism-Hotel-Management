@@ -146,8 +146,8 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
       </div>
 
       {/* Day Navigation */}
-      <div className="flex flex-wrap gap-2 mb-8 p-6 bg-gradient-to-r from-muted/30 to-muted/10 rounded-xl backdrop-blur-sm">
-        <h3 className="text-lg font-semibold mb-4 w-full flex items-center">
+      <div className="flex flex-wrap gap-2 mb-8 p-4 sm:p-6 bg-gradient-to-r from-muted/30 to-muted/10 rounded-xl backdrop-blur-sm">
+        <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 w-full flex items-center">
           <MapPin className="w-5 h-5 mr-2" />
           Quick Navigation
         </h3>
@@ -185,19 +185,19 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
       {/* Days Timeline */}
       <div className="relative">
         {/* Animated Connecting Line */}
-        <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-muted via-muted-foreground/20 to-muted rounded-full" />
-        <div 
+        <div className="absolute left-4 sm:left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-muted via-muted-foreground/20 to-muted rounded-full" />
+        <div
           className={cn(
-            "absolute left-8 top-0 w-1 rounded-full transition-all duration-1000 ease-out",
+            "absolute left-4 sm:left-8 top-0 w-1 rounded-full transition-all duration-1000 ease-out",
             `bg-gradient-to-b from-${packageColor} via-accent to-success`
           )}
           style={{ height: `${journeyProgress}%` }}
         />
-        
+
         {/* Traveling car indicator */}
-        <div 
+        <div
           className={cn(
-            "absolute left-5 w-6 h-6 rounded-full bg-white border-2 border-white flex items-center justify-center transition-all duration-1000 ease-out z-20 shadow-lg",
+            "absolute left-1 sm:left-5 w-6 h-6 rounded-full bg-white border-2 border-white flex items-center justify-center transition-all duration-1000 ease-out z-20 shadow-lg",
             `text-${packageColor}`
           )}
           style={{ 
@@ -224,7 +224,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
           >
             {/* Day Connector Location Icon with enhanced animations */}
             <div className={cn(
-              "absolute left-5 w-7 h-7 rounded-full border-3 bg-background z-10 transition-all duration-500 hover:scale-125 cursor-pointer flex items-center justify-center",
+              "absolute left-1 sm:left-5 w-6 h-6 sm:w-7 sm:h-7 rounded-full border-3 bg-background z-10 transition-all duration-500 hover:scale-125 cursor-pointer flex items-center justify-center",
               expandedDays.has(day.day) 
                 ? [
                     `border-${packageColor} shadow-lg`,
@@ -254,24 +254,24 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
             </div>
 
             {/* Day Card with enhanced animations */}
-            <div className="ml-20">
+            <div className="ml-10 sm:ml-20">
               <Card className={cn(
                 "tourism-card cursor-pointer transition-all duration-500 hover-scale group relative overflow-hidden",
                 expandedDays.has(day.day) && [
-                  "ring-2 shadow-elegant transform scale-[1.02]",
+                  "ring-2 shadow-elegant transform sm:scale-[1.02]",
                   `ring-${packageColor}/30 shadow-${packageColor}/10`
                 ],
                 activeDay === day.day && "border-primary/50",
                 animatingDay === day.day && "animate-scale-in"
               )}>
-                <CardHeader 
-                  className="pb-4"
+                <CardHeader
+                  className="pb-4 px-4 sm:px-6"
                   onClick={() => toggleDay(day.day)}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
                       <div className={cn(
-                        "relative w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl transition-all duration-500 group-hover:scale-110",
+                        "relative w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-full flex items-center justify-center text-white font-bold text-lg sm:text-xl transition-all duration-500 group-hover:scale-110",
                         "shadow-md ring-2 ring-white/60",
                         dayNumberClasses[packageColor],
                         expandedDays.has(day.day) && [
@@ -292,23 +292,27 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                           `bg-gradient-to-r from-white/20 to-transparent`
                         )} />
                       </div>
-                      <div>
-                        <CardTitle className="text-xl font-poppins">{day.title}</CardTitle>
-                        <div className="flex items-center text-muted-foreground mt-1">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          <span className="text-sm">{day.location}</span>
+                      <div className="min-w-0">
+                        <CardTitle className="text-base sm:text-xl font-poppins leading-snug">{day.title}</CardTitle>
+                        <div className="flex flex-wrap items-center gap-x-1 text-muted-foreground mt-1">
+                          <MapPin className="w-4 h-4 mr-1 shrink-0" />
+                          <span className="text-xs sm:text-sm">{day.location}</span>
                           {day.distance && (
                             <>
-                              <span className="mx-2">•</span>
-                              <Car className="w-4 h-4 mr-1" />
-                              <span className="text-sm">{day.distance}</span>
+                              <span className="mx-1 sm:mx-2">•</span>
+                              <Car className="w-4 h-4 mr-1 shrink-0" />
+                              <span className="text-xs sm:text-sm">{day.distance}</span>
                             </>
                           )}
                         </div>
+                        {/* theme sits under the title on phones, where the header row has no room */}
+                        <Badge variant="secondary" className="sm:hidden mt-2 text-[10px]">
+                          {day.theme}
+                        </Badge>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="secondary" className="text-xs">
+                    <div className="flex items-center space-x-2 shrink-0">
+                      <Badge variant="secondary" className="hidden sm:inline-flex text-xs">
                         {day.theme}
                       </Badge>
                       {expandedDays.has(day.day) ? (
@@ -322,7 +326,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
 
                 {/* Expanded Day Content with staggered animations */}
                 {expandedDays.has(day.day) && (
-                  <CardContent className="pt-0 animate-fade-in overflow-hidden">
+                  <CardContent className="pt-0 px-4 sm:px-6 animate-fade-in overflow-hidden">
                     {/* Background gradient overlay */}
                     <div className={cn(
                       "absolute inset-0 opacity-5 pointer-events-none",
@@ -341,7 +345,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                             type="button"
                             onClick={() => setPreviewImage(activity)}
                             className={cn(
-                              "w-full text-left flex items-start space-x-4 p-4 rounded-xl transition-all duration-300 hover-scale group relative overflow-hidden cursor-pointer",
+                              "w-full text-left flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-xl transition-all duration-300 hover-scale group relative overflow-hidden cursor-pointer",
                               "bg-gradient-to-r from-muted/20 to-muted/10 hover:from-muted/40 hover:to-muted/20",
                               "border border-muted/20 hover:border-primary/20"
                             )}
@@ -354,7 +358,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                             <div className="flex-shrink-0">
                               {activity.image ? (
-                                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-background shadow-md group-hover:scale-110 group-hover:shadow-lg transition-transform duration-200">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-background shadow-md group-hover:scale-110 group-hover:shadow-lg transition-transform duration-200">
                                   <img
                                     src={activity.image}
                                     alt={activity.title}
@@ -363,7 +367,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                                 </div>
                               ) : (
                                 <div className={cn(
-                                  "w-16 h-16 rounded-full flex items-center justify-center text-white text-sm",
+                                  "w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-white text-sm",
                                   `bg-${packageColor}/80`
                                 )}>
                                   {getActivityIcon(activity.type)}
@@ -371,16 +375,18 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                               )}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between">
-                                <h5 className="font-semibold text-foreground">{activity.title}</h5>
-                                <span className="text-sm text-muted-foreground bg-background px-2 py-1 rounded">
+                              <div className="flex flex-col-reverse gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
+                                <h5 className="font-semibold text-foreground text-sm sm:text-base leading-snug">
+                                  {activity.title}
+                                </h5>
+                                <span className="self-start sm:self-auto shrink-0 text-xs sm:text-sm text-muted-foreground bg-background px-2 py-0.5 sm:py-1 rounded">
                                   {activity.time}
                                 </span>
                               </div>
-                              <p className="text-sm text-muted-foreground mt-1">{activity.description}</p>
-                              <div className="flex items-center mt-2 text-xs text-muted-foreground">
-                                <MapPin className="w-3 h-3 mr-1" />
-                                {activity.location}
+                              <p className="text-xs sm:text-sm text-muted-foreground mt-1">{activity.description}</p>
+                              <div className="flex items-start mt-2 text-xs text-muted-foreground">
+                                <MapPin className="w-3 h-3 mr-1 mt-0.5 shrink-0" />
+                                <span className="min-w-0">{activity.location}</span>
                               </div>
                               {activity.highlights && (
                                 <div className="flex flex-wrap gap-1 mt-2">

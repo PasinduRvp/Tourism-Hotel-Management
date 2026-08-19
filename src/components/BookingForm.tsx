@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -181,7 +181,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
     code: string; discount: number; type: string; description: string;
   } | null>(null);
   const [isCheckingPromo, setIsCheckingPromo] = useState(false);
-  const formRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   const days        = parseDays(packageDuration);
@@ -492,12 +491,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
   // ── main form ─────────────────────────────────────────────────────────────
   return (
-    <Card className="shadow-xl rounded-lg overflow-hidden">
+    <Card className="border-0 shadow-none rounded-none overflow-hidden">
 
       {/* ════ Header ════ */}
-      <CardHeader className="bg-gradient-to-r from-orange-100 to-red-100 border-b pb-4">
-        <CardTitle className="text-2xl font-bold flex items-center text-gray-800">
-          <User className="w-7 h-7 mr-3 text-blue-600" />
+      <CardHeader className="bg-gradient-to-r from-orange-100 to-red-100 border-b pb-4 px-4 sm:px-6 pr-12">
+        <CardTitle className="text-xl sm:text-2xl font-bold flex items-center text-gray-800">
+          <User className="w-6 h-6 sm:w-7 sm:h-7 mr-2 sm:mr-3 shrink-0 text-blue-600" />
           Book {packageName}
         </CardTitle>
 
@@ -546,16 +545,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
         </div>
       </CardHeader>
 
-      {/* ════ Scrollable body ════ */}
-      <div
-        ref={formRef}
-        onWheel={e => {
-          if (formRef.current) { e.preventDefault(); formRef.current.scrollBy({ top: e.deltaY, behavior: 'smooth' }); }
-        }}
-        style={{ maxHeight: '560px', overflowY: 'auto', scrollBehavior: 'smooth' }}
-      >
-        <CardContent className="pt-6">
-          <div className="space-y-6">
+      {/* ════ Body — the dialog owns the scrolling ════ */}
+      <div>
+        <CardContent className="pt-5 sm:pt-6 px-4 sm:px-6">
+          <div className="space-y-5 sm:space-y-6">
 
             {/* ════ Vehicle Selector ════ */}
             <div>
@@ -571,7 +564,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 )}
               </div>
 
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 {VEHICLE_TIERS.map(tier => {
                   const total      = getTierTotal(tier.rate, days);
                   const discounted = total && appliedPromo ? applyDiscount(total) : null;
@@ -582,54 +575,62 @@ const BookingForm: React.FC<BookingFormProps> = ({
                     <button
                       key={tier.id}
                       type="button"
+                      aria-pressed={sel}
                       onClick={() => setSelectedVehicle(tier.id)}
                       className={[
-                        'relative flex flex-col items-center gap-1 p-3 rounded-xl border-2',
-                        'transition-all duration-200 cursor-pointer text-center w-full',
+                        'relative w-full rounded-xl border-2 transition-colors duration-200 cursor-pointer',
+                        // phone: one row per option — sm+: original stacked card
+                        'flex items-center gap-3 p-3 text-left',
+                        'sm:flex-col sm:items-center sm:gap-1 sm:text-center',
                         c.border(sel), c.bg(sel),
-                        sel ? 'shadow-lg scale-[1.03]' : 'shadow-sm',
+                        sel ? 'shadow-lg' : 'shadow-sm',
                       ].join(' ')}
                     >
-                      {/* checkmark badge */}
-                      {sel && (
-                        <span className={`absolute top-1.5 right-1.5 w-5 h-5 rounded-full ${c.check} flex items-center justify-center shadow`}>
-                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                        </span>
-                      )}
-
                       {/* emoji */}
-                      <span className="text-3xl leading-none mt-1">{tier.emoji}</span>
+                      <span className="text-3xl leading-none shrink-0 sm:mt-1">{tier.emoji}</span>
 
-                      {/* name */}
-                      <span className={`text-sm font-bold leading-tight ${c.price(sel)}`}>
-                        {tier.label}
+                      {/* name + meta */}
+                      <span className="flex-1 min-w-0 sm:w-full sm:flex sm:flex-col sm:items-center sm:gap-1">
+                        <span className={`block text-sm font-bold leading-tight ${c.price(sel)}`}>
+                          {tier.label}
+                        </span>
+                        <span className="mt-1 flex flex-wrap items-center gap-1.5 sm:mt-0 sm:flex-col sm:gap-1">
+                          <span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold ${c.badge}`}>
+                            {tier.seats} seats
+                          </span>
+                          <span className={`text-xs ${c.rate(sel)}`}>${tier.rate}/day</span>
+                        </span>
                       </span>
-
-                      {/* seats */}
-                      <span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold ${c.badge}`}>
-                        {tier.seats} seats
-                      </span>
-
-                      {/* daily rate */}
-                      <span className={`text-xs ${c.rate(sel)}`}>${tier.rate}/day</span>
 
                       {/* ── TOTAL ── */}
-                      <div className="w-full border-t border-gray-100 mt-1.5 pt-1.5">
+                      <span className="shrink-0 text-right leading-tight sm:w-full sm:text-center sm:border-t sm:border-gray-100 sm:mt-1.5 sm:pt-1.5">
                         {total ? (
                           discounted ? (
-                            <div className="leading-tight">
-                              <p className="text-xs line-through text-gray-400">${total}</p>
-                              <p className={`text-lg font-extrabold ${c.price(sel)}`}>${discounted}</p>
-                            </div>
+                            <>
+                              <span className="block text-xs line-through text-gray-400">${total}</span>
+                              <span className={`block text-lg font-extrabold ${c.price(sel)}`}>${discounted}</span>
+                            </>
                           ) : (
-                            <p className={`text-lg font-extrabold ${c.price(sel)}`}>${total}</p>
+                            <span className={`block text-lg font-extrabold ${c.price(sel)}`}>${total}</span>
                           )
                         ) : (
-                          <p className="text-xs text-gray-400 italic">Custom</p>
+                          <span className="block text-xs text-gray-400 italic">Custom</span>
                         )}
-                      </div>
+                      </span>
+
+                      {/* checkmark badge — inline on phone, pinned on the card at sm+ */}
+                      <span
+                        className={[
+                          'w-5 h-5 rounded-full flex items-center justify-center shadow shrink-0',
+                          c.check,
+                          sel ? '' : 'invisible',
+                          'sm:absolute sm:top-1.5 sm:right-1.5',
+                        ].join(' ')}
+                      >
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
                     </button>
                   );
                 })}
@@ -657,7 +658,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 )}
               </div>
 
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 {HOTEL_TIERS.map(tier => {
                   const total      = getTierTotal(tier.rate, days);
                   const discounted = total && appliedPromo ? applyDiscount(total) : null;
@@ -668,54 +669,61 @@ const BookingForm: React.FC<BookingFormProps> = ({
                     <button
                       key={tier.id}
                       type="button"
+                      aria-pressed={sel}
                       onClick={() => setSelectedHotel(tier.id)}
                       className={[
-                        'relative flex flex-col items-center gap-1 p-3 rounded-xl border-2',
-                        'transition-all duration-200 cursor-pointer text-center w-full',
+                        'relative w-full rounded-xl border-2 transition-colors duration-200 cursor-pointer',
+                        'flex items-center gap-3 p-3 text-left',
+                        'sm:flex-col sm:items-center sm:gap-1 sm:text-center',
                         c.border(sel), c.bg(sel),
-                        sel ? 'shadow-lg scale-[1.03]' : 'shadow-sm',
+                        sel ? 'shadow-lg' : 'shadow-sm',
                       ].join(' ')}
                     >
-                      {/* checkmark badge */}
-                      {sel && (
-                        <span className={`absolute top-1.5 right-1.5 w-5 h-5 rounded-full ${c.check} flex items-center justify-center shadow`}>
-                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                        </span>
-                      )}
-
                       {/* emoji */}
-                      <span className="text-3xl leading-none mt-1">{tier.emoji}</span>
+                      <span className="text-3xl leading-none shrink-0 sm:mt-1">{tier.emoji}</span>
 
-                      {/* name */}
-                      <span className={`text-sm font-bold leading-tight ${c.price(sel)}`}>
-                        {tier.label}
+                      {/* name + meta */}
+                      <span className="flex-1 min-w-0 sm:w-full sm:flex sm:flex-col sm:items-center sm:gap-1">
+                        <span className={`block text-sm font-bold leading-tight ${c.price(sel)}`}>
+                          {tier.label}
+                        </span>
+                        <span className="mt-1 flex flex-wrap items-center gap-1.5 sm:mt-0 sm:flex-col sm:gap-1">
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${c.badge}`}>
+                            {tier.description}
+                          </span>
+                          <span className={`text-xs ${c.rate(sel)}`}>${tier.rate}/day</span>
+                        </span>
                       </span>
-
-                      {/* description */}
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${c.badge}`}>
-                        {tier.description}
-                      </span>
-
-                      {/* daily rate */}
-                      <span className={`text-xs ${c.rate(sel)}`}>${tier.rate}/day</span>
 
                       {/* ── TOTAL ── */}
-                      <div className="w-full border-t border-gray-100 mt-1.5 pt-1.5">
+                      <span className="shrink-0 text-right leading-tight sm:w-full sm:text-center sm:border-t sm:border-gray-100 sm:mt-1.5 sm:pt-1.5">
                         {total ? (
                           discounted ? (
-                            <div className="leading-tight">
-                              <p className="text-xs line-through text-gray-400">${total}</p>
-                              <p className={`text-lg font-extrabold ${c.price(sel)}`}>${discounted}</p>
-                            </div>
+                            <>
+                              <span className="block text-xs line-through text-gray-400">${total}</span>
+                              <span className={`block text-lg font-extrabold ${c.price(sel)}`}>${discounted}</span>
+                            </>
                           ) : (
-                            <p className={`text-lg font-extrabold ${c.price(sel)}`}>${total}</p>
+                            <span className={`block text-lg font-extrabold ${c.price(sel)}`}>${total}</span>
                           )
                         ) : (
-                          <p className="text-xs text-gray-400 italic">Custom</p>
+                          <span className="block text-xs text-gray-400 italic">Custom</span>
                         )}
-                      </div>
+                      </span>
+
+                      {/* checkmark badge */}
+                      <span
+                        className={[
+                          'w-5 h-5 rounded-full flex items-center justify-center shadow shrink-0',
+                          c.check,
+                          sel ? '' : 'invisible',
+                          'sm:absolute sm:top-1.5 sm:right-1.5',
+                        ].join(' ')}
+                      >
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
                     </button>
                   );
                 })}
@@ -840,7 +848,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             {/* ════ Promo Code ════ */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Promo Code</label>
-              <div className="flex space-x-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:space-x-2 sm:gap-0">
                 <div className="relative flex-1">
                   <Tag className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
                   <Input {...register('promoCode')} type="text" placeholder="Enter promo code"
@@ -850,14 +858,14 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 {!appliedPromo ? (
                   <Button type="button" onClick={handleApplyPromo}
                     disabled={isCheckingPromo || !watchedPromoCode}
-                    className="py-6 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold px-5">
+                    className="w-full sm:w-auto py-6 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold px-5">
                     {isCheckingPromo
                       ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
                       : 'Apply'}
                   </Button>
                 ) : (
                   <Button type="button" onClick={handleRemovePromo} variant="outline"
-                    className="py-6 border-red-300 text-red-600 hover:bg-red-50 font-bold px-5">
+                    className="w-full sm:w-auto py-6 border-red-300 text-red-600 hover:bg-red-50 font-bold px-5">
                     Remove
                   </Button>
                 )}
@@ -873,7 +881,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               <div className="relative">
                 <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                 <Textarea {...register('message')} placeholder="Any special requirements..."
-                  className="pl-11 min-h-[100px] border-2 resize-none placeholder:text-gray-400" />
+                  className="pl-11 min-h-[100px] border-2 resize-none placeholder:text-gray-400 text-base md:text-sm" />
               </div>
             </div>
 

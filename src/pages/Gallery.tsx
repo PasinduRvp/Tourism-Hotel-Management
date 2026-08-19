@@ -97,6 +97,8 @@ const Gallery = () => {
       alt: "Sigiriya Rock Fortress",
       category: "culture",
       featured: true,
+      description:
+        "King Kasyapa built his capital on top of a 200-metre column of rock in the 5th century. The climb passes his frescoes of court women, a mirror-polished wall scrawled with 1,000-year-old graffiti, and giant lion's paws guarding the final staircase.",
     },
     {
       id: 2,
@@ -104,6 +106,8 @@ const Gallery = () => {
       alt: "Elephant Safari",
       category: "wildlife",
       featured: true,
+      description:
+        "Sri Lanka holds the highest density of wild elephants in Asia. In Udawalawe and Minneriya they gather in herds of dozens around the reservoirs, and at the height of the dry season the Gathering can bring hundreds together in one place.",
     },
     {
       id: 3,
@@ -111,6 +115,8 @@ const Gallery = () => {
       alt: "Tea Plantations",
       category: "nature",
       featured: false,
+      description:
+        "The hill country above 1,200 metres is carpeted in tea bushes clipped flat like green cushions. Pluckers take only the top two leaves and a bud, and the wood-fired factories nearby turn that day's harvest into Ceylon tea within hours.",
     },
     {
       id: 4,
@@ -118,6 +124,8 @@ const Gallery = () => {
       alt: "Mirissa Beach",
       category: "beaches",
       featured: true,
+      description:
+        "A wide crescent of golden sand on the south coast, backed by palms and fringed by a reef. It doubles as the island's whale-watching harbour — the continental shelf drops away steeply just offshore, bringing blue whales within reach.",
     },
     {
       id: 5,
@@ -125,6 +133,8 @@ const Gallery = () => {
       alt: "Temple of the Tooth",
       category: "culture",
       featured: false,
+      description:
+        "The Sri Dalada Maligawa in Kandy houses a tooth of the Buddha, the most venerated object in the country and once the emblem of the right to rule. Drummers and horn players sound the thevava ceremony three times a day.",
     },
     {
       id: 6,
@@ -132,6 +142,8 @@ const Gallery = () => {
       alt: "Ayurvedic Yoga",
       category: "nature",
       featured: false,
+      description:
+        "Ayurveda has been practised on this island for well over two thousand years. Treatments pair yoga and meditation with warm herbal oils, steam baths scented with lemongrass, and diets built around the spices growing outside the door.",
     },
     {
       id: 7,
@@ -139,6 +151,8 @@ const Gallery = () => {
       alt: "Nine Arch Bridge",
       category: "adventure",
       featured: false,
+      description:
+        "Built near Ella in 1921 from solid stone and cement without a gram of steel — wartime shortages meant there was none to be had. The 91-metre viaduct curves across a jungle gorge on nine great arches, and the blue train still rumbles over it daily.",
     },
     {
       id: 8,
@@ -146,6 +160,8 @@ const Gallery = () => {
       alt: "Mountain Hiking",
       category: "adventure",
       featured: true,
+      description:
+        "The central highlands are made for walking — Ella Rock at dawn above a sea of cloud, the sheer drop at World's End in Horton Plains, or the all-night pilgrimage up Adam's Peak to catch sunrise from the summit.",
     },
     {
       id: 9,
@@ -153,6 +169,8 @@ const Gallery = () => {
       alt: "Totus Tower",
       category: "culture",
       featured: false,
+      description:
+        "The Lotus Tower rises 350 metres over Colombo, the tallest self-supported structure in South Asia. Its petals light up after dark and the observation deck gives the best view there is of the city and the coastline running away on either side.",
     },
     {
       id: 10,
@@ -160,6 +178,8 @@ const Gallery = () => {
       alt: "Waterfall Adventure",
       category: "adventure",
       featured: false,
+      description:
+        "The wet hills feed hundreds of waterfalls, from the broad fan of Ravana Falls beside the road at Ella to the 263-metre drop at Bambarakanda. Most have plunge pools at the base, cold enough to be a genuine shock after the climb down.",
     },
     {
       id: 11,
@@ -167,6 +187,8 @@ const Gallery = () => {
       alt: "Sunset Beach",
       category: "beaches",
       featured: false,
+      description:
+        "The west coast gets the better sunsets, and beaches like Bentota and Negombo deliver them nightly — fishing boats in silhouette, the sky running through every shade of orange, and the sun dropping cleanly into the Indian Ocean.",
     },
     {
       id: 12,
@@ -174,6 +196,8 @@ const Gallery = () => {
       alt: "Diving & Turtles",
       category: "wildlife",
       featured: true,
+      description:
+        "Five of the world's seven sea turtle species nest on these shores. Reefs at Hikkaduwa and Pigeon Island put green turtles, parrotfish and hard coral within snorkelling distance of the beach, with wreck dives further out.",
     },
   ];
 
@@ -393,13 +417,21 @@ const Gallery = () => {
               />
 
               {/* Image Info */}
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm text-white p-4 rounded-xl animate-fade-in-up">
+              <div
+                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-black/70 backdrop-blur-sm text-white p-4 rounded-xl animate-fade-in-up"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <p className="font-semibold text-lg text-center">
                   {selectedImage.alt}
                 </p>
-                <p className="text-white/80 text-sm text-center capitalize">
+                <p className="text-white/70 text-xs text-center capitalize">
                   {selectedImage.category}
                 </p>
+                {selectedImage.description && (
+                  <p className="mt-2 text-sm text-white/85 text-center leading-relaxed">
+                    {selectedImage.description}
+                  </p>
+                )}
               </div>
 
               {/* Navigation Arrows */}
