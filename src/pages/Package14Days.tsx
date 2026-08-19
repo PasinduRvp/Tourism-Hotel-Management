@@ -5,7 +5,6 @@ import DayItinerary from '../components/DayItinerary';
 import BookingForm from '../components/BookingForm';
 import { Dialog, DialogContent, DialogTitle } from '../components/ui/dialog';
 import { MapPin, Calendar, Users } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 const DAYS = 14;
 const vehicleTiers = [
@@ -15,7 +14,6 @@ const vehicleTiers = [
 ];
 
 const Package14Days = () => {
-  const navigate = useNavigate();
   const [mapPreviewOpen, setMapPreviewOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
 

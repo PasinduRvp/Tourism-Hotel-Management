@@ -1,36 +1,48 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
+// Static, so it lives outside the component rather than being rebuilt each render
+const DESTINATIONS = [
+  { id: "beach", image: "/b.jpg" },
+  { id: "coast", image: "/bb.jpg" },
+  { id: "hills", image: "/bbb.jpg" },
+  { id: "temple", image: "/aaaaa.jpg" },
+];
+
+/**
+ * Fixed particle layout. Previously generated with Math.random() during
+ * render, which reshuffled every particle on each re-render; these values are
+ * purely decorative so a fixed table is both cheaper and stable.
+ */
+const PARTICLES = [
+  { id: "p1", left: 4, top: 12, delay: 0.3, duration: 7.2 },
+  { id: "p2", left: 11, top: 64, delay: 2.6, duration: 11.4 },
+  { id: "p3", left: 17, top: 33, delay: 1.1, duration: 8.9 },
+  { id: "p4", left: 24, top: 85, delay: 3.8, duration: 13.1 },
+  { id: "p5", left: 30, top: 21, delay: 0.7, duration: 6.4 },
+  { id: "p6", left: 36, top: 71, delay: 4.4, duration: 12.7 },
+  { id: "p7", left: 42, top: 46, delay: 1.9, duration: 9.6 },
+  { id: "p8", left: 48, top: 8, delay: 2.2, duration: 10.3 },
+  { id: "p9", left: 54, top: 90, delay: 0.1, duration: 5.8 },
+  { id: "p10", left: 59, top: 38, delay: 3.3, duration: 14.2 },
+  { id: "p11", left: 64, top: 76, delay: 1.5, duration: 7.9 },
+  { id: "p12", left: 69, top: 17, delay: 4.9, duration: 11.8 },
+  { id: "p13", left: 74, top: 55, delay: 2.9, duration: 6.1 },
+  { id: "p14", left: 79, top: 29, delay: 0.5, duration: 13.6 },
+  { id: "p15", left: 83, top: 82, delay: 3.6, duration: 8.3 },
+  { id: "p16", left: 87, top: 43, delay: 1.3, duration: 10.9 },
+  { id: "p17", left: 91, top: 68, delay: 4.1, duration: 5.2 },
+  { id: "p18", left: 94, top: 25, delay: 2.4, duration: 12.4 },
+  { id: "p19", left: 97, top: 58, delay: 0.9, duration: 9.1 },
+  { id: "p20", left: 8, top: 94, delay: 3.1, duration: 14.7 },
+];
+
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
-
-  // Color palette from your logo
-  const colors = {
-    primary: "#1a365d", // Deep blue
-    secondary: "#d4af37", // Golden yellow
-    accent: "#e53e3e", // Warm red
-    light: "#f7fafc",
-    dark: "#2d3748",
-  };
-
-  const destinations = [
-    {
-      image: "/b.jpg",
-    },
-    {
-      image: "/bb.jpg",
-    },
-    {
-      image: "/bbb.jpg",
-    },
-    {
-      image: "/aaaaa.jpg",
-    },
-  ];
 
   const [currentDestination, setCurrentDestination] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -63,28 +75,26 @@ const Hero = () => {
     };
   }, []);
 
+  // Runs at the end of the fade-out, swapping in the next slide
+  const advanceSlide = useCallback(() => {
+    setCurrentDestination((prev) => (prev + 1) % DESTINATIONS.length);
+    setIsTransitioning(false);
+  }, []);
+
   // Auto-slide effect
   useEffect(() => {
+    let fadeTimeout: ReturnType<typeof setTimeout>;
+
     const interval = setInterval(() => {
       setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentDestination((prev) => (prev + 1) % destinations.length);
-        setIsTransitioning(false);
-      }, 500);
+      fadeTimeout = setTimeout(advanceSlide, 500);
     }, 6000);
 
-    return () => clearInterval(interval);
-  }, [destinations.length]);
-
-  const scrollToPackages = () => {
-    const packagesSection = document.getElementById("packages");
-    packagesSection?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollToContact = () => {
-    const contactSection = document.getElementById("contact");
-    contactSection?.scrollIntoView({ behavior: "smooth" });
-  };
+    return () => {
+      clearInterval(interval);
+      clearTimeout(fadeTimeout);
+    };
+  }, [advanceSlide]);
 
   const goToDestination = (index: number) => {
     if (index !== currentDestination) {
@@ -96,19 +106,7 @@ const Hero = () => {
     }
   };
 
-  const nextDestination = () => {
-    goToDestination((currentDestination + 1) % destinations.length);
-  };
-
-  const prevDestination = () => {
-    goToDestination(
-      currentDestination === 0
-        ? destinations.length - 1
-        : currentDestination - 1
-    );
-  };
-
-  const currentDest = destinations[currentDestination];
+  const currentDest = DESTINATIONS[currentDestination];
 
   return (
     <section className="relative h-screen overflow-hidden">
@@ -133,15 +131,15 @@ const Hero = () => {
 
       {/* Animated Particles */}
       <div className="absolute inset-0 opacity-30">
-        {[...Array(20)].map((_, i) => (
+        {PARTICLES.map((particle) => (
           <div
-            key={i}
+            key={particle.id}
             className="absolute w-1 h-1 bg-white rounded-full animate-float"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${5 + Math.random() * 10}s`,
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              animationDelay: `${particle.delay}s`,
+              animationDuration: `${particle.duration}s`,
             }}
           />
         ))}
@@ -200,19 +198,19 @@ const Hero = () => {
       {/* Enhanced Navigation Controls - Smaller on mobile */}
       <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 sm:gap-6">
         <div className="flex gap-2 sm:gap-3 bg-white/10 backdrop-blur-lg rounded-full p-1 sm:p-2 border border-white/20">
-          {destinations.map((_, index) => (
+          {DESTINATIONS.map((destination, index) => (
             <button
-              key={index}
+              key={destination.id}
+              type="button"
+              aria-label={`Go to slide ${index + 1}`}
+              aria-current={index === currentDestination}
               onClick={() => goToDestination(index)}
               className={cn(
-                "relative rounded-full transition-all duration-500 group",
+                "relative h-2 rounded-full transition-all duration-500 group",
                 index === currentDestination
                   ? "w-8 sm:w-12 bg-gradient-to-r from-[#d4af37] to-[#e53e3e]"
                   : "w-2 sm:w-3 bg-white/40 hover:bg-white/60"
               )}
-              style={{
-                height: index === currentDestination ? "8px" : "8px",
-              }}
             />
           ))}
         </div>

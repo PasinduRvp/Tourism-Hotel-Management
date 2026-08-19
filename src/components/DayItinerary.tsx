@@ -3,18 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Dialog, DialogContent, DialogTitle } from './ui/dialog';
-import { 
-  MapPin, 
-  Clock, 
-  Camera, 
+import {
+  MapPin,
+  Clock,
+  Camera,
   Utensils,
-  Car, 
-  ChevronDown, 
+  Car,
+  ChevronDown,
   ChevronUp,
   ArrowDown,
-  Mountain,
-  Waves,
-  TreePine
+  Mountain
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -108,6 +106,17 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
     primary: 'border-primary text-primary bg-primary/10',
     accent: 'border-accent text-accent bg-accent/10',
     success: 'border-success text-success bg-success/10'
+  };
+
+  // Border/shadow for a timeline marker, by how far along the journey it is
+  const connectorStateClass = (dayNumber: number) => {
+    if (expandedDays.has(dayNumber)) {
+      return [`border-${packageColor} shadow-lg`, "animate-pulse scale-110"];
+    }
+    if (activeDay >= dayNumber) {
+      return `border-${packageColor}/60 shadow-md`;
+    }
+    return "border-muted-foreground/30";
   };
 
   // Written out in full so Tailwind can see the class names at build time
@@ -223,27 +232,23 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
             }}
           >
             {/* Day Connector Location Icon with enhanced animations */}
-            <div className={cn(
-              "absolute left-1 sm:left-5 w-6 h-6 sm:w-7 sm:h-7 rounded-full border-3 bg-background z-10 transition-all duration-500 hover:scale-125 cursor-pointer flex items-center justify-center",
-              expandedDays.has(day.day) 
-                ? [
-                    `border-${packageColor} shadow-lg`,
-                    "animate-pulse scale-110"
-                  ]
-                : activeDay >= day.day
-                ? `border-${packageColor}/60 shadow-md`
-                : "border-muted-foreground/30",
-              day.day === activeDay && [
-                "ring-4 ring-white/50",
-                `shadow-2xl shadow-${packageColor}/40`
-              ]
-            )}
-            onClick={() => scrollToDay(day.day)}
-            style={{
-              boxShadow: expandedDays.has(day.day) 
-                ? `0 0 25px hsl(var(--${packageColor})/0.4), 0 0 50px hsl(var(--${packageColor})/0.2)` 
-                : undefined
-            }}
+            <button
+              type="button"
+              aria-label={`Jump to day ${day.day}`}
+              onClick={() => scrollToDay(day.day)}
+              className={cn(
+                "absolute left-1 sm:left-5 w-6 h-6 sm:w-7 sm:h-7 rounded-full border-3 bg-background z-10 transition-all duration-500 hover:scale-125 cursor-pointer flex items-center justify-center",
+                connectorStateClass(day.day),
+                day.day === activeDay && [
+                  "ring-4 ring-white/50",
+                  `shadow-2xl shadow-${packageColor}/40`
+                ]
+              )}
+              style={{
+                boxShadow: expandedDays.has(day.day)
+                  ? `0 0 25px hsl(var(--${packageColor})/0.4), 0 0 50px hsl(var(--${packageColor})/0.2)`
+                  : undefined
+              }}
             >
               <MapPin className={cn(
                 "w-4 h-4 transition-colors duration-300",
@@ -251,7 +256,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                   ? `text-${packageColor}`
                   : "text-muted-foreground"
               )} />
-            </div>
+            </button>
 
             {/* Day Card with enhanced animations */}
             <div className="ml-10 sm:ml-20">
@@ -341,7 +346,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                         </h4>
                         {day.activities.map((activity, actIndex) => (
                           <button
-                            key={actIndex}
+                            key={`${activity.time}-${activity.title}`}
                             type="button"
                             onClick={() => setPreviewImage(activity)}
                             className={cn(
@@ -390,8 +395,8 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                               </div>
                               {activity.highlights && (
                                 <div className="flex flex-wrap gap-1 mt-2">
-                                  {activity.highlights.map((highlight, hIndex) => (
-                                    <Badge key={hIndex} variant="outline" className="text-xs">
+                                  {activity.highlights.map((highlight) => (
+                                    <Badge key={highlight} variant="outline" className="text-xs">
                                       {highlight}
                                     </Badge>
                                   ))}
@@ -412,19 +417,22 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
             {/* Enhanced Connecting Arrow with journey flow */}
             {index < days.length - 1 && (
               <div className="flex justify-center my-8 relative">
-                <div className={cn(
-                  "relative w-12 h-12 rounded-full flex items-center justify-center text-red transition-all duration-500 hover-scale group cursor-pointer",
-                  `bg-gradient-to-br from-${packageColor}/70 to-${packageColor}/50`,
-                  "shadow-lg hover:shadow-xl animate-pulse",
-                  activeDay > day.day && "animate-bounce"
-                )}
-                onClick={() => scrollToDay(day.day + 1)}
-                style={{
-                  boxShadow: `0 8px 25px hsl(var(--${packageColor})/0.3)`,
-                  animation: activeDay > day.day 
-                    ? 'bounce 2s infinite, pulse 2s infinite' 
-                    : 'pulse 3s infinite'
-                }}
+                <button
+                  type="button"
+                  aria-label={`Jump to day ${day.day + 1}`}
+                  onClick={() => scrollToDay(day.day + 1)}
+                  className={cn(
+                    "relative w-12 h-12 rounded-full flex items-center justify-center text-red transition-all duration-500 hover-scale group cursor-pointer",
+                    `bg-gradient-to-br from-${packageColor}/70 to-${packageColor}/50`,
+                    "shadow-lg hover:shadow-xl animate-pulse",
+                    activeDay > day.day && "animate-bounce"
+                  )}
+                  style={{
+                    boxShadow: `0 8px 25px hsl(var(--${packageColor})/0.3)`,
+                    animation: activeDay > day.day
+                      ? 'bounce 2s infinite, pulse 2s infinite'
+                      : 'pulse 3s infinite'
+                  }}
                 >
                   <ArrowDown className={cn(
                     "w-5 h-5 transition-transform duration-300 group-hover:translate-y-1",
@@ -443,7 +451,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                       Next: {days[day.day]?.title}
                     </div>
                   </div>
-                </div>
+                </button>
               </div>
             )}
           </div>

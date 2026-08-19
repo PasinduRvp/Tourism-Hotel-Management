@@ -83,9 +83,9 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <button
-                key={index}
+                key={item.label}
                 onClick={item.action}
                 className={`font-medium transition-all duration-200 hover:scale-105 relative group ${
                   isScrolled
@@ -151,9 +151,9 @@ const Header = () => {
           }`}
         >
           <div className="bg-white/50 backdrop-blur-lg rounded-xl shadow-lg border border-gray-200/50 p-4 space-y-2">
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <button
-                key={index}
+                key={item.label}
                 onClick={item.action}
                 className="block w-full text-left py-3 px-4 text-gray-900 
                 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all 

@@ -1,26 +1,64 @@
 import React from "react";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Facebook,
-  Instagram,
-  Twitter,
-  Globe,
-  Heart,
-  Code,
-  Palette,
-} from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { MapPin, Phone, Mail, Globe, Heart } from "lucide-react";
+
+/**
+ * lucide-react deprecated its brand icons, so the three social marks are
+ * inlined here using lucide's own paths — same rendering, no deprecation.
+ */
+const brandIconProps = {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+};
+
+const FacebookIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...brandIconProps} {...props}>
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+
+const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...brandIconProps} {...props}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
+
+const TwitterIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...brandIconProps} {...props}>
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+  </svg>
+);
+
+/**
+ * Fixed particle layout. Previously generated with Math.random() on every
+ * render, which reshuffled the particles on each re-render and tripped
+ * Sonar's PRNG rule; these values are purely decorative.
+ */
+const PARTICLES = [
+  { id: "p1", left: 6, top: 18, duration: 21, delay: 0.4 },
+  { id: "p2", left: 14, top: 72, duration: 27, delay: 2.1 },
+  { id: "p3", left: 23, top: 35, duration: 18, delay: 1.3 },
+  { id: "p4", left: 31, top: 88, duration: 31, delay: 3.4 },
+  { id: "p5", left: 38, top: 11, duration: 24, delay: 0.9 },
+  { id: "p6", left: 45, top: 57, duration: 29, delay: 4.2 },
+  { id: "p7", left: 52, top: 26, duration: 16, delay: 1.8 },
+  { id: "p8", left: 59, top: 81, duration: 33, delay: 2.7 },
+  { id: "p9", left: 66, top: 43, duration: 20, delay: 0.2 },
+  { id: "p10", left: 73, top: 68, duration: 26, delay: 3.9 },
+  { id: "p11", left: 79, top: 15, duration: 22, delay: 1.1 },
+  { id: "p12", left: 85, top: 92, duration: 34, delay: 4.6 },
+  { id: "p13", left: 90, top: 49, duration: 19, delay: 2.4 },
+  { id: "p14", left: 95, top: 30, duration: 28, delay: 0.7 },
+  { id: "p15", left: 3, top: 61, duration: 25, delay: 3.1 },
+];
 
 const Footer = () => {
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle newsletter subscription
-    console.log("Newsletter subscription");
-  };
-
   return (
     <footer
       id="contact"
@@ -38,14 +76,14 @@ const Footer = () => {
 
       {/* Floating Particles */}
       <div className="absolute inset-0">
-        {[...Array(15)].map((_, i) => (
+        {PARTICLES.map((particle) => (
           <div
-            key={i}
+            key={particle.id}
             className="absolute w-2 h-2 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] rounded-full opacity-20"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float ${15 + Math.random() * 20}s infinite ease-in-out ${Math.random() * 5}s`,
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              animation: `float ${particle.duration}s infinite ease-in-out ${particle.delay}s`,
             }}
           />
         ))}
@@ -132,8 +170,8 @@ const Footer = () => {
                     text: "ceylonholidaytrip@gmail.com",
                     href: "mailto:ceylonholidaytrip@gmail.com",
                   },
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center group">
+                ].map((item) => (
+                  <div key={item.text} className="flex items-center group">
                     <div className="bg-gradient-to-r from-[#d4af37] to-[#e53e3e] p-2 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                       <item.icon className="w-4 h-4 text-white" />
                     </div>
@@ -152,13 +190,14 @@ const Footer = () => {
               {/* Social Links */}
               <div className="flex space-x-3">
                 {[
-                  { icon: Facebook, href: "#" },
-                  { icon: Instagram, href: "#" },
-                  { icon: Twitter, href: "#" },
-                ].map((social, index) => (
+                  { name: "Facebook", icon: FacebookIcon, href: "#" },
+                  { name: "Instagram", icon: InstagramIcon, href: "#" },
+                  { name: "Twitter", icon: TwitterIcon, href: "#" },
+                ].map((social) => (
                   <a
-                    key={index}
+                    key={social.name}
                     href={social.href}
+                    aria-label={social.name}
                     className="bg-white/60 p-2 rounded-lg text-gray-600 hover:text-[#e53e3e] hover:bg-white transition-all duration-300 hover:scale-110 shadow-lg border border-[#d4af37]/20 group"
                   >
                     <social.icon className="w-4 h-4 group-hover:scale-110 transition-transform" />

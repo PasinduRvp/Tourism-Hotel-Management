@@ -189,9 +189,9 @@ const Contact = () => {
                 </p>
 
                 <div className="space-y-6">
-                  {contactInfo.map((item, index) => (
+                  {contactInfo.map((item) => (
                     <div
-                      key={index}
+                      key={item.title}
                       className={`flex items-start space-x-4 p-4 rounded-lg border border-amber-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ${
                         item.link ? "hover:bg-amber-50 cursor-pointer" : "bg-gradient-to-br from-white to-amber-50"
                       }`}

@@ -187,8 +187,8 @@ const PackagesPreview = () => {
 
                 {/* Highlights */}
                 <div className="space-y-1.5">
-                  {pkg.highlights.map((h, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                  {pkg.highlights.map((h) => (
+                    <div key={h} className="flex items-center gap-2 text-sm text-gray-600">
                       <Star className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#f59e0b", fill: "#f59e0b" }} />
                       <span>{h}</span>
                     </div>

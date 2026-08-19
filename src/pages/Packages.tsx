@@ -251,8 +251,8 @@ const Packages = () => {
                         <Star className="w-4 h-4 text-[#e53e3e] mr-2 fill-current animate-pulse" />
                         Tour Highlights
                       </h4>
-                      {pkg.highlights.map((highlight, idx) => (
-                        <div key={idx} className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-300 transform hover:translate-x-1 transition-transform duration-300">
+                      {pkg.highlights.map((highlight) => (
+                        <div key={highlight} className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-300 transform hover:translate-x-1 transition-transform duration-300">
                           <div className="w-1.5 h-1.5 bg-gradient-to-r from-[#d4af37] to-[#e53e3e] rounded-full mr-2 flex-shrink-0" />
                           {highlight}
                         </div>

@@ -2,7 +2,10 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Award, Heart, Users, Globe, Star, MapPin, Phone, Mail } from 'lucide-react';
+import { Award, Heart, Users, Globe, Star, Phone, Mail } from 'lucide-react';
+
+// Stable keys for the five-star rating rows
+const RATING_STARS = ['star-1', 'star-2', 'star-3', 'star-4', 'star-5'];
 
 const About = () => {
   return (
@@ -162,8 +165,8 @@ const About = () => {
                       <p className="text-[#e53e3e] font-medium mb-3">Founder & CEO</p>
                       <div className="flex items-center justify-center mb-3">
                         <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
+                          {RATING_STARS.map((star) => (
+                            <Star key={star} className="w-4 h-4 text-[#d4af37] fill-current" />
                           ))}
                         </div>
                         <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>
@@ -220,8 +223,8 @@ const About = () => {
                       <p className="text-[#e53e3e] font-medium mb-3">Sri Lanka Operations Manager</p>
                       <div className="flex items-center justify-center mb-3">
                         <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
+                          {RATING_STARS.map((star) => (
+                            <Star key={star} className="w-4 h-4 text-[#d4af37] fill-current" />
                           ))}
                         </div>
                         <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>
@@ -279,8 +282,8 @@ const About = () => {
                       <p className="text-[#e53e3e] font-medium mb-3">UK Operations Manager</p>
                       <div className="flex items-center justify-center mb-3">
                         <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
+                          {RATING_STARS.map((star) => (
+                            <Star key={star} className="w-4 h-4 text-[#d4af37] fill-current" />
                           ))}
                         </div>
                         <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>

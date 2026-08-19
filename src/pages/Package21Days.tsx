@@ -3,10 +3,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DayItinerary from '../components/DayItinerary';
 import BookingForm from '../components/BookingForm';
-import AnimatedMap from '../components/AnimatedMap';
 import { Dialog, DialogContent, DialogTitle } from '../components/ui/dialog';
 import { MapPin, Calendar, Users } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 const DAYS = 21;
 const vehicleTiers = [
@@ -16,23 +14,10 @@ const vehicleTiers = [
 ];
 
 const Package21Days = () => {
-  const navigate = useNavigate();
   const [mapPreviewOpen, setMapPreviewOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
 
   const openBooking = () => setBookingOpen(true);
-
-  const destinations = [
-    { name: 'Colombo', x: 25, y: 75, order: 1 },
-    { name: 'Anuradhapura', x: 35, y: 25, order: 2 },
-    { name: 'Sigiriya', x: 50, y: 35, order: 3 },
-    { name: 'Kandy', x: 40, y: 55, order: 4 },
-    { name: 'Nuwara Eliya', x: 45, y: 65, order: 5 },
-    { name: 'Ella', x: 55, y: 70, order: 6 },
-    { name: 'Yala', x: 70, y: 80, order: 7 },
-    { name: 'Galle', x: 30, y: 85, order: 8 },
-    { name: 'Bentota', x: 28, y: 82, order: 9 }
-  ];
 
   const detailedItinerary = [
     {
