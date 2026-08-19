@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import { Dialog, DialogContent, DialogTitle } from './ui/dialog';
 import { 
   MapPin, 
   Clock, 
@@ -25,6 +26,9 @@ interface Activity {
   type: 'transport' | 'sightseeing' | 'meal' | 'activity';
   icon?: React.ReactNode;
   highlights?: string[];
+  image?: string;
+  /** Longer write-up shown in the image preview modal; falls back to description. */
+  details?: string;
 }
 
 interface DayData {
@@ -57,6 +61,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
   const [activeDay, setActiveDay] = useState<number>(1);
   const [animatingDay, setAnimatingDay] = useState<number | null>(null);
   const [journeyProgress, setJourneyProgress] = useState<number>(0);
+  const [previewImage, setPreviewImage] = useState<Activity | null>(null);
   const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Calculate journey progress based on active day
@@ -101,8 +106,15 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
 
   const colorClasses = {
     primary: 'border-primary text-primary bg-primary/10',
-    accent: 'border-accent text-accent bg-accent/10', 
+    accent: 'border-accent text-accent bg-accent/10',
     success: 'border-success text-success bg-success/10'
+  };
+
+  // Written out in full so Tailwind can see the class names at build time
+  const dayNumberClasses = {
+    primary: 'bg-gradient-to-br from-primary to-primary/80',
+    accent: 'bg-gradient-to-br from-accent to-accent/80',
+    success: 'bg-gradient-to-br from-success to-success/80'
   };
 
   return (
@@ -260,7 +272,8 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                     <div className="flex items-center space-x-4">
                       <div className={cn(
                         "relative w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl transition-all duration-500 group-hover:scale-110",
-                        `bg-gradient-to-br from-${packageColor} to-${packageColor}/80`,
+                        "shadow-md ring-2 ring-white/60",
+                        dayNumberClasses[packageColor],
                         expandedDays.has(day.day) && [
                           "scale-125 shadow-2xl animate-pulse",
                           `shadow-${packageColor}/50`
@@ -323,14 +336,16 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                           Day Schedule
                         </h4>
                         {day.activities.map((activity, actIndex) => (
-                          <div 
-                            key={actIndex} 
+                          <button
+                            key={actIndex}
+                            type="button"
+                            onClick={() => setPreviewImage(activity)}
                             className={cn(
-                              "flex items-start space-x-4 p-4 rounded-xl transition-all duration-300 hover-scale group relative overflow-hidden",
+                              "w-full text-left flex items-start space-x-4 p-4 rounded-xl transition-all duration-300 hover-scale group relative overflow-hidden cursor-pointer",
                               "bg-gradient-to-r from-muted/20 to-muted/10 hover:from-muted/40 hover:to-muted/20",
                               "border border-muted/20 hover:border-primary/20"
                             )}
-                            style={{ 
+                            style={{
                               animationDelay: `${actIndex * 100}ms`,
                               animation: expandedDays.has(day.day) ? 'fade-in 0.5s ease-out' : 'none'
                             }}
@@ -338,12 +353,22 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                             {/* Hover gradient effect */}
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                             <div className="flex-shrink-0">
-                              <div className={cn(
-                                "w-8 h-8 rounded-full flex items-center justify-center text-white text-sm",
-                                `bg-${packageColor}/80`
-                              )}>
-                                {getActivityIcon(activity.type)}
-                              </div>
+                              {activity.image ? (
+                                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-background shadow-md group-hover:scale-110 group-hover:shadow-lg transition-transform duration-200">
+                                  <img
+                                    src={activity.image}
+                                    alt={activity.title}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                              ) : (
+                                <div className={cn(
+                                  "w-16 h-16 rounded-full flex items-center justify-center text-white text-sm",
+                                  `bg-${packageColor}/80`
+                                )}>
+                                  {getActivityIcon(activity.type)}
+                                </div>
+                              )}
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between">
@@ -367,7 +392,7 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
                                 </div>
                               )}
                             </div>
-                          </div>
+                          </button>
                         ))}
                       </div>
 
@@ -418,6 +443,41 @@ const DayItinerary: React.FC<DayItineraryProps> = ({ days, packageColor = 'prima
           </div>
         ))}
       </div>
+
+      {/* Image Preview Modal */}
+      <Dialog open={!!previewImage} onOpenChange={(open) => !open && setPreviewImage(null)}>
+        <DialogContent className="max-w-2xl p-2 sm:p-2 bg-background/95 backdrop-blur-sm">
+          <DialogTitle className="sr-only">{previewImage?.title}</DialogTitle>
+          {previewImage && (
+            <div className="space-y-2">
+              {previewImage.image && (
+                <img
+                  src={previewImage.image}
+                  alt={previewImage.title}
+                  className="w-full max-h-[70vh] object-contain rounded-lg"
+                />
+              )}
+              <div className="px-3 pb-2 space-y-1">
+                <div className="flex items-baseline justify-between gap-3">
+                  <h4 className="font-poppins font-semibold text-base text-foreground">
+                    {previewImage.title}
+                  </h4>
+                  <span className="flex-shrink-0 text-xs text-muted-foreground">
+                    {previewImage.time}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {previewImage.details ?? previewImage.description}
+                </p>
+                <div className="flex items-center text-xs text-muted-foreground">
+                  <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
+                  {previewImage.location}
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
